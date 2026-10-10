@@ -13,7 +13,7 @@ def script(share_base):
     probs = ''.join(R(f) for f in sorted(glob.glob('problems/*.js')))
     app1 = R('src/app1.js').replace("const SHARE_BASE = '';", f"const SHARE_BASE = {share_base!r};")
     js = '\n'.join([R('src/engine.js'), 'const PROBLEMS = []; const P = o => PROBLEMS.push(o);', probs,
-                    R('src/table.js'), R('src/store.js'), app1, R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/app2.js')])
+                    R('src/table.js'), R('src/store.js'), app1, R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
     assert '</script' not in js
     return js
 
@@ -22,7 +22,7 @@ HEAD = '''<title>HOLDEM GOSU</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
 <style>
-''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '''
+''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '''
 </style>
 '''
 BODY = R('src/body.html')

@@ -1,0 +1,12 @@
+.coach-entry{border-color:rgba(120,230,243,.35)!important}.coach-entry .ic{font-size:20px;color:var(--cyan)}
+.coach-top{color:var(--cyan);font-size:12px;font-weight:900}
+.coach-dialog{color:var(--ink);background:#0c151e;border:1px solid #365064;border-radius:20px;width:min(560px,calc(100% - 20px));max-height:calc(100dvh - 28px);padding:0;box-shadow:0 24px 100px #000b;overflow:auto}
+.coach-dialog::backdrop{background:#000b;backdrop-filter:blur(5px)}
+.coach-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px;border-bottom:1px solid var(--line)}
+.coach-head h2{font-size:23px;margin-top:5px}.coach-about{padding:18px 20px 8px;color:#e9f8fc;font-size:17px}.coach-about p{font-size:12px;color:var(--ink-2);margin:10px 0 0}
+.coach-status{margin:8px 20px;padding:9px 11px;border:1px solid #385064;border-radius:9px;color:var(--cyan);font-size:12px}
+.coach-samples{display:flex;gap:7px;flex-wrap:wrap;padding:8px 20px}.coach-samples button{background:#172936;color:#bce9f3;border:1px solid #324955;border-radius:30px;padding:7px 10px;font-size:12px}
+.coach-messages{min-height:120px;max-height:36dvh;overflow-y:auto;padding:12px 20px;display:grid;gap:12px;overscroll-behavior:contain}
+.coach-bubble{background:#182733;border:1px solid #2b4151;border-radius:12px;padding:12px 14px;margin-right:20px;font-size:14px;overflow-wrap:anywhere}.coach-bubble b{font-size:11px;color:var(--cyan)}.coach-bubble p{white-space:pre-wrap;margin:6px 0 0;line-height:1.75}.coach-bubble.user{background:#253121;border-color:#465534;margin-right:0;margin-left:20px}.coach-bubble.user b{color:var(--gold)}
+#coach-form{padding:14px 20px 18px;border-top:1px solid var(--line)}#coach-form label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:6px}#coach-input{width:100%;resize:vertical;min-height:78px;max-height:180px;background:#070e15;border:1px solid #385064;border-radius:10px;padding:10px;font-size:16px;line-height:1.5}.coach-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:10px}.coach-actions .link{margin-right:auto;font-size:12px}.coach-actions .btn{font-size:14px;padding:10px 12px}.coach-privacy{font-size:11px;color:var(--ink-3);margin:12px 0 0}.coach-error{color:var(--red);font-size:12px;margin-top:6px}
+@media(max-width:380px){.top-in{gap:6px;padding-inline:10px}.wordmark{font-size:16px}.coach-head,#coach-form{padding:14px}.coach-messages{padding:12px}.coach-actions{gap:7px}}

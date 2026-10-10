@@ -268,6 +268,7 @@ function boot(data) {
   const m = /^#inv-([A-Za-z0-9]{4,10})$/.exec(location.hash || '');
   if (m && !Sx.p.tot.a && !Sx.p.invitedBy) { Sx.p.pendingInv = m[1].toUpperCase(); Store.save(); }
   if (data && data.ui) { try { Object.assign(App.ui, data.ui); if (App.ui.view === 'play' && !App.ui.set) App.ui.view = 'home'; } catch (e) { } }
+  U.$('#coach-top').onclick = () => Coach.open();
   U.$('#go-home').onclick = () => App.go('home');
   U.$('#who-btn').onclick = () => Sx.p.nick ? App.go('notes') : Login.open();
   U.$('#ev-btn').onclick = U.$('#tix-chip').onclick = () => { if (App.ui.view === 'play') { U.toast(`남은 이용권 ${App.tickets()}개`); return; } App.ui.set = { ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; App.go('result'); };

@@ -101,6 +101,7 @@ const App = (() => {
             <span class="lvstat num">${mine.length ? `정답 ${ok} · 정답률 ${U.pct(ok, mine.length)}%` : '아직 풀지 않음'}</span></div>
           <button class="btn btn-ink btn-block" type="button" id="start" style="font-size:19px;padding:15px">${total > 0 ? `${Math.min(3, total)}문제 플레이` : '이용권 받고 플레이'}</button>
         </div>
+        <button class="simcard coach-entry" type="button" onclick="Coach.open()"><span class="ic">AI</span><span><b>GTO AI 코치</b><span class="small muted">콜? 레이즈? 궁금한 상황을 질문하고 이유를 배워보세요</span></span><span class="go" aria-hidden="true">›</span></button>
         <button class="simcard" type="button" data-nav="sim"><span class="ic">%</span><span><b>승률 시뮬레이터</b><span class="small muted">내 패·상대 패·보드를 직접 정해 승률을 확인해 보세요</span></span><span class="go" aria-hidden="true">›</span></button>
         <div class="quick num">
           <button type="button" data-nav="rank"><b>${S.p.wk.c}</b>이번 주 정답</button>
@@ -247,7 +248,7 @@ const App = (() => {
         </div>
         ${p.ctx ? `<div class="ctx"><b>상황</b> · ${U.esc(p.ctx)}</div>` : ''}
         <div class="acts4" style="--n:${p.o.length}" role="group" aria-label="${PD.posName(st.hero.k)}(나)의 선택">${btns}</div>
-        ${done ? explainHtml(p, st, done) : ''}
+        ${done ? explainHtml(p, st, done) + '<button class="btn btn-line coach-entry" type="button" id="coach-problem">이 문제 AI 코치에게 질문하기 ↗</button>' : ''}
         <div class="ticker"><div class="log">${logHtml(st)}</div></div>
       </section>`;
     },
@@ -255,6 +256,7 @@ const App = (() => {
       U.$$('[data-o]', el).forEach(b => b.onclick = () => answer(+b.dataset.o));
       U.$('#p-unit', el).onclick = () => { Store.setPref('units', units() === 'bb' ? 'chips' : 'bb'); render(); };
       U.$('#p-exit', el).onclick = () => go(ui.set && ui.set.mode === 'preview' && ui.set.back && ui.set.back !== 'play' ? ui.set.back : 'home');
+      const coach = U.$('#coach-problem', el); if (coach) coach.onclick = () => Coach.askProblem(byId(ui.set.ids[ui.set.idx]));
       const nx = U.$('#next', el); if (nx) nx.onclick = next;
     }
   };
