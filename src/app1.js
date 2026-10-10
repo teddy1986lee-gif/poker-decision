@@ -87,37 +87,34 @@ const App = (() => {
       const ex = PROBLEMS.find(p => p.ex);
       const mine = playable().filter(p => S.p.solved[p.id]);
       const ok = mine.filter(p => S.p.solved[p.id].ok).length;
-      return `<section class="screen">
-        ${protoNote()}
-        <div class="lobby-head"><h1>HOLDEM GOSU</h1></div>
-        <div class="panel tixcard num" aria-label="남은 이용권">
-          <div><b>${t.free}</b><span>오늘 무료</span></div><div><b>${t.ad}</b><span>광고 보상</span></div><div><b>${t.inv}</b><span>초대 보상</span></div>
-        </div>
-        <div style="display:grid;gap:10px">
-          <div class="spread"><span class="eyebrow">홀덤 문제</span><span class="small muted">1문제에 이용권 1개 · 무료는 매일 ${S.settings.freePerDay}개</span></div>
-          <div class="level one">
-            <span class="minitable"><span style="font-family:'Segoe UI Symbol','Apple Symbols',sans-serif">♠&#xFE0E;</span></span><span class="nm">오늘의 테이블</span><span class="cnt num"><b>${mine.length}</b>풀이</span>
-            <span class="tp">입문부터 고급까지 한 테이블에 섞여 나와요. 처음엔 쉬운 문제 위주로, 풀수록 어려운 문제가 늘어나요.</span>
-            <span class="lvstat num">${mine.length ? `정답 ${ok} · 정답률 ${U.pct(ok, mine.length)}%` : '아직 풀지 않음'}</span></div>
-          <button class="btn btn-ink btn-block" type="button" id="start" style="font-size:19px;padding:15px">${total > 0 ? `${Math.min(3, total)}문제 플레이` : '이용권 받고 플레이'}</button>
-        </div>
-        <button class="simcard coach-entry" type="button" onclick="Coach.open()"><span class="ic">AI</span><span><b>GTO AI 코치</b><span class="small muted">콜? 레이즈? 궁금한 상황을 질문하고 이유를 배워보세요</span></span><span class="go" aria-hidden="true">›</span></button>
-        <button class="simcard" type="button" data-nav="sim"><span class="ic">%</span><span><b>승률 시뮬레이터</b><span class="small muted">내 패·상대 패·보드를 직접 정해 승률을 확인해 보세요</span></span><span class="go" aria-hidden="true">›</span></button>
-        <div class="quick num">
-          <button type="button" data-nav="rank"><b>${S.p.wk.c}</b>이번 주 정답</button>
-          <button type="button" data-nav="notes"><b>${S.p.tot.p.toLocaleString('ko-KR')}</b>누적 포인트</button>
-          <button type="button" data-nav="notes"><b>${Object.values(S.p.solved).filter(x => !x.ok).length}</b>오답노트</button>
-        </div>
-        <div class="panel pad exhand"><div style="display:grid;gap:6px"><span class="eyebrow">기획서 예시 핸드</span>
-          <span class="small">${TableView.miniCards(PD.parseCards(ex.c))} 보드 ${TableView.miniCards(PD.parseCards(ex.b))} 팟 14,000</span></div>
-          <button class="btn btn-line" type="button" data-ex>예시 보기</button></div>
-        ${canAdmin() ? `<p class="small muted" style="margin:0;text-align:center"><button class="link" type="button" id="to-admin">관리자 페이지</button></p>` : ''}
+      const courses = [
+        ['pre','01','프리플랍의 기본','좋은 판단은 첫 액션에서 시작됩니다.','OPENING RANGE','As','Kh'],
+        ['post','02','포스트플랍 전략','보드와 레인지를 읽고 다음 수를 찾으세요.','READ THE BOARD','Qs','Jh'],
+        ['icm','03','토너먼트의 승부처','스택과 상금 구조가 바꾸는 의사결정.','TOURNAMENT PLAY','Ks','Qh']
+      ];
+      return `<section class="academy screen">
+        <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>${S.p.nick ? U.esc(S.p.nick) + '님의 학습 공간' : '더 나은 판단을 위한 시간.'}</h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
+        <div class="academy-grid"><div class="academy-main">
+          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">DAILY PRACTICE · 오늘의 훈련</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '오늘의 학습 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
+          <div class="academy-section-title"><div><span class="eyebrow">LEARNING PATHS</span><h2>주제별 집중 학습</h2></div><span class="small muted">지금 필요한 판단부터</span></div>
+          <div class="course-grid">${courses.map(([key,no,title,desc,en,a,b]) => { const qs=playable().filter(q=>courseMatch(q,key));const count=qs.filter(q=>S.p.solved[q.id]).length;return `<button type="button" class="course-card course-${key}" data-course="${key}"><div class="course-visual"><span class="course-no">${no}</span><span class="course-symbol">${key==='pre'?'A♠':key==='post'?'♣ ♦ ♠':'♔'}</span><span class="course-en">${en}</span></div><div class="course-copy"><h3>${title}<span>↗</span></h3><p>${desc}</p><div class="course-progress"><i style="width:${U.pct(count,qs.length)}%"></i></div><span class="small muted">${count} / ${qs.length}문제 학습</span></div></button>`; }).join('')}</div>
+          <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>판단을 돕는 도구</h2></div></div>
+          <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황을 질문하고<br>판단의 근거를 확인하세요.</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
+        </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
+          <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
+          <div class="ticket-panel"><div class="spread"><b>남은 학습 이용권</b><strong>${total}</strong></div><div class="ticket-details">무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</div><button class="link" id="academy-tickets" type="button">이용권 받기 →</button></div>
+        </aside></div>
+        <footer class="academy-footer"><span>HOLDEM GOSU <span class="muted">· 매일 한 걸음, 더 나은 플레이.</span></span><div><button class="link" type="button" data-ex>예시 핸드 체험</button>${canAdmin() ? '<button class="link" type="button" id="to-admin">관리자</button>' : ''}</div></footer>
+        <p class="academy-note">학습 문제와 정답은 전문가 검수 전 초안입니다. 광고 보상은 현재 모의 기능입니다.</p>
       </section>`;
     },
     bind(el) {
-      U.$('#start', el).onclick = () => startSet();
+      U.$('#start', el).onclick = () => ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? go('play') : startSet();
       U.$('[data-ex]', el).onclick = () => startPreview(PROBLEMS.find(p => p.ex).id);
       U.$$('[data-nav]', el).forEach(b => b.onclick = () => go(b.dataset.nav));
+      U.$$('[data-course]', el).forEach(b => b.onclick = () => startSet(b.dataset.course));
+      U.$('#academy-review', el).onclick = () => { ui.notesTab='wrong'; go('notes'); };
+      U.$('#academy-tickets', el).onclick = () => U.$('#tix-chip').click();
       const a = U.$('#to-admin', el); if (a) a.onclick = () => go('admin');
     }
   };
@@ -127,8 +124,15 @@ const App = (() => {
    * 한 테이블에서 n문제 고르기. 아직 안 푼 문제 중에서 뽑되, 푼 문제가 적을수록 입문 비중을 높이고
    * 많이 풀수록 중급·고급 비중을 늘린다. 세트 안에서는 쉬운 문제부터 낸다.
    */
-  function pickProblems(n) {
-    const list = playable(), fresh = list.filter(p => !S.p.solved[p.id]);
+  function courseMatch(p, key) {
+    const tournament = /ICM|버블|상금|파이널|숏스택|푸시|리쇼브/i.test([p.tp,p.ti,p.ctx].join(' '));
+    if (key === 'icm') return tournament;
+    if (key === 'pre') return !tournament && !(p.b || '').trim();
+    if (key === 'post') return !tournament && !!(p.b || '').trim();
+    return true;
+  }
+  function pickProblems(n, course) {
+    const list = playable().filter(p => courseMatch(p, course)), fresh = list.filter(p => !S.p.solved[p.id]);
     const solvedN = Object.keys(S.p.solved).length;
     const W = solvedN < 15 ? { 1: 6, 2: 3, 3: 1 } : solvedN < 45 ? { 1: 3, 2: 4, 3: 3 } : { 1: 2, 2: 4, 3: 4 };
     const pool = (fresh.length ? fresh : list).slice(), out = [];
@@ -139,10 +143,10 @@ const App = (() => {
     }
     return out.sort((a, b) => a.lv - b.lv).map(p => p.id);
   }
-  function startSet() {
+  function startSet(course) {
     const n = Math.min(3, tickets());
     if (n === 0) { ui.set = { ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; S.p.ctr.offers++; Store.save(); return go('result'); }
-    const ids = pickProblems(n);
+    const ids = pickProblems(n, course);
     if (!ids.length) { U.toast('출제할 문제가 없습니다.'); return; }
     if (ui.set && ui.set.fromResult) S.p.ctr.continued++;
     S.p.ctr.setsStarted++; Store.save();
