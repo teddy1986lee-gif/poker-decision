@@ -4,8 +4,9 @@
 
 ## 바로 실행하기
 
-- `docs/index.html`을 브라우저로 열면 바로 플레이할 수 있습니다.
-- GitHub Pages로 공개하려면 저장소 **Settings → Pages**에서 Branch를 `main`, 폴더를 `/docs`로 지정합니다. 무료 계정은 공개 저장소에서만 Pages를 쓸 수 있고, 비공개 저장소에서 쓰려면 GitHub Pro 이상 요금제가 필요합니다.
+- 웹 주소: https://teddy1986lee-gif.github.io/poker-decision/
+- 내려받은 파일로는 `docs/index.html`을 브라우저로 열면 바로 플레이할 수 있습니다.
+- GitHub Pages 설정: 저장소 **Settings → Pages**에서 Source를 `Deploy from a branch`, Branch를 `main`으로 고르고 Save를 누릅니다. 폴더는 `/ (root)`와 `/docs` 중 어느 쪽이어도 됩니다. 루트로 지정하면 맨 위의 `index.html`이 게임(`docs/`)으로 넘겨 줍니다. 무료 계정은 공개 저장소에서만 Pages를 쓸 수 있고, 비공개 저장소에서 쓰려면 GitHub Pro 이상 요금제가 필요합니다.
 - 일반 웹 버전에서는 기록과 이용권이 **그 브라우저에만** 저장됩니다. 여러 사람의 공유 랭킹과 친구 초대 보상 확인은 서버가 붙어야 동작합니다(Claude 아티팩트 버전은 공유 저장소를 씁니다).
 
 ## 들어 있는 기능
@@ -37,6 +38,7 @@
 | `check.js` | 전체 문제 자동 검증 |
 | `build.py` | 단일 HTML 빌드 |
 | `docs/index.html` | 빌드된 웹 버전 |
+| `index.html` | 사이트 첫 주소로 들어오면 게임(`docs/`)으로 넘겨 주는 페이지 |
 
 ## 빌드와 검증
 
