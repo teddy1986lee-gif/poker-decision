@@ -83,8 +83,8 @@ const TableView = (() => {
       <rect x="19" y="75" width="352" height="730" rx="176" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
       <rect x="28" y="84" width="334" height="712" rx="167" fill="url(#${uid}felt)"/>
       <rect x="50" y="106" width="290" height="668" rx="145" fill="none" stroke="var(--felt-line)" stroke-width="1.5"/>
-      <text x="195" y="320" text-anchor="middle" font-family="var(--f-game)" font-size="31" letter-spacing="1" fill="rgba(255,255,255,.075)">POKER DECISION</text>
-      <text x="195" y="343" text-anchor="middle" font-family="var(--f-game)" font-size="17" letter-spacing="3" fill="rgba(255,255,255,.06)">HOLD'EM</text>`);
+      <text x="195" y="320" text-anchor="middle" font-family="var(--f-game)" font-size="31" letter-spacing="1" fill="rgba(255,255,255,.075)">HOLDEM GOSU</text>
+      <text x="195" y="343" text-anchor="middle" font-family="var(--f-game)" font-size="17" letter-spacing="3" fill="rgba(255,255,255,.06)">NO LIMIT</text>`);
     // 팟
     P.push(`<g transform="translate(195,254)"><rect x="-58" y="-13" width="116" height="26" rx="13" fill="rgba(5,12,14,.78)" stroke="rgba(255,255,255,.1)"/>${chipIcon(-41, 0, 8)}<text x="8" y="5" text-anchor="middle" font-family="var(--f-body)" font-weight="900" font-size="14" fill="#fff">${esc(amt(st.pot, bb, units))}</text></g>`);
     // 보드

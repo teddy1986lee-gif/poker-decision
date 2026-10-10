@@ -1,4 +1,4 @@
-/* ===== Poker Decision 엔진: 액션 토큰 → 테이블 상태 계산 + 문제 검증 ===== */
+/* ===== HOLDEM GOSU 엔진: 액션 토큰 → 테이블 상태 계산 + 문제 검증 ===== */
 const PD = (() => {
   const POS = {
     8: ['UTG', 'U1', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],

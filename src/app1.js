@@ -18,8 +18,7 @@ const U = {
 
 const App = (() => {
   const S = Store.S;
-  const ui = { view: 'home', lv: 1, set: null, rankTab: 'week', notesTab: 'wrong', adminTab: 'bank' };
-  try { const pr = Store.pref(); if (pr.lv) ui.lv = pr.lv; } catch (e) { }
+  const ui = { view: 'home', set: null, rankTab: 'week', notesTab: 'wrong', adminTab: 'bank' };
   const units = () => Store.pref().units || 'bb';
 
   // ---------- 문제은행 ----------
@@ -38,9 +37,10 @@ const App = (() => {
     });
   }
   const byId = id => bank().find(p => p.id === id);
+  /** 출제 가능한 문제(난이도를 주면 그 난이도만) */
   function playable(lv) {
     const only = S.settings.onlyReviewed;
-    return bank().filter(p => !p.ex && p.lv === lv && p.rv !== 'hidden' && (!only || p.rv === 'ok') && valid(p).length === 0);
+    return bank().filter(p => !p.ex && (lv == null || p.lv === lv) && p.rv !== 'hidden' && (!only || p.rv === 'ok') && valid(p).length === 0);
   }
   const ansOf = p => (p.ans == null ? [] : [].concat(p.ans));
 
@@ -59,7 +59,7 @@ const App = (() => {
     b.textContent = S.p.nick ? S.p.nick : '로그인';
     U.$$('.nav [data-nav]').forEach(x => x.setAttribute('aria-current', x.dataset.nav === navKey() ? 'page' : 'false'));
   }
-  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', invite: 'invite', admin: '' }[ui.view] ?? '');
+  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', admin: '' }[ui.view] ?? '');
   const canAdmin = () => !S.runtime || S.isOwner || S.canEdit;
 
   function go(view, opts = {}) {
@@ -70,7 +70,7 @@ const App = (() => {
   function render() {
     paintHeader();
     const el = U.$('#view');
-    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, invite: Invite, admin: Admin }[ui.view] || Home;
+    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, admin: Admin }[ui.view] || Home;
     el.innerHTML = f.html();
     f.bind && f.bind(el);
   }
@@ -85,25 +85,23 @@ const App = (() => {
     html() {
       const t = S.p.tix, total = tickets();
       const ex = PROBLEMS.find(p => p.ex);
-      const lvCard = lv => {
-        const list = playable(lv), mine = list.filter(p => S.p.solved[p.id]);
-        const ok = mine.filter(p => S.p.solved[p.id].ok).length;
-        return `<button class="level" type="button" data-lv="${lv}" aria-pressed="${ui.lv === lv}">
-          <span class="minitable">${lv}</span><span class="nm">${LV[lv].nm} 테이블</span><span class="cnt num"><b>${mine.length}</b>풀이</span>
-          <span class="tp">${LV[lv].tp}</span>
-          <span class="lvstat num">${mine.length ? `정답 ${ok} · 정답률 ${U.pct(ok, mine.length)}%` : '아직 풀지 않음'}</span></button>`;
-      };
+      const mine = playable().filter(p => S.p.solved[p.id]);
+      const ok = mine.filter(p => S.p.solved[p.id].ok).length;
       return `<section class="screen">
         ${protoNote()}
-        <div class="lobby-head"><h1>POKER DECISION</h1><p>테이블을 보고 가장 좋은 액션을 고르세요 · 노리밋 홀덤 토너먼트 8인</p></div>
+        <div class="lobby-head"><h1>HOLDEM GOSU</h1><p>테이블을 보고 가장 좋은 액션을 고르세요 · 노리밋 홀덤 토너먼트 8인</p></div>
         <div class="panel tixcard num" aria-label="남은 이용권">
           <div><b>${t.free}</b><span>오늘 무료</span></div><div><b>${t.ad}</b><span>광고 보상</span></div><div><b>${t.inv}</b><span>초대 보상</span></div>
         </div>
         <div style="display:grid;gap:10px">
-          <div class="spread"><span class="eyebrow">테이블 선택</span><span class="small muted">1문제에 이용권 1개 · 무료는 매일 ${S.settings.freePerDay}개</span></div>
-          <div class="levels">${[1, 2, 3].map(lvCard).join('')}</div>
-          <button class="btn btn-ink btn-block" type="button" id="start" style="font-size:19px;padding:15px">${total > 0 ? `${LV[ui.lv].nm} ${Math.min(3, total)}문제 플레이` : '이용권 받고 플레이'}</button>
+          <div class="spread"><span class="eyebrow">홀덤 문제</span><span class="small muted">1문제에 이용권 1개 · 무료는 매일 ${S.settings.freePerDay}개</span></div>
+          <div class="level one">
+            <span class="minitable"><span style="font-family:'Segoe UI Symbol','Apple Symbols',sans-serif">♠&#xFE0E;</span></span><span class="nm">오늘의 테이블</span><span class="cnt num"><b>${mine.length}</b>풀이</span>
+            <span class="tp">입문부터 고급까지 한 테이블에 섞여 나와요. 처음엔 쉬운 문제 위주로, 풀수록 어려운 문제가 늘어나요.</span>
+            <span class="lvstat num">${mine.length ? `정답 ${ok} · 정답률 ${U.pct(ok, mine.length)}%` : '아직 풀지 않음'}</span></div>
+          <button class="btn btn-ink btn-block" type="button" id="start" style="font-size:19px;padding:15px">${total > 0 ? `${Math.min(3, total)}문제 플레이` : '이용권 받고 플레이'}</button>
         </div>
+        <button class="simcard" type="button" data-nav="sim"><span class="ic">%</span><span><b>승률 시뮬레이터</b><span class="small muted">내 패·상대 패·보드를 직접 정해 승률을 확인해 보세요</span></span><span class="go" aria-hidden="true">›</span></button>
         <div class="quick num">
           <button type="button" data-nav="rank"><b>${S.p.wk.c}</b>이번 주 정답</button>
           <button type="button" data-nav="notes"><b>${S.p.tot.p.toLocaleString('ko-KR')}</b>누적 포인트</button>
@@ -116,8 +114,7 @@ const App = (() => {
       </section>`;
     },
     bind(el) {
-      U.$$('[data-lv]', el).forEach(b => b.onclick = () => { ui.lv = +b.dataset.lv; Store.setPref('lv', ui.lv); render(); });
-      U.$('#start', el).onclick = () => startSet(ui.lv);
+      U.$('#start', el).onclick = () => startSet();
       U.$('[data-ex]', el).onclick = () => startPreview(PROBLEMS.find(p => p.ex).id);
       U.$$('[data-nav]', el).forEach(b => b.onclick = () => go(b.dataset.nav));
       const a = U.$('#to-admin', el); if (a) a.onclick = () => go('admin');
@@ -125,20 +122,34 @@ const App = (() => {
   };
 
   // ================= 세트 시작 =================
-  function startSet(lv) {
+  /**
+   * 한 테이블에서 n문제 고르기. 아직 안 푼 문제 중에서 뽑되, 푼 문제가 적을수록 입문 비중을 높이고
+   * 많이 풀수록 중급·고급 비중을 늘린다. 세트 안에서는 쉬운 문제부터 낸다.
+   */
+  function pickProblems(n) {
+    const list = playable(), fresh = list.filter(p => !S.p.solved[p.id]);
+    const solvedN = Object.keys(S.p.solved).length;
+    const W = solvedN < 15 ? { 1: 6, 2: 3, 3: 1 } : solvedN < 45 ? { 1: 3, 2: 4, 3: 3 } : { 1: 2, 2: 4, 3: 4 };
+    const pool = (fresh.length ? fresh : list).slice(), out = [];
+    while (out.length < n && pool.length) {
+      let x = Math.random() * pool.reduce((s, p) => s + (W[p.lv] || 1), 0), i = 0;
+      for (; i < pool.length - 1; i++) { x -= W[pool[i].lv] || 1; if (x < 0) break; }
+      out.push(pool.splice(i, 1)[0]);
+    }
+    return out.sort((a, b) => a.lv - b.lv).map(p => p.id);
+  }
+  function startSet() {
     const n = Math.min(3, tickets());
-    if (n === 0) { ui.set = { lv, ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; S.p.ctr.offers++; Store.save(); return go('result'); }
-    const list = playable(lv);
-    const fresh = U.shuffle(list.filter(p => !S.p.solved[p.id]));
-    let ids = fresh.slice(0, n).map(p => p.id), mode = 'scored';
-    if (!ids.length) { ids = U.shuffle(list).slice(0, n).map(p => p.id); }
+    if (n === 0) { ui.set = { ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; S.p.ctr.offers++; Store.save(); return go('result'); }
+    const ids = pickProblems(n);
+    if (!ids.length) { U.toast('출제할 문제가 없습니다.'); return; }
     if (ui.set && ui.set.fromResult) S.p.ctr.continued++;
     S.p.ctr.setsStarted++; Store.save();
-    ui.set = { lv, ids, idx: 0, answers: [], mode };
+    ui.set = { ids, idx: 0, answers: [], mode: 'scored' };
     go('play');
   }
-  function startRetry(ids) { ui.set = { lv: byId(ids[0]).lv, ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
-  function startPreview(id) { ui.set = { lv: byId(id).lv, ids: [id], idx: 0, answers: [], mode: 'preview', back: ui.view }; go('play'); }
+  function startRetry(ids) { ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
+  function startPreview(id) { ui.set = { ids: [id], idx: 0, answers: [], mode: 'preview', back: ui.view }; go('play'); }
 
   // ================= 문제 풀이 =================
   function optText(st, tok) {

@@ -21,7 +21,7 @@ const Result = {
     }).join('');
     const head = set.empty
       ? `<div><div class="eyebrow">이용권</div><h2 class="title">${t > 0 ? `이용권이 ${t}개 남았습니다` : '오늘 이용권을 모두 썼습니다'}</h2><p class="muted" style="margin:6px 0 0">광고를 보거나 친구를 초대하면 3문제를 더 풀 수 있습니다.</p></div>`
-      : `<div class="spread"><div><div class="eyebrow">${App.ui.set.mode === 'retry' ? '재풀이 결과' : `${LV[set.lv].nm} ${scored.length}문제 결과`}</div>
+      : `<div class="spread"><div><div class="eyebrow">${App.ui.set.mode === 'retry' ? '재풀이 결과' : `${scored.length}문제 결과`}</div>
           <div class="score num"><b>${okN}</b><span>/ ${scored.length} 정답</span></div></div>
           <div class="panel pad num" style="text-align:right"><div class="small muted">이번 세트</div><div style="font:800 26px/1 var(--f-display)">+${pts}점</div></div></div>
         <div class="panel pad"><div class="rlist">${list}</div></div>`;
@@ -38,7 +38,7 @@ const Result = {
     </section>`;
   },
   bind(el) {
-    const c = U.$('#cont', el); if (c) c.onclick = () => { App.ui.set.fromResult = true; App.startSet(App.ui.set.lv || App.ui.lv); };
+    const c = U.$('#cont', el); if (c) c.onclick = () => { App.ui.set.fromResult = true; App.startSet(); };
     U.$('#ad', el).onclick = () => Ad.open();
     U.$('#share', el).onclick = () => App.go('invite');
     const l = U.$('#login', el); if (l) l.onclick = () => Login.open();
@@ -109,7 +109,7 @@ const Notes = {
       const store = Sx.remoteOk && Sx.uid && !Sx.readOnly ? '이 계정에 저장되어 다른 기기에서 열어도 기록과 이용권이 이어집니다.' : '이 기기의 브라우저에만 저장됩니다. 실서비스에서는 서버에 저장해 다른 기기에서도 이어집니다.';
       inner = `<div class="panel stats num"><div><b>${p.tot.a}</b><span>풀이</span></div><div><b>${p.tot.c}</b><span>정답</span></div><div><b>${U.pct(p.tot.c, p.tot.a)}%</b><span>정답률</span></div><div><b>${p.tot.p.toLocaleString('ko-KR')}</b><span>포인트</span></div></div>
         <div class="panel pad"><div class="eyebrow" style="margin-bottom:6px">이번 주</div><div class="num">정답 ${p.wk.c} · 풀이 ${p.wk.a} · 포인트 ${p.wk.p.toLocaleString('ko-KR')}</div></div>
-        <div class="panel pad"><div class="eyebrow" style="margin-bottom:6px">난이도별 기록</div><div class="nlist">${[1, 2, 3].map(lvRow).join('')}</div></div>
+        <div class="panel pad"><div class="eyebrow" style="margin-bottom:6px">난이도별 정답률</div><div class="nlist">${[1, 2, 3].map(lvRow).join('')}</div></div>
         <div class="panel pad" style="display:grid;gap:8px"><div class="eyebrow">계정</div>
           <div>${p.nick ? `닉네임 <b>${U.esc(p.nick)}</b>` : '게스트로 체험 중입니다.'}</div><div class="small muted">${store}</div>
           <div class="row"><button class="btn btn-line" type="button" id="login">${p.nick ? '닉네임 바꾸기' : '닉네임으로 로그인'}</button></div></div>`;
@@ -270,7 +270,7 @@ function boot(data) {
   if (data && data.ui) { try { Object.assign(App.ui, data.ui); if (App.ui.view === 'play' && !App.ui.set) App.ui.view = 'home'; } catch (e) { } }
   U.$('#go-home').onclick = () => App.go('home');
   U.$('#who-btn').onclick = () => Sx.p.nick ? App.go('notes') : Login.open();
-  U.$('#ev-btn').onclick = U.$('#tix-chip').onclick = () => { if (App.ui.view === 'play') { U.toast(`남은 이용권 ${App.tickets()}개`); return; } App.ui.set = { lv: App.ui.lv, ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; App.go('result'); };
+  U.$('#ev-btn').onclick = U.$('#tix-chip').onclick = () => { if (App.ui.view === 'play') { U.toast(`남은 이용권 ${App.tickets()}개`); return; } App.ui.set = { ids: [], idx: 0, answers: [], mode: 'scored', empty: true }; App.go('result'); };
   U.$$('.nav [data-nav]').forEach(b => b.onclick = () => App.go(b.dataset.nav));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && U.$('#layer').innerHTML && !U.$('#adc')) Layer.close(); });
   App.render();

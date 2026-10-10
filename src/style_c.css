@@ -1,0 +1,138 @@
+/* ---------- lobby: one table + simulator entry ---------- */
+.level.one{cursor:default;border-color:var(--gold);box-shadow:0 0 0 1px rgba(255,213,74,.3),0 0 18px rgba(255,213,74,.22)}
+.level.one .lvmix{grid-column:2/4;display:flex;flex-wrap:wrap;gap:5px}
+.simcard{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;text-align:left;width:100%;background:linear-gradient(135deg,#123446,#0f1c27);border:1px solid rgba(120,230,243,.28);border-radius:14px;padding:12px 14px;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.simcard .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#2fb4cf,#0d5d6e);font:400 19px/1 var(--f-game);color:#fff;box-shadow:inset 0 0 0 3px rgba(255,255,255,.18)}
+.simcard b{display:block;font:400 17px/1.25 var(--f-game);letter-spacing:.02em}
+.simcard .go{font:400 22px/1 var(--f-game);color:var(--cyan)}
+
+/* ---------- simulator ---------- */
+.sim{max-width:560px;margin:0 auto;width:100%}
+.simbox{display:grid;gap:12px}
+.presets{display:flex;gap:8px;overflow-x:auto;margin-inline:-16px;padding:2px 16px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
+.presets::-webkit-scrollbar{display:none}
+.pchip{flex:none;scroll-snap-align:start;display:grid;gap:2px;text-align:left;background:linear-gradient(#232a32,#171c22);border:1px solid var(--line-2);border-radius:12px;padding:8px 12px;color:var(--ink);max-width:172px}
+.pchip b{font:400 14.5px/1.2 var(--f-game);letter-spacing:.01em;white-space:nowrap}
+.pchip span{font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pchip:active{transform:translateY(1px)}
+.nseg button{padding:5px 9px;min-width:30px}
+.plist{display:grid;gap:8px}
+.prow{display:grid;grid-template-columns:minmax(0,1fr) auto 78px;gap:6px 10px;align-items:center;padding:9px 10px 8px 11px;border-radius:12px;background:#121920;border:1px solid var(--line);border-left:4px solid var(--pc)}
+.prow .pl{display:grid;gap:3px;min-width:0}
+.prow .pl>b{font:400 15px/1.2 var(--f-game);letter-spacing:.02em;color:var(--pc)}
+.prow .sub{font-size:11.5px;line-height:1.35;color:var(--ink-2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.prow .sub b{color:#fff;font-weight:800}
+.prow .ph{display:flex;gap:4px}
+.prow .pr{display:grid;justify-items:end;gap:1px;text-align:right;transition:opacity .2s}
+.prow .pr b{font:400 21px/1 var(--f-game);color:#fff}
+.prow .pr span{font-size:10.5px;color:var(--ink-2);white-space:nowrap}
+.stale{opacity:.45}
+.pbar{grid-column:1/-1;height:5px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;border-radius:3px;background:var(--pc);transition:width .3s ease-out}
+.rsel select{border:1px solid var(--line-2);border-radius:8px;background:#0d1217;padding:3px 6px;font-size:12.5px;font-weight:700;color:var(--ink);max-width:100%}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.prow-act .btn,.brow .btn{flex:1 1 0;padding:10px 12px;font-size:14px}
+
+/* card slots */
+.cs{width:36px;height:50px;border-radius:6px;padding:0;display:grid;place-items:center;align-content:center;gap:0;background:var(--card);border:1px solid #c9ced6;box-shadow:0 2px 4px rgba(0,0,0,.45);font:700 17px/1 var(--f-card)}
+.cs .r{letter-spacing:-.5px}
+.cs .s{font-size:15px;line-height:1.05;font-family:'Segoe UI Symbol','Apple Symbols','Noto Sans Symbols 2',sans-serif}
+.cs.empty{background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,255,255,.3);color:var(--ink-2);box-shadow:none;font:400 20px/1 var(--f-game)}
+.cs.rand{background:repeating-linear-gradient(45deg,#2c3644 0 4px,#232b37 4px 8px);border:1px solid rgba(255,255,255,.2);color:#c9d3dc;font:400 19px/1 var(--f-game)}
+.cs.big{width:44px;height:62px;font-size:20px}
+.cs.big .s{font-size:18px}
+.cs:active{transform:translateY(1px)}
+.board{display:flex;justify-content:center;gap:12px}
+.bgrp{display:grid;gap:5px;justify-items:center}
+.bgrp .cards{display:flex;gap:5px}
+.bgrp>span{font:400 11.5px/1 var(--f-game);letter-spacing:.04em;color:var(--cyan)}
+
+/* summary */
+.simsum{display:grid;gap:10px;transition:opacity .2s}
+.sumtop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.bignum{font:400 54px/1 var(--f-game);color:var(--gold);text-shadow:0 3px 0 #5a3400;margin:4px 0}
+.bignum small{font-size:26px;margin-left:2px}
+.vs{font:400 13px/1.2 var(--f-game);color:var(--ink-2);background:#121920;border:1px solid var(--line);border-radius:8px;padding:6px 9px;white-space:nowrap}
+.prog{height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan-2),var(--cyan));transition:width .2s}
+
+/* street history */
+.hist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.hs{display:grid;gap:3px;justify-items:center;padding:9px 4px;border-radius:10px;background:#121920;border:1px solid var(--line)}
+.hs span{font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.hs b{font:400 17px/1.1 var(--f-game);color:#fff}
+.hs.cur{border-color:var(--gold);box-shadow:0 0 0 1px rgba(255,213,74,.25)}
+.hs.cur b{color:var(--gold)}
+
+/* pot odds */
+.oddsin{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.oddsin label{display:grid;gap:5px;font-size:12.5px;font-weight:700;color:var(--ink-2);align-content:end}
+.oddsin small{font-weight:600;color:var(--ink-3);white-space:nowrap}
+.oddsin input{border:1px solid var(--line-2);border-radius:10px;background:#0d1217;padding:10px 12px;font-size:16px;width:100%;color:var(--ink)}
+#sim-odds{display:grid;gap:10px}
+.oddsout{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.oddsout div{background:#121920;border:1px solid var(--line);border-radius:10px;padding:9px 10px;display:grid;gap:2px}
+.oddsout span{font-size:11.5px;color:var(--ink-2);font-weight:700}
+.oddsout b{font:400 22px/1.1 var(--f-game)}
+.odv{display:grid;gap:2px;border-radius:10px;padding:10px 12px;border:1px solid var(--line-2)}
+.odv b{font:400 18px/1.2 var(--f-game);letter-spacing:.01em}
+.odv span{font-size:12.5px;color:var(--ink-2)}
+.odv.ok{background:rgba(82,227,148,.1);border-color:rgba(82,227,148,.45)} .odv.ok b{color:var(--ok)}
+.odv.no{background:rgba(255,107,94,.1);border-color:rgba(255,107,94,.45)} .odv.no b{color:var(--bad)}
+.odv.eq{background:rgba(255,208,106,.08);border-color:rgba(255,208,106,.4)} .odv.eq b{color:var(--amber)}
+
+/* hand categories */
+.cats{display:grid;gap:6px;transition:opacity .2s}
+.cat{display:grid;grid-template-columns:96px 1fr 62px;gap:8px;align-items:center;font-size:12.5px}
+.cat span{color:var(--ink-2);font-weight:700;white-space:nowrap}
+.cat b{text-align:right;font-weight:800;font-size:12.5px}
+.cbar{height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+.cbar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#2fb4cf,#78e6f3)}
+
+/* reveal */
+.reveal{display:grid;gap:7px;border:1px solid var(--line-2);border-radius:12px;padding:12px;background:#10171e}
+.rvt{font:400 17px/1.2 var(--f-game);letter-spacing:.01em}
+.rvt.ok{color:var(--ok)} .rvt.no{color:var(--bad)}
+.rvrow{display:grid;grid-template-columns:52px auto minmax(0,1fr) 22px;gap:8px;align-items:center;font-size:13px;padding:5px 8px;border-radius:8px;border-left:3px solid var(--pc);background:rgba(255,255,255,.03)}
+.rvrow .nm{font-weight:800;color:var(--pc);white-space:nowrap}
+.rvrow .hn{color:var(--ink-2);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rvrow .wl{font:400 14px/1 var(--f-game);color:var(--gold);text-align:right}
+.rvrow.win{background:rgba(255,213,74,.08)}
+.rvrow.win .hn{color:#fff}
+
+/* card picker (bottom sheet) */
+.veil.sheetveil{place-items:end center;padding:0}
+.picker{width:min(560px,100%);background:linear-gradient(#1b232c,#11171d);border:1px solid var(--line-2);border-bottom:0;border-radius:18px 18px 0 0;padding:12px 8px calc(12px + env(safe-area-inset-bottom,0px));display:grid;gap:12px;box-shadow:0 -10px 30px rgba(0,0,0,.6);animation:sheet .22s ease-out both}
+@keyframes sheet{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.pk-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:0 6px}
+.pk-head b{font:400 16px/1.25 var(--f-game);letter-spacing:.02em;color:var(--gold)}
+.pk-head .adx{border:1px solid rgba(255,255,255,.25);background:none;color:var(--ink);border-radius:8px;padding:6px 11px;font-size:13px;font-weight:700}
+.pvs{display:flex;gap:4px;margin-top:6px}
+.pv{min-width:30px;height:26px;padding:0 4px;border-radius:5px;background:var(--card);display:grid;place-items:center;font:700 14px/1 var(--f-card)}
+.pv.empty{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.3);color:var(--ink-2)}
+.pv.on{outline:2px solid var(--gold);outline-offset:1px}
+.pk-grid{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:3px}
+.pk{height:46px;min-width:0;border-radius:6px;padding:0;border:1px solid #c9ced6;background:var(--card);display:grid;place-items:center;align-content:center;gap:1px;font:700 13.5px/1 var(--f-card)}
+.pk span:last-child{font-size:13px;font-family:'Segoe UI Symbol','Apple Symbols','Noto Sans Symbols 2',sans-serif}
+.pk[disabled]{opacity:.16;cursor:not-allowed}
+.pk[aria-pressed="true"]{outline:3px solid var(--gold);outline-offset:1px}
+.pk:not([disabled]):active{transform:translateY(1px)}
+.pk-foot{display:flex;gap:8px;padding:0 6px}
+.pk-foot .btn{flex:1 1 0;padding:10px 12px;font-size:14px}
+@media (max-width:440px){
+  .top-in{gap:8px}
+  .wordmark{font-size:17.5px;letter-spacing:.01em}
+  .tixbox{gap:5px;padding-left:8px;font-size:11px}
+  .tixbox button{padding:6px 8px}
+}
+@media (max-width:380px){
+  .wordmark{font-size:16px}
+  .prow{grid-template-columns:minmax(0,1fr) auto 70px;gap:6px 8px}
+  .cs{width:33px;height:46px;font-size:16px}
+  .cs.big{width:40px;height:56px}
+  .board{gap:8px}
+  .bgrp .cards{gap:4px}
+  .pk{height:44px;font-size:12.5px}
+  .cat{grid-template-columns:84px 1fr 58px}
+  .bignum{font-size:48px}
+}
