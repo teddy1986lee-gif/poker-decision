@@ -89,7 +89,7 @@ const App = (() => {
       const ok = mine.filter(p => S.p.solved[p.id].ok).length;
       return `<section class="screen">
         ${protoNote()}
-        <div class="lobby-head"><h1>HOLDEM GOSU</h1><p>테이블을 보고 가장 좋은 액션을 고르세요 · 노리밋 홀덤 토너먼트 8인</p></div>
+        <div class="lobby-head"><h1>HOLDEM GOSU</h1></div>
         <div class="panel tixcard num" aria-label="남은 이용권">
           <div><b>${t.free}</b><span>오늘 무료</span></div><div><b>${t.ad}</b><span>광고 보상</span></div><div><b>${t.inv}</b><span>초대 보상</span></div>
         </div>
