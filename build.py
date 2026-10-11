@@ -20,9 +20,9 @@ def script(share_base):
 HEAD = '''<title>HOLDEM GOSU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
 <style>
-''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '''
+''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '''
 </style>
 '''
 BODY = R('src/body.html')

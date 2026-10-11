@@ -68,6 +68,7 @@ const App = (() => {
     if (!opts.keepScroll) window.scrollTo({ top: 0 });
   }
   function render() {
+    document.body.dataset.view = ui.view;
     paintHeader();
     const el = U.$('#view');
     const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, admin: Admin }[ui.view] || Home;
@@ -93,12 +94,12 @@ const App = (() => {
         ['icm','03','토너먼트의 승부처','스택과 상금 구조가 바꾸는 의사결정.','TOURNAMENT PLAY','Ks','Qh']
       ];
       return `<section class="academy screen">
-        <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>${S.p.nick ? U.esc(S.p.nick) + '님의 학습 공간' : '더 나은 판단을 위한 시간.'}</h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
+        <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
         <div class="academy-grid"><div class="academy-main">
           <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">DAILY PRACTICE · 오늘의 훈련</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '오늘의 학습 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
-          <div class="academy-section-title"><div><span class="eyebrow">LEARNING PATHS</span><h2>주제별 집중 학습</h2></div><span class="small muted">지금 필요한 판단부터</span></div>
+          <div class="academy-section-title"><div><span class="eyebrow">LEARNING PATHS</span><h2>집중 학습. <span>한 수씩 깊어지는 실력.</span></h2></div><span class="small muted">지금 필요한 판단부터</span></div>
           <div class="course-grid">${courses.map(([key,no,title,desc,en,a,b]) => { const qs=playable().filter(q=>courseMatch(q,key));const count=qs.filter(q=>S.p.solved[q.id]).length;return `<button type="button" class="course-card course-${key}" data-course="${key}"><div class="course-visual"><span class="course-no">${no}</span><span class="course-symbol">${key==='pre'?'A♠':key==='post'?'♣ ♦ ♠':'♔'}</span><span class="course-en">${en}</span></div><div class="course-copy"><h3>${title}<span>↗</span></h3><p>${desc}</p><div class="course-progress"><i style="width:${U.pct(count,qs.length)}%"></i></div><span class="small muted">${count} / ${qs.length}문제 학습</span></div></button>`; }).join('')}</div>
-          <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>판단을 돕는 도구</h2></div></div>
+          <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
           <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황을 질문하고<br>판단의 근거를 확인하세요.</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
         </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
           <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
