@@ -102,7 +102,7 @@ calls.forEach(([pos, S, X, c], i) => {
   const call = r.e > nd, h = cls(c), P = PN(pos);
   const p = { id: id(), lv: 3, tp: '숏스택', ti: `${P} ${S}BB 올인에 BB ${h}`, bl: BL(2000), s: { d: 30, [pos]: S, BB: 25 }, h: 'BB', c, b: '', a: r.a, o: ['f', 'c'], ans: call ? 1 : 0, ctx: `${P}${eun(pos)} 이 스택에서 상위 ${X}% 핸드로 올인합니다.` };
   check(p);
-  p.w = `${P}${ga(pos)} ${S}BB를 올인했습니다. ${bbs(r.risk)}BB를 더 내고 ${bbs(r.Pfin)}BB를 다투므로 필요한 승률은 약 ${pc(nd)}%입니다. 상위 ${X}% 범위를 상대로 ${h} 핸드의 승률은 약 ${pc(r.e)}%라 ` + (call ? '콜합니다.' : '폴드합니다.');
+  p.w = `${P}${ga(pos)} ${S}BB를 올인했습니다. ${bbs(r.risk / 2000)}BB를 더 내고 ${bbs(r.Pfin / 2000)}BB를 다투므로 필요한 승률은 약 ${pc(nd)}%입니다. 상위 ${X}% 범위를 상대로 ${h} 핸드의 승률은 약 ${pc(r.e)}%라 ` + (call ? '콜합니다.' : '폴드합니다.');
   p.n = call ? ['필요한 승률보다 실제 승률이 높습니다.', ''] : ['', `승률(${pc(r.e)}%)이 필요한 승률(${pc(nd)}%)보다 낮습니다.`];
   out.push(p);
 });

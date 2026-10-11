@@ -51,8 +51,9 @@ const PD = (() => {
     const pre = streets[0].trim().split(/\s+/).filter(Boolean);
     if (pre.length >= 2) pre.splice(2, 0, 'f');
     streets[0] = pre.join(' ');
-    const fix = x => typeof x === 'string' ? x.replace(/8인/g, '9인').replace(/뒤에 7명/g, '뒤에 8명') : x;
-    return { ...p, pl: 9, format: 'tournament', a: streets.join('|'), ti: fix(p.ti), ctx: fix(p.ctx), w: fix(p.w), n: (p.n || []).map(fix) };
+    const fix = x => typeof x === 'string' ? x.replace(/8인/g, '9인').replace(/뒤에 7명/g, '뒤에 8명').replace(/뒤 7명/g, '뒤 8명').replace(/뒤에는 6명/g, '뒤에는 7명').replace(/앞의 세 명/g, '앞의 네 명') : x;
+    const s = p.s && typeof p.s === 'object' && p.s.U2 == null ? {...p.s, U2:p.s.d ?? p.s.U1 ?? p.s.UTG ?? 20} : p.s;
+    return { ...p, s, pl: 9, format: 'tournament', a: streets.join('|'), ti: fix(p.ti), ctx: fix(p.ctx), w: fix(p.w), n: (p.n || []).map(fix) };
   }
   /** 문제 → 결정 시점의 테이블 상태 */
   function build(p) {
@@ -233,9 +234,9 @@ const PD = (() => {
     const o = p.o || [];
     if (o.length < 2 || o.length > 5) errs.push('선택지는 2~5개');
     errs.push(...validateOptions(st, o));
-    if (!p.ex) {
-      const ans = [].concat(p.ans);
-      if (!ans.length || ans.some(i => !(i >= 0 && i < o.length))) errs.push('정답 인덱스 오류');
+    if (!p.ex && !p.reviewHold) {
+      const ans = p.ans == null ? [] : [].concat(p.ans);
+      if (!ans.length || ans.some(i => !Number.isInteger(i) || !(i >= 0 && i < o.length))) errs.push('정답 인덱스 오류');
       if (!p.w || p.w.length < 20) errs.push('해설(w) 부족');
     }
     if (p.n && p.n.length !== o.length) errs.push(`선택지별 설명(n) 개수 ${p.n.length} ≠ 선택지 ${o.length}`);

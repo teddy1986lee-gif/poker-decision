@@ -12,7 +12,7 @@ R = lambda p: open(p, encoding='utf-8').read()
 def script(share_base):
     probs = ''.join(R(f) for f in sorted(glob.glob('problems/*.js')))
     app1 = R('src/app1.js').replace("const SHARE_BASE = '';", f"const SHARE_BASE = {share_base!r};")
-    js = '\n'.join([R('src/engine.js'), 'const PROBLEMS = []; const P = o => PROBLEMS.push(o);', probs,
+    js = '\n'.join([R('src/engine.js'), R('src/problem-review.js'), 'const PROBLEMS = []; const P = o => PROBLEMS.push(ProblemReview.apply(o, PD));', probs,
                     R('src/table.js'), R('src/store.js'), app1, R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
     assert '</script' not in js
     return js

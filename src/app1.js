@@ -32,15 +32,15 @@ const App = (() => {
     const base = PROBLEMS.concat(Object.values(S.custom || {}).map(p => ({ ...p, custom: true })));
     return base.map(p => {
       const e = S.edits[p.id];
-      const q = e ? { ...p, ...e } : p;
-      return { ...PD.normalize(q), rv: S.review[p.id] || 'draft' };
+      const q = e && !p.contentRevision ? { ...p, ...e } : p;
+      return { ...PD.normalize(q), rv: p.reviewHold ? 'fix' : S.review[p.id] || p.rv || 'draft' };
     });
   }
   const byId = id => bank().find(p => p.id === id);
   /** 출제 가능한 문제(난이도를 주면 그 난이도만) */
   function playable(lv) {
     const only = S.settings.onlyReviewed;
-    return bank().filter(p => !p.ex && (lv == null || p.lv === lv) && p.rv !== 'hidden' && (!only || p.rv === 'ok') && valid(p).length === 0);
+    return bank().filter(p => !p.ex && !p.reviewHold && p.ans != null && (lv == null || p.lv === lv) && p.rv !== 'hidden' && p.rv !== 'fix' && (!only || p.rv === 'ok') && valid(p).length === 0);
   }
   const ansOf = p => (p.ans == null ? [] : [].concat(p.ans));
 
@@ -140,7 +140,7 @@ const App = (() => {
     ui.set = { ids, idx: 0, answers: [], mode: 'scored' };
     go('play');
   }
-  function startRetry(ids) { ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
+  function startRetry(ids) { ids = ids.filter(id => { const p=byId(id); return p && !p.reviewHold && p.ans != null && !['fix','hidden'].includes(p.rv); }); if (!ids.length) { U.toast('선택한 문제는 재검수 중입니다.'); return; } ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
   function startPreview(id) { ui.set = { ids: [id], idx: 0, answers: [], mode: 'preview', back: ui.view }; go('play'); }
 
   // ================= 문제 풀이 =================
@@ -226,11 +226,12 @@ const App = (() => {
           else if (done.choice === i) { cls += ' wrong'; mark = '✕ 내 선택'; }
           else cls += ' dim';
         }
-        return `<button type="button" class="${cls}" data-o="${i}" ${done ? 'disabled' : ''}><span class="led" aria-hidden="true"></span><span class="lb">${U.esc(op.act)}</span>${op.amt ? `<span class="am num">${U.esc(op.amt)}</span>` : ''}${op.sub ? `<span class="sb num">${U.esc(op.sub)}</span>` : ''}${mark ? `<span class="mark">${mark}</span>` : ''}</button>`;
+        return `<button type="button" class="${cls}" data-o="${i}" ${done || p.reviewHold ? 'disabled' : ''}><span class="led" aria-hidden="true"></span><span class="lb">${U.esc(op.act)}</span>${op.amt ? `<span class="am num">${U.esc(op.amt)}</span>` : ''}${op.sub ? `<span class="sb num">${U.esc(op.sub)}</span>` : ''}${mark ? `<span class="mark">${mark}</span>` : ''}</button>`;
       }).join('');
       const facing = st.facing ? `콜 금액 ${A(Math.min(st.toCall, st.hero.stack))}` : '상대 베팅 없음';
       return `<section class="stage story-stage">
         ${storyHtml(p, st, prog)}
+        ${p.reviewHold ? '<p class="proto">재검수 중 · 출제 및 채점 중단: ' + U.esc(p.reviewReason) + '</p>' : ''}
         <div class="tbl">${svg}
           <div class="hud">
             <div class="hud-l">
@@ -284,6 +285,7 @@ const App = (() => {
   function answer(i) {
     const set = ui.set, p = byId(set.ids[set.idx]);
     if (set.answers[set.idx]) return;
+    if (p.reviewHold) { U.toast('재검수 중인 문항은 채점하지 않습니다.'); return; }
     const ans = ansOf(p), ok = ans.includes(i);
     const rec = { id: p.id, choice: i, ok, first: false };
     if (set.mode === 'scored') {

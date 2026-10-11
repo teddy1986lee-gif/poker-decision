@@ -28,11 +28,10 @@ function callSpot(jPos, S, X, hero, bb = 1000, heroS = 20) {
   const e = L.eqv(hero, 'top:' + X, '', 30000);
   // 실제로 다투는 금액 기준 필요 승률
   const h = st.hero, v = st.pl.find(x => x.k === jPos);
-  const Seff = Math.min(h.start, v.start);
-  const risk = Seff - h.inv, Pf = st.total - v.inv + Seff + (Seff - h.inv) - 0; // 데드머니 + 양쪽 유효 스택
-  const dead = st.total - h.inv - v.inv;
-  const Pfin = dead + 2 * Seff;
-  return { need: risk / (Pfin - h.inv + 0) , need2: risk / (Pfin), e, a, st, risk, Pfin };
+  const risk = Math.min(st.toCall, h.stack);
+  const uncalled = Math.max(0, v.bet - (h.bet + risk));
+  const Pfin = st.total + risk - uncalled;
+  return { need: risk / Pfin, need2: risk / Pfin, e, a, st, risk, Pfin };
 }
 module.exports = { jamEV, callSpot };
 if (require.main === module) {

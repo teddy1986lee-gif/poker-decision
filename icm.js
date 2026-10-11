@@ -1,23 +1,33 @@
-// Malmuth-Harville ICM with memo over subsets
-function icm(stacks, pays){
-  const n=stacks.length, P=pays.slice(0,n); const memo=new Map(); const total=stacks.reduce((a,b)=>a+b,0);
-  // eq[i] = expected prize of i
-  const eq=new Array(n).fill(0);
-  function rec(mask, place, prob){ // mask: remaining players
-    if(place>=P.length||prob<1e-12) return;
-    let sum=0; for(let i=0;i<n;i++) if(mask>>i&1) sum+=stacks[i];
-    if(sum<=0) return;
-    for(let i=0;i<n;i++) if(mask>>i&1){ if(stacks[i]<=0) continue; const p=prob*stacks[i]/sum; eq[i]+=p*P[place]; rec(mask&~(1<<i), place+1, p); }
+// Malmuth-Harville ICM, exact subset DP. Payouts use the caller's units.
+function icm(stacks, pays) {
+  const n=stacks.length;
+  if (!n || n>20 || stacks.some(x=>!Number.isFinite(x)||x<0) || pays.some(x=>!Number.isFinite(x)||x<0)) throw new Error('Invalid ICM inputs');
+  const prizes=Array.from({length:n},(_,i)=>pays[i] || 0);
+  if (prizes.some((x,i)=>i>0 && x>prizes[i-1])) throw new Error('Payouts must descend');
+  const active=stacks.map((s,i)=>s>0?i:-1).filter(i=>i>=0), m=active.length;
+  if (!m) throw new Error('At least one live stack required');
+  const eq=Array(n).fill(0);
+  // Zero stack is already eliminated, not an unpaid player still in the draw.
+  // Multiple zero stacks are treated as tied eliminations and split tail prizes.
+  const tail=prizes.slice(m).reduce((a,b)=>a+b,0)/(n-m || 1);
+  stacks.forEach((s,i)=>{if(s===0)eq[i]=tail;});
+  const full=(1<<m)-1, prob=new Float64Array(1<<m), sums=new Float64Array(1<<m), counts=new Uint8Array(1<<m);
+  prob[full]=1;
+  for(let mask=1;mask<=full;mask++) {
+    const bit=mask&-mask, j=31-Math.clz32(bit);
+    sums[mask]=sums[mask^bit]+stacks[active[j]];
+    counts[mask]=counts[mask^bit]+1;
   }
-  // memoized version for speed: compute via DP over masks
-  const full=(1<<n)-1;
-  const prob=new Float64Array(1<<n); prob[full]=1;
-  const sums=new Float64Array(1<<n); for(let m=1;m<=full;m++){const lb=m&-m;const i=31-Math.clz32(lb);sums[m]=sums[m^lb]+stacks[i];}
-  // iterate masks in decreasing popcount
-  const order=[];for(let m=1;m<=full;m++)order.push(m);order.sort((a,b)=>popc(b)-popc(a));
-  for(const m of order){const pm=prob[m]; if(pm===0)continue; const place=n-popc(m); if(place>=P.length) continue; const s=sums[m]; if(s<=0)continue;
-    for(let i=0;i<n;i++) if(m>>i&1){const p=pm*stacks[i]/s; eq[i]+=p*P[place]; prob[m^(1<<i)]+=p;}}
+  // Removing a bit always produces a numerically smaller mask.
+  for(let mask=full;mask>0;mask--) {
+    if(!prob[mask])continue;
+    const place=m-counts[mask];
+    for(let j=0;j<m;j++) if(mask&(1<<j)) {
+      const p=prob[mask]*stacks[active[j]]/sums[mask];
+      eq[active[j]]+=p*prizes[place];
+      prob[mask^(1<<j)]+=p;
+    }
+  }
   return eq;
 }
-function popc(x){x=x-((x>>1)&0x55555555);x=(x&0x33333333)+((x>>2)&0x33333333);return(((x+(x>>4))&0xF0F0F0F)*0x1010101)>>24;}
 module.exports={icm};
