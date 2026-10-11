@@ -113,7 +113,7 @@ const Admin = (() => {
   }
 
   // ---------- 문제 등록(에디터) ----------
-  const blank = () => ({ id: '', lv: 1, tp: TOPICS[0], ti: '', pl: 8, bl: [500, 1000, 1000], s: 40, h: 'BTN', c: 'AsKd', b: '', a: 'f f f f f', o: ['f', 'c', 'r2.2', 'a'], ans: 2, w: '', n: [], ctx: '' });
+  const blank = () => ({ id: '', lv: 1, tp: TOPICS[0], ti: '', pl: 9, bl: [500, 1000, 1000], s: 40, h: 'BTN', c: 'AsKd', b: '', a: 'f f f f f f', o: ['f', 'c', 'r2.2', 'a'], ans: 2, w: '', n: [], ctx: '' });
   function parseStack(def, txt) {
     const o = { d: +def || 40 };
     (txt || '').split(/[,\s]+/).filter(Boolean).forEach(kv => { const [k, v] = kv.split(':'); if (k && v && !isNaN(+v)) o[k.trim().toUpperCase().replace('UTG+1', 'U1')] = +v; });
@@ -139,7 +139,7 @@ const Admin = (() => {
         </div>
         <div class="field"><label for="ed-ti">제목</label><input id="ed-ti" value="${U.esc(e.ti)}" placeholder="예: CO에서 KTo"></div>
         <div class="grid2">
-          <div class="field"><label for="ed-pl">인원</label><select id="ed-pl">${[8, 7, 6, 5, 4, 3].map(n => `<option ${+e.pl === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+          <div class="field"><label for="ed-pl">인원</label><select id="ed-pl">${[9, 8, 7, 6, 5, 4, 3].map(n => `<option ${+e.pl === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
           <div class="field"><label for="ed-sb">SB</label><input id="ed-sb" type="number" inputmode="numeric" value="${e.bl[0]}"></div>
           <div class="field"><label for="ed-bb">BB</label><input id="ed-bb" type="number" inputmode="numeric" value="${e.bl[1]}"></div>
           <div class="field"><label for="ed-an">BB 앤티</label><input id="ed-an" type="number" inputmode="numeric" value="${e.bl[2]}"></div>

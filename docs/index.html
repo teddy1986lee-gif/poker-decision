@@ -498,6 +498,7 @@ body[data-view="home"]{background:#f5f5f7;color:#1d1d1f;color-scheme:light}.acad
 /* ===== HOLDEM GOSU 엔진: 액션 토큰 → 테이블 상태 계산 + 문제 검증 ===== */
 const PD = (() => {
   const POS = {
+    9: ['UTG', 'U1', 'U2', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     8: ['UTG', 'U1', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     7: ['UTG', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     6: ['UTG', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
@@ -505,7 +506,7 @@ const PD = (() => {
     4: ['CO', 'BTN', 'SB', 'BB'],
     3: ['BTN', 'SB', 'BB']
   };
-  const POS_NAME = { U1: 'UTG+1' };
+  const POS_NAME = { U1: 'UTG+1', U2: 'UTG+2' };
   const posName = k => POS_NAME[k] || k;
   const STREETS = ['pre', 'flop', 'turn', 'river'];
   const STREET_KO = { pre: '프리플랍', flop: '플랍', turn: '턴', river: '리버' };
@@ -540,8 +541,19 @@ const PD = (() => {
     return (s && s.d) || 100;
   }
 
+  // Legacy eight-seat tournament hands gain a folded UTG+2 seat.
+  function normalize(p) {
+    if ((p.pl || 8) !== 8 || p.format === 'cash') return p;
+    const streets = (p.a || '').split('|');
+    const pre = streets[0].trim().split(/\s+/).filter(Boolean);
+    if (pre.length >= 2) pre.splice(2, 0, 'f');
+    streets[0] = pre.join(' ');
+    const fix = x => typeof x === 'string' ? x.replace(/8인/g, '9인').replace(/뒤에 7명/g, '뒤에 8명') : x;
+    return { ...p, pl: 9, format: 'tournament', a: streets.join('|'), ti: fix(p.ti), ctx: fix(p.ctx), w: fix(p.w), n: (p.n || []).map(fix) };
+  }
   /** 문제 → 결정 시점의 테이블 상태 */
   function build(p) {
+    p = normalize(p);
     const n = p.pl || 8;
     const order = POS[n];
     if (!order) throw new Error('지원하지 않는 인원: ' + n);
@@ -752,7 +764,7 @@ const PD = (() => {
     return { name: 'HIGH CARD', key: R(Math.max(...rs)) };
   }
 
-  return { POS, posName, STREETS, STREET_KO, parseCards, parseTok, build, optionInfo, validate, validateOptions, handLabel };
+  return { normalize, POS, posName, STREETS, STREET_KO, parseCards, parseTok, build, optionInfo, validate, validateOptions, handLabel };
 })();
 if (typeof module !== 'undefined') module.exports = PD;
 
@@ -1491,6 +1503,10 @@ o:['f','c'],ans:1,
 ctx:'대회 초반: 1,000명 중 300명이 남아 입상권까지 한참 남았습니다. BTN은 상위 40% 핸드로 올인합니다.',
 w:'A24와 같은 핸드와 스택이지만 입상권과 멀어서 ICM 압박이 거의 없습니다. 이때는 칩 기준으로 판단합니다. 18BB를 더 내고 40.5BB를 다투므로 약 44%가 필요하고, AJo는 BTN 범위에 약 60%입니다. 콜합니다. 같은 핸드라도 대회 단계에 따라 정답이 달라집니다.',
 n:['입상권과 먼 단계에서는 칩을 늘릴 기회를 잡아야 합니다. 버블처럼 타이트하게 접을 이유가 없습니다.','']});
+/* Six-max cash-game introduction; no ante or rake in these exercises. */
+P({id:'C01',format:'cash',pl:6,lv:1,tp:'링게임 오픈',ti:'버튼에 도착한 포켓 에이스',bl:[50,100,0],s:100,h:'BTN',c:'AsAh',b:'',a:'f f f',o:['f','c','r2.5','a'],ans:2,ctx:'앞선 세 명이 모두 폴드했습니다. 스몰블라인드와 빅블라인드만 남았습니다. 100BB 링게임에서 AA를 받았습니다. 이 문제는 레이크와 앤티를 제외합니다.',w:'AA는 가장 강한 시작 핸드입니다. 작은 레이즈로 팟을 키우면서 더 약한 핸드가 참여할 여지를 남깁니다. 100BB 오픈 올인은 보통 불필요하게 상대의 약한 핸드를 폴드시킵니다.',n:['AA를 폴드할 이유가 없습니다.','림프보다 레이즈로 밸류를 얻습니다.','','큰 올인은 상대의 계속할 범위를 과도하게 좁힙니다.']});
+P({id:'C02',format:'cash',pl:6,lv:1,tp:'링게임 시작 핸드',ti:'첫 자리에서 받은 7과 2',bl:[50,100,0],s:100,h:'UTG',c:'7d2c',b:'',a:'',o:['f','c','r2.5','a'],ans:0,ctx:'6인 링게임의 첫 액션입니다. 뒤에 다섯 명이 남아 있고, 내 카드는 서로 연결되지 않은 72 오프수트입니다. 레이크와 앤티는 제외합니다.',w:'72o는 연결성과 높은 카드 가치가 모두 부족합니다. 첫 포지션에서는 폴드하고 더 나은 시작 핸드를 기다립니다.',n:['','림프해도 약한 핸드의 문제가 사라지지 않습니다.','뒤의 다섯 명을 상대로 불필요하게 팟을 키웁니다.','100BB를 걸 가치가 없는 핸드입니다.']});
+P({id:'C03',format:'cash',pl:6,lv:2,tp:'링게임 리버 밸류',ti:'리버의 에이스 풀하우스',bl:[50,100,0],s:100,h:'BTN',c:'AsAh',b:'AcKd7s7h2c',a:'f f f r2.5 f c | x b2 c | x b6 c | x',o:['x','b8','b80'],ans:1,ctx:'버튼에서 오픈한 뒤 빅블라인드가 따라왔습니다. 플랍과 턴에서 내 베팅을 콜한 상대가 리버에서 다시 체크합니다. AA로 에이스 풀하우스를 완성했습니다. 레이크는 제외합니다.',w:'매우 강한 풀하우스로 더 약한 트립스나 풀하우스 등의 콜에서 밸류를 얻을 수 있습니다. 제시된 선택지에서는 8BB 베팅이 적절합니다. 정확한 최적 사이즈는 상대 범위에 따라 달라집니다.',n:['체크는 더 약한 핸드로부터 받을 밸류를 놓칠 수 있습니다.','','80BB 오버벳은 더 약한 핸드의 콜을 받기 어렵습니다.']});
 
 /* ===== 게임 테이블(SVG) 렌더러: 세로형 레이스트랙 테이블 ===== */
 const TableView = (() => {
@@ -1564,7 +1580,11 @@ const TableView = (() => {
   /** st: PD.build 결과, o: { units, label, heroName, hand } */
   function render(st, o = {}) {
     const units = o.units || 'bb', bb = st.bb, uid = 'tv' + (++uidN);
-    const n = st.n, heroIdx = st.hero.i, slots = SLOTS_BY_N[n];
+    const n = st.n, heroIdx = st.hero.i, slots = n === 9 ? [0,1,2,3,4,5,6,7,8] : SLOTS_BY_N[n];
+    const SEAT = n === 9 ? [[136,486],[52,438],[44,330],[64,206],[137,112],[253,112],[326,206],[346,330],[338,438]] : [[136,486],[52,438],[44,330],[64,196],[195,104],[326,196],[346,330],[338,438]];
+    const SIDE = n === 9 ? [0,1,1,1,1,-1,-1,-1,-1] : [0,1,1,1,-1,-1,-1,-1];
+    const PILL = n === 9 ? [[195,404],[112,404],[54,268],[125,230],[144,184],[246,184],[265,230],[340,268],[278,404]] : [[195,404],[112,404],[54,268],[154,216],[195,180],[236,216],[340,268],[278,404]];
+    const DLR = SEAT.map(([x,y],i)=>[x+(i===0?-62:SIDE[i]*38),y+22]);
     const P = [];
     P.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="포커 테이블: ${esc(o.label || '')}">
       <defs>
@@ -1863,7 +1883,7 @@ const App = (() => {
     return base.map(p => {
       const e = S.edits[p.id];
       const q = e ? { ...p, ...e } : p;
-      return { ...q, rv: S.review[p.id] || 'draft' };
+      return { ...PD.normalize(q), rv: S.review[p.id] || 'draft' };
     });
   }
   const byId = id => bank().find(p => p.id === id);
@@ -1922,7 +1942,7 @@ const App = (() => {
         <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
         <div class="academy-grid"><div class="academy-main">
           <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">ALL-IN-ONE · 통합 홀덤 트레이닝</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '게임 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
-          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>다양한 상황이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
+          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
           <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
           <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황을 질문하고<br>판단의 근거를 확인하세요.</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
         </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
@@ -2030,7 +2050,7 @@ const App = (() => {
     const pos = PD.posName(st.hero.k);
     const actions = st.log.flatMap(l => l.evs).filter(e => e.t !== 'f');
     const opening = !actions.length ? '블라인드와 앤티가 놓였습니다. 이제 당신의 첫 선택입니다.' : st.facing ? '앞선 액션으로 판돈이 올라갔습니다. 이 팟을 이어갈지 결정할 순간입니다.' : '액션이 당신에게 돌아왔습니다. 직접 움직일지, 다음 액션을 지켜볼지 선택하세요.';
-    return `<header class="hand-story"><div class="story-top"><span>THE SCENARIO</span><span>${U.esc(prog)} · ${street}</span></div><h1>${U.esc(p.ti)}</h1><div class="story-intro">${st.n}인 토너먼트. 당신은 <b>${pos}</b>에 앉아 있습니다.<br>유효 스택은 <b>${TableView.trimNum(st.effBB)}BB</b>. ${opening}</div>${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}<div class="story-facts"><div><span>내 핸드</span><b>${TableView.miniCards(st.heroCards)}</b></div><div><span>현재 팟</span><b>${A(st.total)}</b></div><div><span>${st.facing ? '콜에 필요한 금액' : '현재 액션'}</span><b>${st.facing ? A(Math.min(st.toCall,st.hero.stack)) : '체크 또는 베팅'}</b></div></div><div class="story-prompt">${st.facing ? '이어갈 것인가, 물러설 것인가.' : '주도권을 잡을 것인가, 기다릴 것인가.'}<span>테이블을 읽고, 당신의 액션을 선택하세요.</span></div></header>`;
+    return `<header class="hand-story"><div class="story-top"><span>THE SCENARIO</span><span>${U.esc(prog)} · ${street}</span></div><h1>${U.esc(p.ti)}</h1><div class="story-intro">${st.n}인 ${p.format === 'cash' ? '링게임' : '토너먼트'}. 당신은 <b>${pos}</b>에 앉아 있습니다.<br>유효 스택은 <b>${TableView.trimNum(st.effBB)}BB</b>. ${opening}</div>${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}<div class="story-facts"><div><span>내 핸드</span><b>${TableView.miniCards(st.heroCards)}</b></div><div><span>현재 팟</span><b>${A(st.total)}</b></div><div><span>${st.facing ? '콜에 필요한 금액' : '현재 액션'}</span><b>${st.facing ? A(Math.min(st.toCall,st.hero.stack)) : '체크 또는 베팅'}</b></div></div><div class="story-prompt">${st.facing ? '이어갈 것인가, 물러설 것인가.' : '주도권을 잡을 것인가, 기다릴 것인가.'}<span>테이블을 읽고, 당신의 액션을 선택하세요.</span></div></header>`;
   }
   const Play = {
     html() {
@@ -2071,7 +2091,7 @@ const App = (() => {
               </div>
               <div class="sidechips">${chips}</div>
             </div>
-            <div class="blindbox num"><b>${st.sb.toLocaleString('ko-KR')}/${st.bb.toLocaleString('ko-KR')}</b><span>토너먼트 · ${st.n}인</span><i>유효 ${TableView.trimNum(st.effBB)}BB</i></div>
+            <div class="blindbox num"><b>${st.sb.toLocaleString('ko-KR')}/${st.bb.toLocaleString('ko-KR')}</b><span>${p.format === 'cash' ? '링게임' : '토너먼트'} · ${st.n}인</span><i>유효 ${TableView.trimNum(st.effBB)}BB</i></div>
           </div>
           <div class="turnbox"><b>${PD.STREET_KO[st.street]} · 내 차례</b><span class="num">${facing}</span></div>
           ${stamp}
@@ -2284,7 +2304,7 @@ const Admin = (() => {
   }
 
   // ---------- 문제 등록(에디터) ----------
-  const blank = () => ({ id: '', lv: 1, tp: TOPICS[0], ti: '', pl: 8, bl: [500, 1000, 1000], s: 40, h: 'BTN', c: 'AsKd', b: '', a: 'f f f f f', o: ['f', 'c', 'r2.2', 'a'], ans: 2, w: '', n: [], ctx: '' });
+  const blank = () => ({ id: '', lv: 1, tp: TOPICS[0], ti: '', pl: 9, bl: [500, 1000, 1000], s: 40, h: 'BTN', c: 'AsKd', b: '', a: 'f f f f f f', o: ['f', 'c', 'r2.2', 'a'], ans: 2, w: '', n: [], ctx: '' });
   function parseStack(def, txt) {
     const o = { d: +def || 40 };
     (txt || '').split(/[,\s]+/).filter(Boolean).forEach(kv => { const [k, v] = kv.split(':'); if (k && v && !isNaN(+v)) o[k.trim().toUpperCase().replace('UTG+1', 'U1')] = +v; });
@@ -2310,7 +2330,7 @@ const Admin = (() => {
         </div>
         <div class="field"><label for="ed-ti">제목</label><input id="ed-ti" value="${U.esc(e.ti)}" placeholder="예: CO에서 KTo"></div>
         <div class="grid2">
-          <div class="field"><label for="ed-pl">인원</label><select id="ed-pl">${[8, 7, 6, 5, 4, 3].map(n => `<option ${+e.pl === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+          <div class="field"><label for="ed-pl">인원</label><select id="ed-pl">${[9, 8, 7, 6, 5, 4, 3].map(n => `<option ${+e.pl === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
           <div class="field"><label for="ed-sb">SB</label><input id="ed-sb" type="number" inputmode="numeric" value="${e.bl[0]}"></div>
           <div class="field"><label for="ed-bb">BB</label><input id="ed-bb" type="number" inputmode="numeric" value="${e.bl[1]}"></div>
           <div class="field"><label for="ed-an">BB 앤티</label><input id="ed-an" type="number" inputmode="numeric" value="${e.bl[2]}"></div>
@@ -3171,7 +3191,7 @@ const Coach = (() => {
   }
   function askProblem(p) {
     const st = PD.build(p), bb = x => +(x / st.bb).toFixed(2);
-    const snapshot = { format: '노리밋 홀덤 토너먼트', players: st.n, heroPosition: p.h, heroCards: st.heroCards, board: st.board, effectiveStackBB: st.effBB, potIncludingBetsBB: bb(st.total), toCallBB: bb(Math.min(st.toCall, st.hero.stack)), blinds: p.bl, initialStacksBB: p.s, actionTokens: p.a, situation: p.ctx || '', options: p.o };
+    const snapshot = { format: p.format === 'cash' ? '노리밋 홀덤 링게임' : '노리밋 홀덤 토너먼트', players: st.n, heroPosition: p.h, heroCards: st.heroCards, board: st.board, effectiveStackBB: st.effBB, potIncludingBetsBB: bb(st.total), toCallBB: bb(Math.min(st.toCall, st.hero.stack)), blinds: p.bl, initialStacksBB: p.s, actionTokens: p.a, situation: p.ctx || '', options: p.o };
     open('이 학습 문제를 GTO 원칙으로 복기해 주세요. 권장 행동과 다른 선택을 비교하고, 정보가 부족한 부분은 알려주세요.\n' + JSON.stringify(snapshot) + '\n액션 표기: f 폴드, x 체크, c 콜, b 숫자BB 베팅, r 숫자BB까지 레이즈, a 올인. |는 스트리트 구분입니다. 액션은 각 스트리트의 행동 순서대로입니다.');
   }
   return { open, askProblem };

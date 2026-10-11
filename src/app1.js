@@ -33,7 +33,7 @@ const App = (() => {
     return base.map(p => {
       const e = S.edits[p.id];
       const q = e ? { ...p, ...e } : p;
-      return { ...q, rv: S.review[p.id] || 'draft' };
+      return { ...PD.normalize(q), rv: S.review[p.id] || 'draft' };
     });
   }
   const byId = id => bank().find(p => p.id === id);
@@ -92,7 +92,7 @@ const App = (() => {
         <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
         <div class="academy-grid"><div class="academy-main">
           <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">ALL-IN-ONE · 통합 홀덤 트레이닝</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '게임 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
-          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>다양한 상황이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
+          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
           <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
           <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황을 질문하고<br>판단의 근거를 확인하세요.</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
         </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
@@ -200,7 +200,7 @@ const App = (() => {
     const pos = PD.posName(st.hero.k);
     const actions = st.log.flatMap(l => l.evs).filter(e => e.t !== 'f');
     const opening = !actions.length ? '블라인드와 앤티가 놓였습니다. 이제 당신의 첫 선택입니다.' : st.facing ? '앞선 액션으로 판돈이 올라갔습니다. 이 팟을 이어갈지 결정할 순간입니다.' : '액션이 당신에게 돌아왔습니다. 직접 움직일지, 다음 액션을 지켜볼지 선택하세요.';
-    return `<header class="hand-story"><div class="story-top"><span>THE SCENARIO</span><span>${U.esc(prog)} · ${street}</span></div><h1>${U.esc(p.ti)}</h1><div class="story-intro">${st.n}인 토너먼트. 당신은 <b>${pos}</b>에 앉아 있습니다.<br>유효 스택은 <b>${TableView.trimNum(st.effBB)}BB</b>. ${opening}</div>${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}<div class="story-facts"><div><span>내 핸드</span><b>${TableView.miniCards(st.heroCards)}</b></div><div><span>현재 팟</span><b>${A(st.total)}</b></div><div><span>${st.facing ? '콜에 필요한 금액' : '현재 액션'}</span><b>${st.facing ? A(Math.min(st.toCall,st.hero.stack)) : '체크 또는 베팅'}</b></div></div><div class="story-prompt">${st.facing ? '이어갈 것인가, 물러설 것인가.' : '주도권을 잡을 것인가, 기다릴 것인가.'}<span>테이블을 읽고, 당신의 액션을 선택하세요.</span></div></header>`;
+    return `<header class="hand-story"><div class="story-top"><span>THE SCENARIO</span><span>${U.esc(prog)} · ${street}</span></div><h1>${U.esc(p.ti)}</h1><div class="story-intro">${st.n}인 ${p.format === 'cash' ? '링게임' : '토너먼트'}. 당신은 <b>${pos}</b>에 앉아 있습니다.<br>유효 스택은 <b>${TableView.trimNum(st.effBB)}BB</b>. ${opening}</div>${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}<div class="story-facts"><div><span>내 핸드</span><b>${TableView.miniCards(st.heroCards)}</b></div><div><span>현재 팟</span><b>${A(st.total)}</b></div><div><span>${st.facing ? '콜에 필요한 금액' : '현재 액션'}</span><b>${st.facing ? A(Math.min(st.toCall,st.hero.stack)) : '체크 또는 베팅'}</b></div></div><div class="story-prompt">${st.facing ? '이어갈 것인가, 물러설 것인가.' : '주도권을 잡을 것인가, 기다릴 것인가.'}<span>테이블을 읽고, 당신의 액션을 선택하세요.</span></div></header>`;
   }
   const Play = {
     html() {
@@ -241,7 +241,7 @@ const App = (() => {
               </div>
               <div class="sidechips">${chips}</div>
             </div>
-            <div class="blindbox num"><b>${st.sb.toLocaleString('ko-KR')}/${st.bb.toLocaleString('ko-KR')}</b><span>토너먼트 · ${st.n}인</span><i>유효 ${TableView.trimNum(st.effBB)}BB</i></div>
+            <div class="blindbox num"><b>${st.sb.toLocaleString('ko-KR')}/${st.bb.toLocaleString('ko-KR')}</b><span>${p.format === 'cash' ? '링게임' : '토너먼트'} · ${st.n}인</span><i>유효 ${TableView.trimNum(st.effBB)}BB</i></div>
           </div>
           <div class="turnbox"><b>${PD.STREET_KO[st.street]} · 내 차례</b><span class="num">${facing}</span></div>
           ${stamp}

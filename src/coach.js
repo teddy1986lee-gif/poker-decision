@@ -72,7 +72,7 @@ const Coach = (() => {
   }
   function askProblem(p) {
     const st = PD.build(p), bb = x => +(x / st.bb).toFixed(2);
-    const snapshot = { format: '노리밋 홀덤 토너먼트', players: st.n, heroPosition: p.h, heroCards: st.heroCards, board: st.board, effectiveStackBB: st.effBB, potIncludingBetsBB: bb(st.total), toCallBB: bb(Math.min(st.toCall, st.hero.stack)), blinds: p.bl, initialStacksBB: p.s, actionTokens: p.a, situation: p.ctx || '', options: p.o };
+    const snapshot = { format: p.format === 'cash' ? '노리밋 홀덤 링게임' : '노리밋 홀덤 토너먼트', players: st.n, heroPosition: p.h, heroCards: st.heroCards, board: st.board, effectiveStackBB: st.effBB, potIncludingBetsBB: bb(st.total), toCallBB: bb(Math.min(st.toCall, st.hero.stack)), blinds: p.bl, initialStacksBB: p.s, actionTokens: p.a, situation: p.ctx || '', options: p.o };
     open('이 학습 문제를 GTO 원칙으로 복기해 주세요. 권장 행동과 다른 선택을 비교하고, 정보가 부족한 부분은 알려주세요.\n' + JSON.stringify(snapshot) + '\n액션 표기: f 폴드, x 체크, c 콜, b 숫자BB 베팅, r 숫자BB까지 레이즈, a 올인. |는 스트리트 구분입니다. 액션은 각 스트리트의 행동 순서대로입니다.');
   }
   return { open, askProblem };

@@ -70,7 +70,11 @@ const TableView = (() => {
   /** st: PD.build 결과, o: { units, label, heroName, hand } */
   function render(st, o = {}) {
     const units = o.units || 'bb', bb = st.bb, uid = 'tv' + (++uidN);
-    const n = st.n, heroIdx = st.hero.i, slots = SLOTS_BY_N[n];
+    const n = st.n, heroIdx = st.hero.i, slots = n === 9 ? [0,1,2,3,4,5,6,7,8] : SLOTS_BY_N[n];
+    const SEAT = n === 9 ? [[136,486],[52,438],[44,330],[64,206],[137,112],[253,112],[326,206],[346,330],[338,438]] : [[136,486],[52,438],[44,330],[64,196],[195,104],[326,196],[346,330],[338,438]];
+    const SIDE = n === 9 ? [0,1,1,1,1,-1,-1,-1,-1] : [0,1,1,1,-1,-1,-1,-1];
+    const PILL = n === 9 ? [[195,404],[112,404],[54,268],[125,230],[144,184],[246,184],[265,230],[340,268],[278,404]] : [[195,404],[112,404],[54,268],[154,216],[195,180],[236,216],[340,268],[278,404]];
+    const DLR = SEAT.map(([x,y],i)=>[x+(i===0?-62:SIDE[i]*38),y+22]);
     const P = [];
     P.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="포커 테이블: ${esc(o.label || '')}">
       <defs>

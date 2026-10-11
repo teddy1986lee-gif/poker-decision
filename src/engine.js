@@ -1,6 +1,7 @@
 /* ===== HOLDEM GOSU 엔진: 액션 토큰 → 테이블 상태 계산 + 문제 검증 ===== */
 const PD = (() => {
   const POS = {
+    9: ['UTG', 'U1', 'U2', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     8: ['UTG', 'U1', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     7: ['UTG', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
     6: ['UTG', 'HJ', 'CO', 'BTN', 'SB', 'BB'],
@@ -8,7 +9,7 @@ const PD = (() => {
     4: ['CO', 'BTN', 'SB', 'BB'],
     3: ['BTN', 'SB', 'BB']
   };
-  const POS_NAME = { U1: 'UTG+1' };
+  const POS_NAME = { U1: 'UTG+1', U2: 'UTG+2' };
   const posName = k => POS_NAME[k] || k;
   const STREETS = ['pre', 'flop', 'turn', 'river'];
   const STREET_KO = { pre: '프리플랍', flop: '플랍', turn: '턴', river: '리버' };
@@ -43,8 +44,19 @@ const PD = (() => {
     return (s && s.d) || 100;
   }
 
+  // Legacy eight-seat tournament hands gain a folded UTG+2 seat.
+  function normalize(p) {
+    if ((p.pl || 8) !== 8 || p.format === 'cash') return p;
+    const streets = (p.a || '').split('|');
+    const pre = streets[0].trim().split(/\s+/).filter(Boolean);
+    if (pre.length >= 2) pre.splice(2, 0, 'f');
+    streets[0] = pre.join(' ');
+    const fix = x => typeof x === 'string' ? x.replace(/8인/g, '9인').replace(/뒤에 7명/g, '뒤에 8명') : x;
+    return { ...p, pl: 9, format: 'tournament', a: streets.join('|'), ti: fix(p.ti), ctx: fix(p.ctx), w: fix(p.w), n: (p.n || []).map(fix) };
+  }
   /** 문제 → 결정 시점의 테이블 상태 */
   function build(p) {
+    p = normalize(p);
     const n = p.pl || 8;
     const order = POS[n];
     if (!order) throw new Error('지원하지 않는 인원: ' + n);
@@ -255,6 +267,6 @@ const PD = (() => {
     return { name: 'HIGH CARD', key: R(Math.max(...rs)) };
   }
 
-  return { POS, posName, STREETS, STREET_KO, parseCards, parseTok, build, optionInfo, validate, validateOptions, handLabel };
+  return { normalize, POS, posName, STREETS, STREET_KO, parseCards, parseTok, build, optionInfo, validate, validateOptions, handLabel };
 })();
 if (typeof module !== 'undefined') module.exports = PD;
