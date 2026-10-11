@@ -138,9 +138,9 @@ function processInvites() {
   for (const inv of [...Sx.invites].sort((a, b) => (a.at || 0) - (b.at || 0))) {
     if (inv.id === Sx.uid || p.credited.includes(inv.id)) continue;
     if (p.invDay.n >= s.inviteDailyLimit) break;
-    p.credited.push(inv.id); p.invDay.n++; p.tix.inv += s.inviteReward; p.ctr.invDone++; n++;
+    p.credited.push(inv.id); p.invDay.n++; p.tix.inv += s.inviteReward; p.ctr.invDone++; p.aiTickets = (p.aiTickets ?? 1) + 1; n++;
   }
-  if (n) { Store.save(); U.toast(`친구 ${n}명이 참여했어요 · 이용권 +${n * s.inviteReward}`); App.render(); }
+  if (n) { Store.save(); U.toast(`친구 ${n}명이 참여했어요 · 이용권 +${n * s.inviteReward} · AI 질문권 +${n}`); App.render(); }
 }
 const Invite = {
   html() {
@@ -158,7 +158,7 @@ const Invite = {
       <div class="panel stats num" style="grid-template-columns:repeat(3,1fr)"><div><b>${p.invDay.n}/${s.inviteDailyLimit}</b><span>오늘 받은 보상</span></div><div><b>${done}</b><span>참여 완료한 친구</span></div><div><b>${p.tix.inv}</b><span>남은 초대 이용권</span></div></div>
       ${waiting ? `<p class="small muted" style="margin:0">오늘 한도를 넘은 참여 ${waiting}건은 다음 날 자동으로 지급됩니다.</p>` : ''}
       <div class="panel pad" style="display:grid;gap:8px"><div class="eyebrow">보상 조건</div><ul class="rules">
-        <li>친구가 이 링크로 처음 접속해 첫 문제를 풀면 이용권 ${s.inviteReward}개를 드립니다.</li>
+        <li>친구가 이 링크로 처음 접속해 첫 문제를 풀면 이용권 ${s.inviteReward}개와 AI 질문권 1개를 드립니다.</li>
         <li>공유 버튼을 누르는 것만으로는 지급되지 않습니다.</li>
         <li>하루 ${s.inviteDailyLimit}회, 최대 ${s.inviteDailyLimit * s.inviteReward}문제까지 받을 수 있습니다.</li>
         <li>같은 친구는 처음 한 번만 인정되고, 본인 초대는 제외됩니다.</li></ul></div>
@@ -212,7 +212,7 @@ const Ad = {
     const v = Layer.open(`<div class="adbox"><div class="adtop"><span class="adtag">모의 광고 · 실제 광고 아님 · 수익 없음</span><button class="adx" type="button" id="adx" disabled>닫기</button></div>
       <div class="adstage"><canvas id="adc" aria-hidden="true"></canvas><div class="admsg" id="admsg"><b class="num" id="adsec">${s.adSeconds}</b><span>보상형 광고 자리입니다. 실서비스에서는 광고사의 동영상이 재생되고, 시청 완료가 확인되면 이용권이 지급됩니다.</span></div></div>
       <div class="adbar"><i id="adbar"></i></div>
-      <div class="adfoot" id="adfoot"><button class="btn btn-brass btn-block" type="button" id="claim" disabled>끝까지 보면 이용권 ${s.adReward}개</button></div></div>`, '모의 광고');
+      <div class="adfoot" id="adfoot"><button class="btn btn-brass btn-block" type="button" id="claim" disabled>끝까지 보면 이용권 ${s.adReward}개 + AI 질문권 1개</button></div></div>`, '모의 광고');
     const t0 = Date.now(), dur = s.adSeconds * 1000;
     let finished = false, raf = 0, iv = 0;
     const cv = U.$('#adc', v), ctx = cv.getContext('2d');
@@ -246,7 +246,7 @@ const Ad = {
       if (el >= dur && !finished) {
         finished = true; clearInterval(iv);
         U.$('#adsec', v).textContent = '완료';
-        const c = U.$('#claim', v); c.disabled = false; c.textContent = `이용권 ${s.adReward}개 받기`;
+        const c = U.$('#claim', v); c.disabled = false; c.textContent = `이용권 ${s.adReward}개 + AI 질문권 1개 받기`;
       }
     }, 200);
     U.$('#adx', v).onclick = () => {
@@ -255,9 +255,10 @@ const Ad = {
     };
     U.$('#claim', v).onclick = () => {
       if (!finished) return;
+      finished = false;
       stop(); Store.roll(Sx.p);
-      Sx.p.tix.ad += s.adReward; Sx.p.adDay.n++; Sx.p.ctr.adDone++; Store.save(true);
-      Layer.close(); U.toast(`이용권 +${s.adReward}`); App.render();
+      Sx.p.tix.ad += s.adReward; Sx.p.adDay.n++; Sx.p.ctr.adDone++; Sx.p.aiTickets = (Sx.p.aiTickets ?? 1) + 1; Store.save(true);
+      Layer.close(); U.toast(`이용권 +${s.adReward} · AI 질문권 +1`); App.render();
     };
   }
 };

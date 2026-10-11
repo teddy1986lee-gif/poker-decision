@@ -6,6 +6,7 @@ const Coach = (() => {
     ['토너먼트 ICM', '토너먼트 버블에서 칩EV 기준으로는 콜이지만 ICM 기준으로는 폴드할 수 있는 이유를 알려주세요.']
   ];
   let messages = [], busy = false, controller = null, returnFocus = null;
+  const balance = () => Math.max(0, Math.floor(Number(Store.S.p.aiTickets) || 0));
   function endpoint() {
     try { const u = new URL(COACH_CONFIG.endpoint); return u.protocol === 'https:' ? u.href : ''; }
     catch { return ''; }
@@ -19,6 +20,7 @@ const Coach = (() => {
       d.innerHTML = `<div class="coach-head"><div><span class="eyebrow">HOLDEM GOSU · STUDY</span><h2 id="coach-title">GTO AI 코치</h2></div><button type="button" class="ibtn" id="coach-close" aria-label="채팅 닫기">×</button></div>
         <div class="coach-about">콜할까, 레이즈할까?<br><b>판단의 이유까지 함께 배워보세요.</b><p>GTO 원칙에 따른 AI 해설입니다. 솔버 계산 결과가 아니며, 정확한 액션 빈도·EV를 보장하지 않습니다.</p></div>
         <div id="coach-status" class="coach-status" role="status"></div>
+        <div class="coach-wallet"><div><b id="coach-balance"></b><span>최초 1개 무료 · 답변 1회당 1개</span></div><div><button type="button" id="coach-ad">광고 보고 +1</button><button type="button" id="coach-invite">친구 초대 +1</button></div></div>
         <div class="coach-samples">${samples.map(([label], i) => `<button type="button" data-coach-sample="${i}">${label} ↗</button>`).join('')}</div>
         <div id="coach-messages" class="coach-messages" role="log" aria-label="코치와의 대화" aria-live="polite"></div>
         <form id="coach-form"><label for="coach-input">포커 상황 또는 궁금한 점</label><textarea id="coach-input" rows="3" maxlength="3000" placeholder="내 패 / 포지션 / 유효 스택 / 보드 / 지금까지의 액션을 적어주세요."></textarea><div id="coach-error" class="coach-error" role="alert"></div><div class="coach-actions"><button type="button" id="coach-clear" class="link">새 대화</button><button type="button" id="coach-stop" class="btn btn-line" hidden>중단</button><button type="submit" id="coach-send" class="btn btn-ink">코치에게 질문 ↗</button></div><p class="coach-privacy">전송한 질문과 최근 대화가 AI 서비스에 전달됩니다. 이름·연락처 등 개인정보는 입력하지 마세요. 대화는 새로고침하면 사라집니다.</p></form>`;
@@ -26,6 +28,9 @@ const Coach = (() => {
       d.querySelector('#coach-close').onclick = () => d.close();
       d.addEventListener('close', () => { if (returnFocus?.isConnected) returnFocus.focus(); });
       d.querySelector('#coach-form').onsubmit = send;
+      d.querySelector('#coach-ad').onclick = () => { if (busy) return; d.close(); Ad.open(); };
+      d.querySelector('#coach-invite').onclick = () => { if (busy) return; d.close(); App.go('invite'); };
+      Store.on(what => { if (what === 'progress') paint(); });
       d.querySelector('#coach-input').onkeydown = e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !e.isComposing) { e.preventDefault(); d.querySelector('#coach-form').requestSubmit(); } };
       d.querySelectorAll('[data-coach-sample]').forEach(b => b.onclick = () => { if (busy) return; input().value = samples[+b.dataset.coachSample][1]; input().focus(); });
       d.querySelector('#coach-clear').onclick = () => { if (busy) return; messages = []; input().value = ''; error(''); paint(); };
@@ -49,13 +54,18 @@ const Coach = (() => {
     if (busy) { const p = document.createElement('p'); p.className = 'small muted'; p.textContent = '상황을 분석하고 있어요…'; log.append(p); }
     log.scrollTop = log.scrollHeight;
     document.getElementById('coach-status').textContent = endpoint() ? '학습·복기용 · Ctrl/⌘ + Enter로 전송' : 'AI 연결 준비 중입니다. 운영자가 연결을 완료하면 질문을 보낼 수 있어요.';
-    document.getElementById('coach-send').disabled = busy || !endpoint();
+    document.getElementById('coach-balance').textContent = `AI 질문권 ${balance()}개`;
+    document.getElementById('coach-ad').disabled = busy;
+    document.getElementById('coach-invite').disabled = busy;
+    document.getElementById('coach-send').disabled = busy || !endpoint() || balance() < 1;
+    if (endpoint() && !balance()) document.getElementById('coach-status').textContent = '질문권을 모두 사용했어요. 광고 완료 또는 친구 참여 보상으로 1개를 받을 수 있습니다.';
     document.getElementById('coach-clear').disabled = busy;
     document.getElementById('coach-stop').hidden = !busy;
     input().disabled = busy;
   }
   async function send(e) {
     e.preventDefault(); if (busy || !endpoint()) return;
+    if (balance() < 1) { error('AI 질문권이 필요합니다. 광고 완료 또는 친구 초대 보상을 이용해 주세요.'); return; }
     const question = input().value.trim(); if (!question) { error('질문을 입력해 주세요.'); return; }
     error(''); messages.push({ role: 'user', content: question }); busy = true; input().value = ''; paint();
     controller = new AbortController(); const timer = setTimeout(() => controller?.abort(), 55000);
@@ -64,6 +74,7 @@ const Coach = (() => {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(({429:'잠시 질문이 몰렸어요. 1분 후 다시 시도해 주세요.',503:'AI 연결 준비 중입니다. 잠시 후 다시 이용해 주세요.'})[response.status] || '답변을 받지 못했습니다. 잠시 후 다시 시도해 주세요.');
       if (typeof data.answer !== 'string' || !data.answer.trim()) throw new Error('답변이 비어 있습니다. 다시 시도해 주세요.');
+      Store.S.p.aiTickets = Math.max(0, balance() - 1); Store.save(true);
       messages.push({ role: 'assistant', content: data.answer }); messages = messages.slice(-20);
     } catch (err) {
       messages.pop(); input().value = question;

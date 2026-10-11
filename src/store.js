@@ -24,6 +24,7 @@ const Store = (() => {
   function fresh() {
     const t = Date.now();
     return {
+      aiTickets: 1,
       v: 1, nick: '', code: randCode(), created: t, upd: t,
       solved: {}, retry: {}, tot: { c: 0, a: 0, p: 0 }, wk: { k: weekKey(), c: 0, a: 0, p: 0 },
       tix: { day: dayKey(), free: S.settings.freePerDay, ad: 0, inv: 0 },
