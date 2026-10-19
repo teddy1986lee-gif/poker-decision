@@ -59,7 +59,7 @@ const App = (() => {
     b.textContent = S.p.nick ? S.p.nick : '로그인';
     U.$$('.nav [data-nav]').forEach(x => x.setAttribute('aria-current', x.dataset.nav === navKey() ? 'page' : 'false'));
   }
-  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', admin: '' }[ui.view] ?? '');
+  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', ach: 'ach', admin: '' }[ui.view] ?? '');
   const canAdmin = () => !S.runtime || S.isOwner || S.canEdit;
 
   function go(view, opts = {}) {
@@ -71,7 +71,7 @@ const App = (() => {
     document.body.dataset.view = ui.view;
     paintHeader();
     const el = U.$('#view');
-    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, admin: Admin }[ui.view] || Home;
+    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, ach: Fun.View, admin: Admin }[ui.view] || Home;
     el.innerHTML = f.html();
     f.bind && f.bind(el);
   }
@@ -91,11 +91,11 @@ const App = (() => {
       return `<section class="academy screen">
         <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
         <div class="academy-grid"><div class="academy-main">
-          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">ALL-IN-ONE · 통합 홀덤 트레이닝</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '게임 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
+          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">TODAY'S RIVAL · 라이벌 매치</span><h2>오늘의 라이벌,<br>이길 수 있을까?</h2><p>매 라운드 새 라이벌 등장!<br>3문제 중 2문제 맞히면 격파.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '라이벌과 한 판 붙기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 정답 하나에 라이벌 하트 하나</span></div>${Fun.homeRival()}</div>
           <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
           <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
           <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황의 판단 근거를 확인하세요.<br>남은 AI 질문권 ${S.p.aiTickets ?? 1}개</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
-        </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
+        </div><aside class="academy-aside">${Fun.homePanel()}<div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
           <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
           <div class="ticket-panel"><div class="spread"><b>남은 학습 이용권</b><strong>${total}</strong></div><div class="ticket-details">무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</div><button class="link" id="academy-tickets" type="button">이용권 받기 →</button></div>
         </aside></div>
@@ -107,6 +107,7 @@ const App = (() => {
       U.$('#start', el).onclick = () => ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? go('play') : startSet();
       U.$('[data-ex]', el).onclick = () => startPreview(PROBLEMS.find(p => p.ex).id);
       U.$$('[data-nav]', el).forEach(b => b.onclick = () => go(b.dataset.nav));
+      U.$$('[data-go]', el).forEach(b => b.onclick = () => go(b.dataset.go));
       U.$('#academy-review', el).onclick = () => { ui.notesTab='wrong'; go('notes'); };
       U.$('#academy-tickets', el).onclick = () => U.$('#tix-chip').click();
       const a = U.$('#to-admin', el); if (a) a.onclick = () => go('admin');
@@ -138,9 +139,10 @@ const App = (() => {
     if (ui.set && ui.set.fromResult) S.p.ctr.continued++;
     S.p.ctr.setsStarted++; Store.save();
     ui.set = { ids, idx: 0, answers: [], mode: 'scored' };
+    Fun.startSet(ui.set);
     go('play');
   }
-  function startRetry(ids) { ids = ids.filter(id => { const p=byId(id); return p && !p.reviewHold && p.ans != null && !['fix','hidden'].includes(p.rv); }); if (!ids.length) { U.toast('선택한 문제는 재검수 중입니다.'); return; } ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
+  function startRetry(ids) { ids = ids.filter(id => { const p=byId(id); return p && !p.reviewHold && p.ans != null && !['fix','hidden'].includes(p.rv); }); if (!ids.length) { U.toast('선택한 문제는 재검수 중입니다.'); return; } ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; Fun.startSet(ui.set); go('play'); }
   function startPreview(id) { ui.set = { ids: [id], idx: 0, answers: [], mode: 'preview', back: ui.view }; go('play'); }
 
   // ================= 문제 풀이 =================
@@ -230,7 +232,7 @@ const App = (() => {
       }).join('');
       const facing = st.facing ? `콜 금액 ${A(Math.min(st.toCall, st.hero.stack))}` : '상대 베팅 없음';
       return `<section class="stage story-stage">
-        ${storyHtml(p, st, prog)}
+        ${Fun.story(p, st, prog, set)}
         ${p.reviewHold ? '<p class="proto">재검수 중 · 출제 및 채점 중단: ' + U.esc(p.reviewReason) + '</p>' : ''}
         <div class="tbl">${svg}
           <div class="hud">
@@ -267,8 +269,8 @@ const App = (() => {
     const last = set.idx >= set.ids.length - 1;
     let verdict;
     if (!ans.length) verdict = `<div class="verdict na"><b>검수 대기</b><span>이 예시 문제의 정답은 전문가 검수 후 공개됩니다.</span></div>`;
-    else if (done.ok) verdict = `<div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
-    else verdict = `<div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
+    else if (done.ok) verdict = `<p class="verdict-fun ok">${U.esc(Fun.verdictLine(true, p.id))}</p><div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
+    else verdict = `<p class="verdict-fun no">${U.esc(Fun.verdictLine(false, p.id))}</p><div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
     const others = p.o.map((tok, i) => (p.n && p.n[i] && !ans.includes(i)) ? `<li><b>${U.esc(optLabel(st, tok))}</b><span>${U.esc(p.n[i])}</span></li>` : '').join('');
     const btn = set.mode === 'preview' ? `<button class="btn btn-ink btn-block" id="next" type="button">돌아가기</button>`
       : `<button class="btn btn-ink btn-block" id="next" type="button">${last ? '결과 보기' : '다음 문제'}</button>`;
@@ -308,6 +310,7 @@ const App = (() => {
     }
     set.answers[set.idx] = rec;
     render();
+    Fun.onAnswer(set, ok, ans.length > 0);
     const sh = U.$('.acts4'); if (sh) sh.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -316,6 +319,7 @@ const App = (() => {
     if (set.mode === 'preview') return go(set.back && set.back !== 'play' ? set.back : 'home');
     if (set.idx < set.ids.length - 1) { set.idx++; return go('play'); }
     if (set.mode === 'scored') { S.p.ctr.setsDone++; S.p.ctr.offers++; Store.save(); }
+    Fun.endSet(set);
     go('result');
   }
 

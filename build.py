@@ -4,7 +4,7 @@
   python3 build.py                 # docs/index.html (일반 웹용) + dist/poker-decision.html (Claude 아티팩트용)
   python3 build.py <공유 주소>      # 아티팩트 초대 링크의 기본 주소를 지정
 """
-import glob, os, sys
+import glob, os, shutil, sys
 
 share = sys.argv[1] if len(sys.argv) > 1 else ''
 R = lambda p: open(p, encoding='utf-8').read()
@@ -13,7 +13,7 @@ def script(share_base):
     probs = ''.join(R(f) for f in sorted(glob.glob('problems/*.js')))
     app1 = R('src/app1.js').replace("const SHARE_BASE = '';", f"const SHARE_BASE = {share_base!r};")
     js = '\n'.join([R('src/engine.js'), R('src/problem-review.js'), 'const PROBLEMS = []; const P = o => PROBLEMS.push(ProblemReview.apply(o, PD));', probs,
-                    R('src/table.js'), R('src/store.js'), app1, R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
+                    R('src/table.js'), R('src/store.js'), app1, R('src/fun.js'), R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
     assert '</script' not in js
     return js
 
@@ -22,7 +22,7 @@ HEAD = '''<title>HOLDEM GOSU</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
 <style>
-''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '''
+''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '\n' + R('src/fun.css') + '''
 </style>
 '''
 BODY = R('src/body.html')
@@ -40,4 +40,6 @@ page = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
         'body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n'
         + HEAD + '</head>\n<body>\n' + BODY + '<script>\n' + script('') + '\n</script>\n</body>\n</html>\n')
 open('docs/index.html', 'w', encoding='utf-8').write(page)
+# 라이벌 이미지(assets/rivals → docs/rivals)
+shutil.copytree('assets/rivals', 'docs/rivals', dirs_exist_ok=True)
 print('built dist/poker-decision.html', len(frag.encode()), 'bytes; docs/index.html', len(page.encode()), 'bytes')

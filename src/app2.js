@@ -24,11 +24,12 @@ const Result = {
       : `<div class="spread"><div><div class="eyebrow">${App.ui.set.mode === 'retry' ? '재풀이 결과' : `${scored.length}문제 결과`}</div>
           <div class="score num"><b>${okN}</b><span>/ ${scored.length} 정답</span></div></div>
           <div class="panel pad num" style="text-align:right"><div class="small muted">이번 세트</div><div style="font:800 26px/1 var(--f-display)">+${pts}점</div></div></div>
+        ${Fun.resultBlock(set)}
         <div class="panel pad"><div class="rlist">${list}</div></div>`;
     return `<section class="screen">
       ${head}
       <div class="reward">
-        ${t > 0 ? `<button class="btn btn-ink btn-block" type="button" id="cont">남은 이용권으로 ${Math.min(3, t)}문제 더 풀기 <small class="num">남은 이용권 ${t}개</small></button>` : ''}
+        ${t > 0 ? `<button class="btn btn-ink btn-block" type="button" id="cont">${set.fun && !set.fun.win ? '리벤지? 아니, 다음 라이벌과' : '다음 라이벌 도전!'} ${Math.min(3, t)}문제 <small class="num">남은 이용권 ${t}개</small></button>` : ''}
         <button class="btn btn-brass btn-block" type="button" id="ad" ${adLeft === 0 ? 'disabled' : ''}><span>광고 보고 3문제 더 풀기<small>끝까지 시청하면 이용권 ${s.adReward}개${adLeft != null ? ` · 오늘 남은 횟수 ${adLeft}` : ''}</small></span><span aria-hidden="true">▶</span></button>
         <button class="btn btn-line btn-block" type="button" id="share" ${invLeft === 0 ? 'disabled' : ''}><span>친구에게 공유하고 3문제 더 풀기<small>친구가 링크로 처음 접속해 첫 문제를 풀면 이용권 ${s.inviteReward}개 · 오늘 ${Sx.p.invDay.n}/${s.inviteDailyLimit}</small></span><span aria-hidden="true">↗</span></button>
       </div>
@@ -266,6 +267,7 @@ const Ad = {
 // ================= 시작 =================
 function boot(data) {
   Store.initLocal();
+  Fun.check(true);
   const m = /^#inv-([A-Za-z0-9]{4,10})$/.exec(location.hash || '');
   if (m && !Sx.p.tot.a && !Sx.p.invitedBy) { Sx.p.pendingInv = m[1].toUpperCase(); Store.save(); }
   if (data && data.ui) { try { Object.assign(App.ui, data.ui); if (App.ui.view === 'play' && !App.ui.set) App.ui.view = 'home'; } catch (e) { } }
