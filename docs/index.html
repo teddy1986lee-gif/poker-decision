@@ -621,6 +621,96 @@ body[data-view="home"]{background:#f5f5f7;color:#1d1d1f;color-scheme:light}.acad
 @keyframes fun-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 @media(prefers-reduced-motion:reduce){.rival-bar.hit,.rival-bar.gloat .rb-face,.vs-card,.vs-badge,.rr-stamp,.ach-pop,.hr-new{animation:none!important}}
 
+/* ===== 메인(로비) ===== */
+body[data-view="home"]{background:#0b0a09}
+.home2{--g:#e3bd6d;--g2:#f6dca0;--ink:#f4efe6;--mute:#a59d90;--line:#ffffff14;--card:#15120f;display:grid;gap:18px;color:var(--ink);max-width:1180px;margin:0 auto}
+.home2 small{font-size:inherit}
+
+/* 히어로 */
+.h2-hero{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;min-height:540px;display:flex;align-items:center;background:#0b0a09;border:1px solid var(--line)}
+.h2-bg{position:absolute;top:0;right:0;width:62%;height:100%;object-fit:cover;object-position:50% 20%;z-index:-2;-webkit-mask-image:linear-gradient(90deg,#0000 0,#000 38%);mask-image:linear-gradient(90deg,#0000 0,#000 38%)}
+.h2-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0b0a09 30%,#0b0a0999 48%,#0b0a0900 66%),linear-gradient(0deg,#0b0a09 0,#0b0a0900 30%)}
+.h2-copy{padding:56px;max-width:560px;display:grid;gap:18px}
+.h2-eyebrow{font:700 11px/1 var(--f-body);letter-spacing:.22em;color:var(--g)}
+.h2-copy h1{margin:0;font-size:46px;line-height:1.28;font-weight:700;letter-spacing:-.045em;color:#fff}
+.h2-copy h1 em{font-style:normal;font-weight:400;color:var(--g2)}
+.h2-copy p{margin:0;font-size:15px;line-height:1.75;color:var(--mute);max-width:440px}
+.h2-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.h2-start{display:inline-flex;align-items:center;gap:14px;height:54px;padding:0 26px;border:0;border-radius:99px;background:linear-gradient(180deg,#f3d48a,#d9a443);color:#1d1404;font:800 16px/1 var(--f-body);letter-spacing:-.01em;cursor:pointer;box-shadow:0 8px 28px #d9a44333;transition:transform .15s,box-shadow .15s}
+.h2-start:hover{transform:translateY(-1px);box-shadow:0 12px 32px #d9a44355}
+.h2-start span{font-size:18px}
+.h2-tix{font-size:13px;color:var(--mute)}.h2-tix b{color:#fff;font-size:15px}
+.h2-next{position:absolute;right:20px;bottom:20px;display:flex;gap:11px;align-items:center;padding:8px 16px 8px 8px;border-radius:99px;background:#0b0a09b3;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid #ffffff22;color:#fff;font:inherit;text-align:left;cursor:pointer}
+.h2-next img{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:50% 14%;border:1.5px solid var(--g)}
+.h2-next span{display:grid;gap:1px}
+.h2-next small{font:700 9.5px/1.3 var(--f-body);letter-spacing:.14em;color:var(--g)}
+.h2-next b{font-size:14px}.h2-next em{font-style:normal;font-size:11px;color:var(--mute);max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 통계 줄 */
+.h2-stats{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.h2-stats>div{display:grid;gap:8px;padding:20px 22px;border-left:1px solid var(--line);min-width:0}
+.h2-stats>div:first-child{border-left:0}
+.h2-stats span{font-size:11.5px;color:var(--mute)}
+.h2-stats b{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h2-stats>div:first-child b{font-size:17px;color:var(--g2);line-height:26px}
+.h2-stats small{font-size:13px;font-weight:500;color:var(--mute);margin-left:2px}
+
+/* 카드 */
+.h2-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+.h2-card{position:relative;display:grid;align-content:start;gap:6px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;cursor:pointer;transition:border-color .2s,background .2s}
+.h2-card:hover{border-color:#e3bd6d66;background:#1a1612}
+.h2-card small{font:700 10px/1 var(--f-body);letter-spacing:.18em;color:var(--g)}
+.h2-card b{font-size:18px;font-weight:700;letter-spacing:-.03em;color:#fff}
+.h2-card em{font-style:normal;font-size:12.5px;line-height:1.55;color:var(--mute)}
+.h2-side{display:grid;gap:12px}
+.h2-tx{padding-right:56px}
+.h2-arr{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--g);transition:transform .2s}
+.h2-tx:hover .h2-arr{transform:translate(4px,-50%)}
+.h2-ach{min-height:300px;overflow:hidden;align-content:end;padding:0}
+.h2-ach img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .6s}
+.h2-ach:hover img{transform:scale(1.03)}
+.h2-ach::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b0a09 8%,#0b0a09aa 40%,#0b0a0900 75%)}
+.h2-cb{position:relative;z-index:1;display:grid;gap:7px;padding:24px}
+.h2-cb b{font-size:22px}
+.h2-cb em{color:#d5ccbd}
+.h2-bar{display:block;height:4px;border-radius:9px;background:#ffffff22;overflow:hidden;margin-top:4px}
+.h2-bar i{display:block;height:100%;background:linear-gradient(90deg,#f3d48a,#d9a443)}
+
+/* 이용권 · 바닥글 */
+.h2-ticket{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border:1px solid var(--line);border-radius:14px;font-size:13.5px;color:var(--mute)}
+.h2-ticket b{color:#fff;font-size:16px;margin:0 6px 0 4px}
+.h2-ticket small{font-size:12px}
+.h2-link{background:none;border:0;padding:0;font:600 13px var(--f-body);color:var(--g);cursor:pointer}
+.h2-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 4px 0;font-size:12px;color:#7a7368}
+.h2-foot>span:last-child{display:flex;gap:16px}
+.h2-note{margin:0 4px;font-size:11px;color:#625c53}
+
+@media(max-width:860px){
+  .h2-grid{grid-template-columns:1fr}
+  .h2-stats{grid-template-columns:1fr 1fr}
+  .h2-stats>div:nth-child(3){border-left:0}
+  .h2-stats>div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media(max-width:600px){
+  .home2{gap:14px}
+  .h2-hero{min-height:600px;align-items:flex-end;border-radius:20px}
+  .h2-bg{width:100%;height:78%;object-position:50% 12%;-webkit-mask-image:none;mask-image:none}
+  .h2-hero::before{background:linear-gradient(0deg,#0b0a09 34%,#0b0a09cc 48%,#0b0a0900 72%)}
+  .h2-copy{padding:24px 22px 26px;gap:14px}
+  .h2-copy h1{font-size:30px;line-height:1.32}
+  .h2-copy p{font-size:13.5px}
+  .h2-start{height:50px;padding:0 22px;font-size:15px;flex:1;justify-content:center}
+  .h2-cta{gap:12px}
+  .h2-next{top:14px;bottom:auto;right:14px;padding:6px 13px 6px 6px}
+  .h2-next img{width:36px;height:36px}
+  .h2-next em{display:none}
+  .h2-stats>div{padding:16px 18px}
+  .h2-stats b{font-size:19px}
+  .h2-ach{min-height:260px}
+  .h2-card{padding:18px 20px}.h2-tx{padding-right:48px}
+  .h2-ticket{padding:14px 18px;flex-wrap:wrap}
+}
+
 </style>
 </head>
 <body>
@@ -2172,19 +2262,40 @@ const App = (() => {
       const ex = PROBLEMS.find(p => p.ex);
       const mine = playable().filter(p => S.p.solved[p.id]);
       const ok = mine.filter(p => S.p.solved[p.id].ok).length;
-      return `<section class="academy screen">
-        <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
-        <div class="academy-grid"><div class="academy-main">
-          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">TODAY'S RIVAL · 라이벌 매치</span><h2>오늘의 라이벌,<br>이길 수 있을까?</h2><p>매 라운드 새 라이벌 등장!<br>3문제 중 2문제 맞히면 격파.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '라이벌과 한 판 붙기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 정답 하나에 라이벌 하트 하나</span></div>${Fun.homeRival()}</div>
-          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
-          <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
-          <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황의 판단 근거를 확인하세요.<br>남은 AI 질문권 ${S.p.aiTickets ?? 1}개</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
-        </div><aside class="academy-aside">${Fun.homePanel()}<div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
-          <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
-          <div class="ticket-panel"><div class="spread"><b>남은 학습 이용권</b><strong>${total}</strong></div><div class="ticket-details">무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</div><button class="link" id="academy-tickets" type="button">이용권 받기 →</button></div>
-        </aside></div>
-        <footer class="academy-footer"><span>HOLDEM GOSU <span class="muted">· 매일 한 걸음, 더 나은 플레이.</span></span><div><button class="link" type="button" data-ex>예시 핸드 체험</button>${canAdmin() ? '<button class="link" type="button" id="to-admin">관리자</button>' : ''}</div></footer>
-        <p class="academy-note">학습 문제와 정답은 전문가 검수 전 초안입니다. 광고 보상은 현재 모의 기능입니다.</p>
+      const inProg = ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length;
+      const acc = U.pct(ok, mine.length), all = playable().length;
+      const f = Fun.st(), ttl = Fun.title(), nx = Fun.nextGoal(), nr = Fun.peek();
+      const beat = Object.keys(f.beat).length, achN = Fun.ACH.filter(a => f.ach[a.id]).length;
+      const wrongN = Object.values(S.p.solved).filter(x => !x.ok).length;
+      const cta = inProg ? '진행 중인 라운드 이어하기' : total ? '라이벌 매치 시작' : '이용권 충전하기';
+      return `<section class="home2">
+        <div class="h2-hero">
+          <img class="h2-bg" src="${RIVAL_BASE}hero.webp" alt="" fetchpriority="high">
+          <div class="h2-copy">
+            <span class="h2-eyebrow">HOLDEM GOSU · RIVAL MATCH</span>
+            <h1>테이블 위의 한 수.<br><em>오늘은 누구를 이길까.</em></h1>
+            <p>${S.p.nick ? U.esc(S.p.nick) + '님, ' : ''}매 라운드 새 라이벌이 앉습니다. 3문제 중 2문제를 맞히면 격파.</p>
+            <div class="h2-cta"><button class="h2-start" id="start" type="button">${cta}<span aria-hidden="true">→</span></button><span class="h2-tix">남은 이용권 <b class="num">${total}</b></span></div>
+          </div>
+          <button class="h2-next" type="button" data-rival="${nr.id}"><img src="${Fun.thumb(nr)}" alt=""><span><small>NEXT RIVAL${f.met[nr.id] ? '' : ' · NEW'}</small><b>${U.esc(nr.n)}</b><em>${U.esc(nr.t)}</em></span></button>
+        </div>
+        <div class="h2-stats">
+          <div><span>칭호</span><b>${ttl ? ttl.e + ' ' + U.esc(ttl.nm) : '—'}</b></div>
+          <div><span>정답률</span><b class="num">${acc}<small>%</small></b></div>
+          <div><span>학습한 문제</span><b class="num">${mine.length}<small>/${all}</small></b></div>
+          <div><span>격파한 라이벌</span><b class="num">${beat}<small>/${Fun.R.length}</small></b></div>
+        </div>
+        <div class="h2-grid">
+          <button class="h2-card h2-ach" type="button" data-go="ach"><img src="${RIVAL_BASE}card-a.webp" alt="" loading="lazy"><span class="h2-cb"><small>ACHIEVEMENTS</small><b>업적 · 라이벌 도감</b><em>${achN}/${Fun.ACH.length} 달성${nx ? ` · 다음 칭호 ‘${U.esc(nx.nm)}’까지 ${Math.max(0, nx.n - S.p.tot.c)}문제` : ''}</em>${nx ? `<i class="h2-bar"><i style="width:${Math.min(100, Math.round(S.p.tot.c / nx.n * 100))}%"></i></i>` : ''}</span></button>
+          <div class="h2-side">
+            <button class="h2-card h2-tx" type="button" id="academy-review"><small>REVIEW</small><b>오답 복습</b><em>${wrongN ? `틀린 문제 ${wrongN}개 · 이용권 없이 다시 풀기` : '아직 틀린 문제가 없어요'}</em><span class="h2-arr">→</span></button>
+            <button class="h2-card h2-tx" type="button" onclick="Coach.open()"><small>AI COACH</small><b>GTO AI 코치</b><em>${COACH_CONFIG.endpoint ? `남은 질문권 ${S.p.aiTickets ?? 1}개` : '연결 준비 중'}</em><span class="h2-arr">→</span></button>
+            <button class="h2-card h2-tx" type="button" data-nav="sim"><small>SIMULATOR</small><b>승률 시뮬레이터</b><em>카드와 상대 범위로 승률 계산</em><span class="h2-arr">→</span></button>
+          </div>
+        </div>
+        <div class="h2-ticket"><span>이용권 <b class="num">${total}</b> <small>무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</small></span><button class="h2-link" id="academy-tickets" type="button">이용권 받기 →</button></div>
+        <footer class="h2-foot"><span>HOLDEM GOSU · 매일 한 판, 더 나은 플레이.</span><span><button class="h2-link" type="button" data-ex>예시 핸드 체험</button>${canAdmin() ? '<button class="h2-link" type="button" id="to-admin">관리자</button>' : ''}</span></footer>
+        <p class="h2-note">학습 문제와 정답은 전문가 검수 전 초안입니다. 광고 보상은 현재 모의 기능입니다.</p>
       </section>`;
     },
     bind(el) {
@@ -2861,7 +2972,7 @@ const Fun = (() => {
     if (b && !e.target.closest('.veil')) { e.preventDefault(); profile(b.dataset.rival); }
   });
 
-  return { R, ACH, byId, banner, story, verdictLine, startSet, onAnswer, endSet, resultBlock, homeRival, homePanel, View, check, st, title };
+  return { R, ACH, byId, peek: peekNext, thumb, img, nextGoal: nextCountGoal, banner, story, verdictLine, startSet, onAnswer, endSet, resultBlock, homeRival, homePanel, View, check, st, title };
 })();
 
 /* ===== 관리자 페이지 ===== */

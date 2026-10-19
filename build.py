@@ -22,7 +22,7 @@ HEAD = '''<title>HOLDEM GOSU</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
 <style>
-''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '\n' + R('src/fun.css') + '''
+''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '\n' + R('src/fun.css') + '\n' + R('src/home.css') + '''
 </style>
 '''
 BODY = R('src/body.html')
