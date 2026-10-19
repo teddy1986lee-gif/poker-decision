@@ -88,19 +88,40 @@ const App = (() => {
       const ex = PROBLEMS.find(p => p.ex);
       const mine = playable().filter(p => S.p.solved[p.id]);
       const ok = mine.filter(p => S.p.solved[p.id].ok).length;
-      return `<section class="academy screen">
-        <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
-        <div class="academy-grid"><div class="academy-main">
-          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">TODAY'S RIVAL · 라이벌 매치</span><h2>오늘의 라이벌,<br>이길 수 있을까?</h2><p>매 라운드 새 라이벌 등장!<br>3문제 중 2문제 맞히면 격파.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '라이벌과 한 판 붙기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 정답 하나에 라이벌 하트 하나</span></div>${Fun.homeRival()}</div>
-          <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
-          <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
-          <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황의 판단 근거를 확인하세요.<br>남은 AI 질문권 ${S.p.aiTickets ?? 1}개</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
-        </div><aside class="academy-aside">${Fun.homePanel()}<div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
-          <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
-          <div class="ticket-panel"><div class="spread"><b>남은 학습 이용권</b><strong>${total}</strong></div><div class="ticket-details">무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</div><button class="link" id="academy-tickets" type="button">이용권 받기 →</button></div>
-        </aside></div>
-        <footer class="academy-footer"><span>HOLDEM GOSU <span class="muted">· 매일 한 걸음, 더 나은 플레이.</span></span><div><button class="link" type="button" data-ex>예시 핸드 체험</button>${canAdmin() ? '<button class="link" type="button" id="to-admin">관리자</button>' : ''}</div></footer>
-        <p class="academy-note">학습 문제와 정답은 전문가 검수 전 초안입니다. 광고 보상은 현재 모의 기능입니다.</p>
+      const inProg = ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length;
+      const acc = U.pct(ok, mine.length), all = playable().length;
+      const f = Fun.st(), ttl = Fun.title(), nx = Fun.nextGoal(), nr = Fun.peek();
+      const beat = Object.keys(f.beat).length, achN = Fun.ACH.filter(a => f.ach[a.id]).length;
+      const wrongN = Object.values(S.p.solved).filter(x => !x.ok).length;
+      const cta = inProg ? '진행 중인 라운드 이어하기' : total ? '라이벌 매치 시작' : '이용권 충전하기';
+      return `<section class="home2">
+        <div class="h2-hero">
+          <img class="h2-bg" src="${RIVAL_BASE}hero.webp" alt="" fetchpriority="high">
+          <div class="h2-copy">
+            <span class="h2-eyebrow">HOLDEM GOSU · RIVAL MATCH</span>
+            <h1>테이블 위의 한 수.<br><em>오늘은 누구를 이길까.</em></h1>
+            <p>${S.p.nick ? U.esc(S.p.nick) + '님, ' : ''}매 라운드 새 라이벌이 앉습니다. 3문제 중 2문제를 맞히면 격파.</p>
+            <div class="h2-cta"><button class="h2-start" id="start" type="button">${cta}<span aria-hidden="true">→</span></button><span class="h2-tix">남은 이용권 <b class="num">${total}</b></span></div>
+          </div>
+          <button class="h2-next" type="button" data-rival="${nr.id}"><img src="${Fun.thumb(nr)}" alt=""><span><small>NEXT RIVAL${f.met[nr.id] ? '' : ' · NEW'}</small><b>${U.esc(nr.n)}</b><em>${U.esc(nr.t)}</em></span></button>
+        </div>
+        <div class="h2-stats">
+          <div><span>칭호</span><b>${ttl ? ttl.e + ' ' + U.esc(ttl.nm) : '—'}</b></div>
+          <div><span>정답률</span><b class="num">${acc}<small>%</small></b></div>
+          <div><span>학습한 문제</span><b class="num">${mine.length}<small>/${all}</small></b></div>
+          <div><span>격파한 라이벌</span><b class="num">${beat}<small>/${Fun.R.length}</small></b></div>
+        </div>
+        <div class="h2-grid">
+          <button class="h2-card h2-ach" type="button" data-go="ach"><img src="${RIVAL_BASE}card-a.webp" alt="" loading="lazy"><span class="h2-cb"><small>ACHIEVEMENTS</small><b>업적 · 라이벌 도감</b><em>${achN}/${Fun.ACH.length} 달성${nx ? ` · 다음 칭호 ‘${U.esc(nx.nm)}’까지 ${Math.max(0, nx.n - S.p.tot.c)}문제` : ''}</em>${nx ? `<i class="h2-bar"><i style="width:${Math.min(100, Math.round(S.p.tot.c / nx.n * 100))}%"></i></i>` : ''}</span></button>
+          <div class="h2-side">
+            <button class="h2-card h2-tx" type="button" id="academy-review"><small>REVIEW</small><b>오답 복습</b><em>${wrongN ? `틀린 문제 ${wrongN}개 · 이용권 없이 다시 풀기` : '아직 틀린 문제가 없어요'}</em><span class="h2-arr">→</span></button>
+            <button class="h2-card h2-tx" type="button" onclick="Coach.open()"><small>AI COACH</small><b>GTO AI 코치</b><em>${COACH_CONFIG.endpoint ? `남은 질문권 ${S.p.aiTickets ?? 1}개` : '연결 준비 중'}</em><span class="h2-arr">→</span></button>
+            <button class="h2-card h2-tx" type="button" data-nav="sim"><small>SIMULATOR</small><b>승률 시뮬레이터</b><em>카드와 상대 범위로 승률 계산</em><span class="h2-arr">→</span></button>
+          </div>
+        </div>
+        <div class="h2-ticket"><span>이용권 <b class="num">${total}</b> <small>무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</small></span><button class="h2-link" id="academy-tickets" type="button">이용권 받기 →</button></div>
+        <footer class="h2-foot"><span>HOLDEM GOSU · 매일 한 판, 더 나은 플레이.</span><span><button class="h2-link" type="button" data-ex>예시 핸드 체험</button>${canAdmin() ? '<button class="h2-link" type="button" id="to-admin">관리자</button>' : ''}</span></footer>
+        <p class="h2-note">학습 문제와 정답은 전문가 검수 전 초안입니다. 광고 보상은 현재 모의 기능입니다.</p>
       </section>`;
     },
     bind(el) {

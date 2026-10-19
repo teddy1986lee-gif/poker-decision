@@ -430,5 +430,5 @@ const Fun = (() => {
     if (b && !e.target.closest('.veil')) { e.preventDefault(); profile(b.dataset.rival); }
   });
 
-  return { R, ACH, byId, banner, story, verdictLine, startSet, onAnswer, endSet, resultBlock, homeRival, homePanel, View, check, st, title };
+  return { R, ACH, byId, peek: peekNext, thumb, img, nextGoal: nextCountGoal, banner, story, verdictLine, startSet, onAnswer, endSet, resultBlock, homeRival, homePanel, View, check, st, title };
 })();
