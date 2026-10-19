@@ -469,6 +469,158 @@ body[data-view="home"]{background:#f5f5f7;color:#1d1d1f;color-scheme:light}.acad
 .story-stage{max-width:650px;gap:20px}.hand-story{padding:28px 30px;background:linear-gradient(140deg,#25332f,#192123);border:1px solid #80998e40;border-radius:18px;color:#eaf0eb}.story-top{display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.12em;color:#b7c4bd}.story-top span:last-child{letter-spacing:0;color:#c4b794}.hand-story h1{font-size:29px;font-weight:650;line-height:1.4;letter-spacing:-.045em;margin:16px 0}.story-intro{font-size:15px;line-height:1.9;color:#c6d0c9}.story-intro b{color:#f0dab2;font-weight:600}.story-context{border-left:3px solid #c9b17a;padding:2px 0 2px 15px;margin-top:22px}.story-context>span{font-size:10px;color:#c9b17a}.story-context p{margin:6px 0 0;font-size:16px;line-height:1.85;color:#f0f1ed}.story-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid #ffffff12;border-bottom:1px solid #ffffff12;padding:17px 0;margin-top:23px}.story-facts>div{display:flex;flex-direction:column;gap:9px}.story-facts>div>span{font-size:10px;color:#a4b1ab}.story-facts b{font-size:16px;font-weight:600;line-height:24px}.story-prompt{font-size:18px;color:#f1dfb6;font-weight:500;margin-top:20px;line-height:1.6}.story-prompt>span{display:block;font-size:12px;color:#a9b7af;font-weight:400;margin-top:4px}.decision-heading{display:flex;flex-direction:column;gap:6px;margin-top:4px}.decision-heading span{font-size:10px;letter-spacing:.14em;color:#aebcb4}.decision-heading b{font-size:20px;font-weight:550;letter-spacing:-.035em}.story-stage .tbl{margin-inline:0}.story-stage .ibtn{color:#eaf0eb;background:#222d30;border-color:#ffffff24}.story-stage .ticker{margin-top:4px}.story-stage .tbl svg{min-height:360px}.story-stage .acts4{margin-bottom:3px}
 @media(max-width:480px){.unified-progress{padding:22px;gap:15px}.unified-progress p{font-size:12px}.unified-count b{font-size:23px}.unified-count small{font-size:13px}.story-stage{gap:16px}.hand-story{padding:22px 20px;border-radius:16px}.hand-story h1{font-size:25px;margin:14px 0}.story-intro{font-size:14px;line-height:1.85}.story-context p{font-size:15px}.story-facts{gap:5px}.story-facts b{font-size:14px}.story-facts>div>span{font-size:9px}.story-prompt{font-size:17px}.decision-heading b{font-size:19px}.story-stage .tbl{margin-inline:-10px}}
 
+/* ===== 재미 레이어: 라이벌 · 업적 ===== */
+.nav-in{grid-template-columns:repeat(6,minmax(0,1fr)) 58px}
+@media(max-width:480px){.nav-in{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.nav .slot{font-size:10px}}
+
+/* 홈: 다음 라이벌 */
+.study-hero .hero-copy{width:58%}
+.hero-rival{position:absolute;top:0;right:0;bottom:0;width:46%;z-index:1;border:0;padding:0;margin:0;cursor:pointer;background:#120d0b;overflow:hidden;color:#fff;text-align:left;font:inherit}
+.hero-rival img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%;transition:transform .5s ease}
+.hero-rival:hover img{transform:scale(1.04)}
+.hero-rival::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#fff 0,#fff0 30%),linear-gradient(0deg,#000000d0 0,transparent 48%)}
+.hero-rival>span{position:absolute;z-index:2}
+.hr-tag{top:14px;right:14px;font:800 10px/1 var(--f-body);letter-spacing:.14em;background:#f5c451;color:#2a1a00;padding:6px 9px;border-radius:99px}
+.hr-new{top:40px;right:14px;font:900 10px/1 var(--f-body);background:#ff5d6c;color:#fff;padding:5px 8px;border-radius:99px;animation:fun-pulse 1.4s ease-in-out infinite}
+.hr-name{left:16%;right:12px;bottom:46px;display:flex;flex-direction:column;font-size:11px;color:#ffe9b8}
+.hr-name b{font-size:22px;color:#fff;letter-spacing:-.03em}
+.hr-say{left:16%;right:12px;bottom:12px;font-size:11.5px;line-height:1.45;color:#f3eee6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:480px){.study-hero .hero-copy{width:58%}.study-hero .hero-copy h2{font-size:26px}.hero-rival{width:50%}.hr-name b{font-size:18px}.hr-say{font-size:10.5px}.hero-art{display:none}}
+
+/* 홈: 업적 패널 */
+.ach-panel{display:grid;gap:12px;padding:24px;border-radius:20px;background:linear-gradient(150deg,#2a2112,#16120b);color:#f6ead2;border:1px solid #f5c45133}
+.ach-panel .eyebrow{color:#e5bf6a}
+.ap-title{display:flex;gap:12px;align-items:center}
+.ap-medal{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#e2a93a 60%,#9a6512);font-size:26px;box-shadow:0 0 0 3px #f5c45133,0 6px 16px #0006;flex:none}
+.ap-title small,.ach-hero small{display:block;font-size:11px;color:#c9b48a}
+.ap-title b,.ach-hero b{font-size:19px;letter-spacing:-.03em;color:#fff}
+.ap-next{display:flex;justify-content:space-between;font-size:12px;color:#d9c9a6}
+.ap-next b{color:#ffd77a}
+.ach-panel .course-progress{height:6px;background:#ffffff1a;border-radius:9px;overflow:hidden;margin:0}
+.ach-panel .course-progress i{display:block;height:100%;background:linear-gradient(90deg,#f5c451,#ff8a4c);border-radius:9px}
+.ap-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#c9b48a;flex-wrap:wrap}
+.ap-row b{color:#fff;font-size:13px}
+.ach-panel .btn-line{color:#ffe3a1;border-color:#f5c45155;background:transparent}
+
+/* 풀이: 코믹 시나리오 */
+.hand-story.comic{position:relative}
+.story-hook{margin:-6px 0 14px;font-size:15px;line-height:1.6;color:#ffd98a;font-weight:600}
+.story-topic{margin:14px 0 0;font-size:13px;color:#d6e2da;background:#ffffff0c;border:1px dashed #ffffff26;border-radius:10px;padding:9px 12px}
+
+/* 라이벌 말풍선 */
+.rival-bar{position:relative;display:flex;gap:12px;align-items:center;margin:-6px -8px 18px;padding:10px 12px;border-radius:16px;background:#0e1513;border:1px solid #f5c45138}
+.rb-face{flex:none;width:64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #f5c451;padding:0;background:#000;cursor:pointer}
+.rb-face img{width:100%;height:100%;object-fit:cover;object-position:50% 14%;display:block}
+.rb-main{min-width:0;flex:1;display:grid;gap:6px}
+.rb-top{display:flex;align-items:baseline;gap:7px;min-width:0}
+.rb-top b{font-size:15px;color:#fff;flex:none}
+.rb-top span:not(.rb-hp){font-size:11px;color:#b3c1b9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.rb-hp{margin-left:auto;flex:none;letter-spacing:1px;font-style:normal}
+.rb-hp i{font-style:normal;color:#ffffff30;font-size:14px}
+.rb-hp i.on{color:#ff5d6c;text-shadow:0 0 6px #ff5d6c88}
+.rb-say{position:relative;background:#fff;color:#1d1d1f;font-size:13.5px;font-weight:600;line-height:1.45;padding:8px 11px;border-radius:4px 12px 12px 12px}
+.rival-bar.hit{animation:fun-shake .5s ease 1}
+.rival-bar.hit .rb-face{border-color:#6fd39a;filter:saturate(.6)}
+.rival-bar.hit .rb-say{background:#e8fff1}
+.rival-bar.gloat .rb-face{animation:fun-bounce .7s ease 2}
+.rival-bar.gloat .rb-say{background:#fff0f1}
+.rb-fx{position:absolute;right:14px;top:-10px;font:900 15px/1 var(--f-body);padding:5px 9px;border-radius:99px;animation:fun-float 1.6s ease forwards}
+.hit .rb-fx{background:#6fd39a;color:#06301a}
+.gloat .rb-fx{background:#ff5d6c;color:#fff}
+.verdict-fun{margin:0 0 10px;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.verdict-fun.ok{color:#2fbf71}.verdict-fun.no{color:#ff6b6b}
+@media(max-width:480px){.rival-bar{margin:-4px -6px 16px;padding:9px 10px;gap:10px}.rb-face{width:54px;height:54px}.rb-say{font-size:12.5px}.story-hook{font-size:14px}}
+
+/* VS 화면 · 프로필 */
+.vs-card{width:min(400px,100%);max-height:calc(100dvh - 32px);overflow:auto;border-radius:22px;background:#130f0c;border:1px solid #f5c45155;box-shadow:0 20px 60px #000c;color:#f6efe3;animation:fun-pop .45s cubic-bezier(.2,1.4,.4,1)}
+.vs-img{position:relative;aspect-ratio:4/4.2;overflow:hidden}
+.vs-img img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;display:block}
+.vs-img::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#130f0c 0,transparent 40%)}
+.vs-badge{position:absolute;z-index:2;left:16px;top:14px;font:italic 900 34px/1 var(--f-body);color:#ffd45e;text-shadow:0 3px 0 #a33,0 0 18px #f5c451aa;animation:fun-vs 1.2s ease-in-out infinite}
+.vs-type{position:absolute;z-index:2;right:14px;top:14px;font:800 11px/1 var(--f-body);padding:6px 10px;border-radius:99px;background:#000a;border:1px solid #fff4;color:#fff}
+.vs-body{display:grid;gap:10px;padding:0 20px 20px;margin-top:-34px;position:relative;z-index:2}
+.vs-eyebrow{font-size:10px;letter-spacing:.14em;color:#e5bf6a}
+.vs-body h2{margin:0;font-size:28px;letter-spacing:-.04em;color:#fff;display:flex;flex-direction:column}
+.vs-body h2 small{font-size:13px;font-weight:500;color:#cdbb98;letter-spacing:0;margin-top:3px}
+.vs-say{margin:0;background:#fff;color:#1d1d1f;padding:11px 14px;border-radius:4px 14px 14px 14px;font-size:15px;font-weight:700;line-height:1.5}
+.vs-meta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#c9b48a;flex-wrap:wrap}
+.vs-card .btn-brass{background:linear-gradient(180deg,#ffd45e,#e09a26);color:#2a1a00;border:0;font-weight:800}
+.vs-rule{margin:0;font-size:12px;color:#a99a80;line-height:1.6}
+
+/* 결과: 라이벌 */
+.rival-result{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center;padding:14px;border-radius:18px;background:linear-gradient(140deg,#2a2112,#130f0c);border:1px solid #f5c45140;color:#f6efe3}
+.rival-result.lose{background:linear-gradient(140deg,#2a1216,#130c0e);border-color:#ff5d6c40}
+.rr-img{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden}
+.rr-img img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.lose .rr-img img{filter:none}.win .rr-img img{filter:grayscale(.55) brightness(.8)}
+.rr-stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-14deg);font:900 21px/1 var(--f-body);padding:7px 10px;border:3px solid currentColor;border-radius:8px;white-space:nowrap;animation:fun-stamp .5s cubic-bezier(.3,1.6,.5,1) both .15s}
+.win .rr-stamp{color:#ffd45e;background:#2a1a00cc}.lose .rr-stamp{color:#ff6b78;background:#2a0006cc}
+.rr-body{display:grid;gap:8px;min-width:0}
+.rr-body .eyebrow{color:#e5bf6a}
+.rr-body h3{margin:0;font-size:20px;letter-spacing:-.03em;color:#fff}
+.rr-say{margin:0;font-size:13.5px;line-height:1.55;color:#efe5d3}
+.rr-say b{color:#ffd77a;margin-right:4px}
+.rr-hp{font-size:12px;color:#c9b48a}
+.rival-result .link{color:#ffd77a;justify-self:start}
+@media(max-width:400px){.rival-result{grid-template-columns:100px 1fr;gap:12px}.rr-body h3{font-size:17px}.rr-stamp{font-size:16px}}
+
+/* 업적 화면 */
+.ach-hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:20px;border-radius:18px;background:linear-gradient(150deg,#2a2112,#16120b);border:1px solid #f5c45133}
+.ach-hero-n{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid #ffffff14;padding-top:14px}
+.ach-hero-n div{display:flex;align-items:baseline;gap:3px;justify-content:center}
+.ach-hero-n b{font-size:24px;color:#ffd77a}.ach-hero-n span{font-size:11px;color:#c9b48a}
+.ach-group{display:grid;gap:10px}
+.ach-group h3{margin:6px 0 0;font-size:13px;letter-spacing:.06em;color:var(--muted,#8a939b)}
+.ach-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ach{display:flex;gap:12px;align-items:center;padding:14px;border-radius:14px;background:#ffffff08;border:1px solid #ffffff14}
+.ach.on{background:linear-gradient(140deg,#3a2c10,#1e170c);border-color:#f5c45166}
+.ach-ic{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#ffffff10;font-size:22px;filter:grayscale(1);opacity:.6}
+.ach.on .ach-ic{filter:none;opacity:1;background:radial-gradient(circle at 35% 30%,#fff3c4,#e2a93a 60%,#9a6512)}
+.ach-tx{min-width:0;flex:1;display:grid;gap:3px}
+.ach-tx b{font-size:14.5px}
+.ach.on .ach-tx b{color:#ffe3a1}
+.ach-tx span{font-size:12px;color:#9aa3a8;line-height:1.45}
+.ach.on .ach-tx span{color:#dccfb5}
+.ach-tx em{font-style:normal;font-size:11px;color:#8a939b}
+.ach.on .ach-tx em{color:#e5bf6a}
+.ach-bar{height:5px;border-radius:9px;background:#ffffff14;overflow:hidden;margin-top:3px}
+.ach-bar i{display:block;height:100%;background:linear-gradient(90deg,#f5c451,#ff8a4c)}
+
+/* 라이벌 도감 */
+.dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.dex-c{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;padding:0;border:2px solid #ffffff1a;background:#000;cursor:pointer;color:#fff;font:inherit}
+.dex-c img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.dex-c.lock img{filter:grayscale(1) brightness(.22) blur(3px);transform:scale(1.08)}
+.dex-c.met{border-color:#ffffff40}
+.dex-c.beat{border-color:#f5c451;box-shadow:0 0 0 2px #f5c45133}
+.dex-c::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#000c 0,transparent 45%)}
+.dex-n{position:absolute;z-index:2;left:8px;right:8px;bottom:7px;font-size:12.5px;font-weight:700;text-align:left}
+.dex-no{position:absolute;z-index:2;left:7px;top:6px;font-size:9.5px;color:#fffc;background:#0008;padding:2px 5px;border-radius:5px}
+.dex-s{position:absolute;z-index:2;right:6px;top:6px;font:900 10px/1 var(--f-body);background:#f5c451;color:#2a1a00;padding:4px 6px;border-radius:5px;transform:rotate(6deg)}
+
+/* 업적 팝업 · 꽃가루 */
+.ach-pop{position:fixed;z-index:80;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;gap:12px;align-items:center;width:min(380px,calc(100% - 24px));padding:12px 16px;border-radius:16px;background:linear-gradient(140deg,#3a2c10,#1a140a);border:1px solid #f5c451;color:#fff;box-shadow:0 12px 34px #000a;cursor:pointer;animation:fun-drop .5s cubic-bezier(.2,1.4,.4,1)}
+.ach-pop.out{animation:fun-up .35s ease forwards}
+.ap-ic{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;font-size:24px;background:radial-gradient(circle at 35% 30%,#fff3c4,#e2a93a 60%,#9a6512)}
+.ach-pop>span:last-child{display:grid;gap:2px;min-width:0}
+.ach-pop small{font-size:10.5px;letter-spacing:.12em;color:#f5c451;font-weight:800}
+.ach-pop b{font-size:16px}
+.ach-pop em{font-style:normal;font-size:12px;color:#dccfb5}
+.confetti{position:fixed;inset:0;z-index:79;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-30px;font-style:normal;font-size:18px;animation:fun-fall 1.8s ease-in forwards}
+
+@keyframes fun-shake{0%,100%{transform:none}20%{transform:translateX(-7px) rotate(-1deg)}40%{transform:translateX(6px) rotate(1deg)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes fun-bounce{0%,100%{transform:none}50%{transform:translateY(-6px) scale(1.06)}}
+@keyframes fun-float{0%{opacity:0;transform:translateY(8px)}20%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+@keyframes fun-pop{0%{opacity:0;transform:scale(.85)}100%{opacity:1;transform:none}}
+@keyframes fun-vs{0%,100%{transform:scale(1) rotate(-6deg)}50%{transform:scale(1.12) rotate(-2deg)}}
+@keyframes fun-stamp{0%{opacity:0;transform:translate(-50%,-50%) rotate(-14deg) scale(2.2)}100%{opacity:1;transform:translate(-50%,-50%) rotate(-14deg) scale(1)}}
+@keyframes fun-drop{0%{opacity:0;transform:translate(-50%,-30px)}100%{opacity:1;transform:translate(-50%,0)}}
+@keyframes fun-up{to{opacity:0;transform:translate(-50%,-30px)}}
+@keyframes fun-fall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}
+@keyframes fun-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.rival-bar.hit,.rival-bar.gloat .rb-face,.vs-card,.vs-badge,.rr-stamp,.ach-pop,.hr-new{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -490,6 +642,7 @@ body[data-view="home"]{background:#f5f5f7;color:#1d1d1f;color-scheme:light}.acad
     <button class="slot" type="button" data-nav="rank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>랭킹</button>
     <button class="slot" type="button" data-nav="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>기록</button>
     <button class="slot" type="button" data-nav="sim"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12h8.5"/><path d="M12 12l5.6 6.2"/></svg>분석</button>
+    <button class="slot" type="button" data-nav="ach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-1.5 6h-5z"/><circle cx="12" cy="15" r="5.5"/><path d="M12 12.4l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 14.5l2-.3z"/></svg>업적</button>
     <button class="slot" type="button" data-nav="invite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="9" r="3.5"/><path d="M3 20c.8-3.4 3.2-5 6-5s5.2 1.6 6 5M17 8v6M14 11h6"/></svg>초대</button>
     <button class="event" type="button" id="ev-btn" aria-label="이용권 받기"><span class="rib">EVENT</span><span class="chip">+</span><span>이용권</span></button>
   </div>
@@ -1990,7 +2143,7 @@ const App = (() => {
     b.textContent = S.p.nick ? S.p.nick : '로그인';
     U.$$('.nav [data-nav]').forEach(x => x.setAttribute('aria-current', x.dataset.nav === navKey() ? 'page' : 'false'));
   }
-  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', admin: '' }[ui.view] ?? '');
+  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', ach: 'ach', admin: '' }[ui.view] ?? '');
   const canAdmin = () => !S.runtime || S.isOwner || S.canEdit;
 
   function go(view, opts = {}) {
@@ -2002,7 +2155,7 @@ const App = (() => {
     document.body.dataset.view = ui.view;
     paintHeader();
     const el = U.$('#view');
-    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, admin: Admin }[ui.view] || Home;
+    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, ach: Fun.View, admin: Admin }[ui.view] || Home;
     el.innerHTML = f.html();
     f.bind && f.bind(el);
   }
@@ -2022,11 +2175,11 @@ const App = (() => {
       return `<section class="academy screen">
         <div class="academy-intro"><div><span class="eyebrow">YOUR POKER STUDY ROOM</span><h1>학습의 즐거움.<br><span>${S.p.nick ? U.esc(S.p.nick) + '님의 더 나은 플레이를 위해.' : '더 나은 플레이가 시작되는 곳.'}</span></h1></div><span class="academy-date">HOLDEM GOSU / ACADEMY</span></div>
         <div class="academy-grid"><div class="academy-main">
-          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">ALL-IN-ONE · 통합 홀덤 트레이닝</span><h2>한 번의 선택.<br>더 깊어지는 실력.</h2><p>실전 속 다양한 상황을 풀어보고,<br>내 선택의 이유를 이해하세요.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '게임 시작하기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 선택 후 해설 제공</span></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-card art-back">K<span>♥</span></div><div class="art-card art-front">A<span>♠</span></div><span class="art-caption">THINK IN RANGES.</span></div></div>
+          <div class="study-hero"><div class="hero-copy"><span class="lesson-tag">TODAY'S RIVAL · 라이벌 매치</span><h2>오늘의 라이벌,<br>이길 수 있을까?</h2><p>매 라운드 새 라이벌 등장!<br>3문제 중 2문제 맞히면 격파.</p><button class="btn btn-ink" id="start" type="button">${ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? '진행 중인 학습 이어하기' : total ? '라이벌과 한 판 붙기' : '이용권 충전하기'} <span aria-hidden="true">↗</span></button><span class="hero-meta">한 세트 최대 3문제 · 정답 하나에 라이벌 하트 하나</span></div>${Fun.homeRival()}</div>
           <div class="unified-progress"><div><span>통합 홀덤 트레이닝</span><p>프리플랍부터 리버, 토너먼트의 승부처까지.<br>9인 토너먼트와 6인 링게임이 하나의 게임에서 이어집니다.</p></div><div class="unified-count"><b>${mine.length}<small> / ${playable().length}</small></b><span>학습한 문제</span></div><div class="course-progress"><i style="width:${U.pct(mine.length,playable().length)}%"></i></div></div>
           <div class="academy-section-title"><div><span class="eyebrow">STUDY TOOLS</span><h2>학습 도구. <span>궁금함을 확신으로.</span></h2></div></div>
           <div class="tool-grid"><button class="study-tool" type="button" onclick="Coach.open()"><span class="tool-icon">✳</span><div><h3>GTO AI 코치 <span class="quiet-badge">${COACH_CONFIG.endpoint ? 'AI' : '연결 준비 중'}</span></h3><p>헷갈리는 상황의 판단 근거를 확인하세요.<br>남은 AI 질문권 ${S.p.aiTickets ?? 1}개</p></div><span>↗</span></button><button class="study-tool" type="button" data-nav="sim"><span class="tool-icon">%</span><div><h3>승률 시뮬레이터</h3><p>카드와 상대 범위를 설정하고<br>가능성을 직접 비교하세요.</p></div><span>↗</span></button></div>
-        </div><aside class="academy-aside"><div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
+        </div><aside class="academy-aside">${Fun.homePanel()}<div class="progress-panel"><span class="eyebrow">MY PROGRESS</span><h2>나의 학습 기록</h2><div class="accuracy-ring" style="--progress:${U.pct(ok,mine.length)}%"><div><b>${U.pct(ok,mine.length)}<small>%</small></b><span>첫 풀이 정답률</span></div></div><div class="metric-row"><span>학습한 문제</span><b>${mine.length}<small> 문제</small></b></div><div class="metric-row"><span>누적 포인트</span><b>${S.p.tot.p.toLocaleString('ko-KR')}<small> P</small></b></div><div class="metric-row"><span>이번 주 정답</span><b>${S.p.wk.c}<small> 문제</small></b></div><button class="btn btn-line btn-block" data-nav="notes" type="button">학습 기록 보기 →</button></div>
           <div class="review-panel"><span class="eyebrow">REVIEW & IMPROVE</span><h3>틀린 선택에서<br>한 단계 더.</h3><p>오답 ${Object.values(S.p.solved).filter(x=>!x.ok).length}문제가 기다리고 있어요.<br>재풀이는 이용권을 사용하지 않습니다.</p><button class="link" id="academy-review" type="button">오답노트 열기 ↗</button></div>
           <div class="ticket-panel"><div class="spread"><b>남은 학습 이용권</b><strong>${total}</strong></div><div class="ticket-details">무료 ${t.free} · 광고 ${t.ad} · 초대 ${t.inv}</div><button class="link" id="academy-tickets" type="button">이용권 받기 →</button></div>
         </aside></div>
@@ -2038,6 +2191,7 @@ const App = (() => {
       U.$('#start', el).onclick = () => ui.set && ui.set.mode !== 'preview' && ui.set.ids[ui.set.idx] && ui.set.answers.length < ui.set.ids.length ? go('play') : startSet();
       U.$('[data-ex]', el).onclick = () => startPreview(PROBLEMS.find(p => p.ex).id);
       U.$$('[data-nav]', el).forEach(b => b.onclick = () => go(b.dataset.nav));
+      U.$$('[data-go]', el).forEach(b => b.onclick = () => go(b.dataset.go));
       U.$('#academy-review', el).onclick = () => { ui.notesTab='wrong'; go('notes'); };
       U.$('#academy-tickets', el).onclick = () => U.$('#tix-chip').click();
       const a = U.$('#to-admin', el); if (a) a.onclick = () => go('admin');
@@ -2069,9 +2223,10 @@ const App = (() => {
     if (ui.set && ui.set.fromResult) S.p.ctr.continued++;
     S.p.ctr.setsStarted++; Store.save();
     ui.set = { ids, idx: 0, answers: [], mode: 'scored' };
+    Fun.startSet(ui.set);
     go('play');
   }
-  function startRetry(ids) { ids = ids.filter(id => { const p=byId(id); return p && !p.reviewHold && p.ans != null && !['fix','hidden'].includes(p.rv); }); if (!ids.length) { U.toast('선택한 문제는 재검수 중입니다.'); return; } ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; go('play'); }
+  function startRetry(ids) { ids = ids.filter(id => { const p=byId(id); return p && !p.reviewHold && p.ans != null && !['fix','hidden'].includes(p.rv); }); if (!ids.length) { U.toast('선택한 문제는 재검수 중입니다.'); return; } ui.set = { ids, idx: 0, answers: [], mode: 'retry' }; Fun.startSet(ui.set); go('play'); }
   function startPreview(id) { ui.set = { ids: [id], idx: 0, answers: [], mode: 'preview', back: ui.view }; go('play'); }
 
   // ================= 문제 풀이 =================
@@ -2161,7 +2316,7 @@ const App = (() => {
       }).join('');
       const facing = st.facing ? `콜 금액 ${A(Math.min(st.toCall, st.hero.stack))}` : '상대 베팅 없음';
       return `<section class="stage story-stage">
-        ${storyHtml(p, st, prog)}
+        ${Fun.story(p, st, prog, set)}
         ${p.reviewHold ? '<p class="proto">재검수 중 · 출제 및 채점 중단: ' + U.esc(p.reviewReason) + '</p>' : ''}
         <div class="tbl">${svg}
           <div class="hud">
@@ -2198,8 +2353,8 @@ const App = (() => {
     const last = set.idx >= set.ids.length - 1;
     let verdict;
     if (!ans.length) verdict = `<div class="verdict na"><b>검수 대기</b><span>이 예시 문제의 정답은 전문가 검수 후 공개됩니다.</span></div>`;
-    else if (done.ok) verdict = `<div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
-    else verdict = `<div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
+    else if (done.ok) verdict = `<p class="verdict-fun ok">${U.esc(Fun.verdictLine(true, p.id))}</p><div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
+    else verdict = `<p class="verdict-fun no">${U.esc(Fun.verdictLine(false, p.id))}</p><div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
     const others = p.o.map((tok, i) => (p.n && p.n[i] && !ans.includes(i)) ? `<li><b>${U.esc(optLabel(st, tok))}</b><span>${U.esc(p.n[i])}</span></li>` : '').join('');
     const btn = set.mode === 'preview' ? `<button class="btn btn-ink btn-block" id="next" type="button">돌아가기</button>`
       : `<button class="btn btn-ink btn-block" id="next" type="button">${last ? '결과 보기' : '다음 문제'}</button>`;
@@ -2239,6 +2394,7 @@ const App = (() => {
     }
     set.answers[set.idx] = rec;
     render();
+    Fun.onAnswer(set, ok, ans.length > 0);
     const sh = U.$('.acts4'); if (sh) sh.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -2247,6 +2403,7 @@ const App = (() => {
     if (set.mode === 'preview') return go(set.back && set.back !== 'play' ? set.back : 'home');
     if (set.idx < set.ids.length - 1) { set.idx++; return go('play'); }
     if (set.mode === 'scored') { S.p.ctr.setsDone++; S.p.ctr.offers++; Store.save(); }
+    Fun.endSet(set);
     go('result');
   }
 
@@ -2270,6 +2427,441 @@ const App = (() => {
   }
 
   return { ui, S, go, render, bank, byId, playable, ansOf, tickets, valid, startSet, startRetry, startPreview, units, optLabel, protoNote, lvPill, rvPill, canAdmin, paintHeader };
+})();
+
+/* ===== 재미 레이어: 라이벌 · 코믹 시나리오 · 업적 ===== */
+const RIVAL_BASE = 'rivals/';
+const Fun = (() => {
+  // ---------- 도우미 ----------
+  const hash = s => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  /** 같은 문제·같은 라이벌이면 다시 그려도 같은 대사가 나오도록 시드로 고른다 */
+  const spick = (a, seed) => a[hash(seed) % a.length];
+  const fill = (s, v) => s.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? '');
+  /** 받침에 맞는 조사: josa('세라','이','가') → '세라가' */
+  function josa(word, a, b) {
+    const c = String(word).trim().slice(-1).charCodeAt(0);
+    if (c < 0xac00 || c > 0xd7a3) return word + b;
+    return word + ((c - 0xac00) % 28 ? a : b);
+  }
+  const img = r => RIVAL_BASE + 'r' + String(r.i).padStart(2, '0') + '.webp';
+  const thumb = r => RIVAL_BASE + 't' + String(r.i).padStart(2, '0') + '.webp';
+
+  // ---------- 라이벌 40명 ----------
+  // ty: bluff 블러퍼 · rock 철벽 · maniac 공격형 · station 콜스테이션 · calc 계산형
+  const TY = { bluff: '블러퍼', rock: '철벽', maniac: '공격형', station: '콜머신', calc: '계산형' };
+  const R = [
+    ['세라', '카드 부채질 장인', 'bluff', '부채질은 더워서 하는 거야. 블러프 아니야. 진짜로.'],
+    ['미진', '엑셀로 팟오즈 계산하는 경리', 'calc', '팟오즈 23.8%. 소수점 둘째 자리에서 반올림했어.'],
+    ['로즈', '레이즈 말고는 할 줄 모름', 'maniac', '체크? 그게 무슨 버튼이야?'],
+    ['하나', '남의 칩도 내 칩이라 믿는 사람', 'maniac', '그 칩, 곧 내 앞으로 이사 올 거야.'],
+    ['엘라', '취한 척하는 위스키 마담', 'bluff', '나 취했어~ (안 취함)'],
+    ['유나', '졸린 척 넛을 든 새벽 세 시', 'rock', '하암… 나 지금 폴드할까 말까 졸려서… 아 올인.'],
+    ['리리', '손키스로 틸트 유발', 'bluff', '쪽♡ 지금 흔들렸지? 그게 텔이야.'],
+    ['나나', '카드 뒤에 숨는 포커페이스', 'rock', '(카드 뒤에서) …내 표정 못 봤지?'],
+    ['지아', '녹색 테이블 보호색 위장', 'station', '나 여기 있었어. 처음부터. 콜.'],
+    ['수아', '딜러 출신, 셔플만 3년', 'calc', '덱에 남은 아웃츠 9장. 다 세어 놨어.'],
+    ['클로이', '블랙스완, 우아하게 올인', 'maniac', '우아하게, 그러나 전부.'],
+    ['하린', '회계감사팀 출신 안경', 'calc', '당신의 콜, 감사(監査)하겠습니다.'],
+    ['루비', '빨간 머리 칩 불도저', 'maniac', '칩은 밀라고 있는 거야. 밀어!'],
+    ['셀린', '은발 여왕, 키스 날리고 3벳', 'bluff', '키스는 서비스, 3벳은 진심.'],
+    ['지수', '단발 스나이퍼', 'rock', '한 발. 한 번. 그걸로 끝.'],
+    ['소피', '레이스 커튼 뒤 매복러', 'rock', '여섯 시간 기다렸어. 이 한 판을 위해.'],
+    ['민', '조끼 입은 칩 회수반', 'calc', '계산 끝났어. 그 팟은 내 거야.'],
+    ['앨리스', '골드러시 금발', 'station', '금은 캐는 거고, 콜은 하는 거야.'],
+    ['서아', '에메랄드 반지 콜 요정', 'station', '궁금하면 콜. 안 궁금해도 콜.'],
+    ['비비안', '이기기 전에 미리 건배', 'bluff', '건배~ 이 팟 축하주야. 아직 안 끝났지만.'],
+    ['태오', '턱 괴고 지루한 척', 'rock', '하… 이 판 지루하네. (속으로 AA)'],
+    ['태오', '카드 두 장 쥐고 폼 잡기', 'bluff', '내 카드? 궁금하면 콜해.'],
+    ['태오', '칩 밀기 국가대표', 'maniac', '밀 때는 망설이면 안 돼.'],
+    ['태오', '검은 셔츠 진지 모드', 'calc', '오늘은 장난 안 쳐. 계산만 해.'],
+    ['태오', '카드로 입 가리는 텔 방지턱', 'rock', '입꼬리는 가렸다. 텔은 없다.'],
+    ['태오', '실내에서 선글라스 낀 남자', 'bluff', '눈빛 읽히면 곤란하거든. (실내임)'],
+    ['태오', '생각하는 척 장인', 'calc', '음… 생각 중이야. (이미 정함)'],
+    ['태오', '건배사 제조기', 'station', '위하여! 그리고 콜!'],
+    ['태오', '올인 손 미리 뻗기', 'maniac', '내 손은 이미 칩 위에 있어.'],
+    ['태오', '폴드하고 야경 감상', 'rock', '난 폴드. 야경이 예쁘네.'],
+    ['태준', '태오 쌍둥이 형, 더 공격적', 'maniac', '동생한테 이겼다고? 형은 다르다.'],
+    ['태준', '쌍둥이 형, 카드로 얼굴 반 가림', 'bluff', '반만 보여 줄게. 반은 블러프야.'],
+    ['태준', '쌍둥이 형, 칩 쌓기 집착', 'calc', '칩은 10개씩. 각 맞춰서. 팟도 각 맞춰서.'],
+    ['태준', '쌍둥이 형, 블루 테이블 VIP', 'rock', '블루 테이블에선 내가 법이야.'],
+    ['태준', '쌍둥이 형, 레드 테이블 감성', 'station', '빨간 테이블에선 콜이 국룰이지.'],
+    ['태준', '쌍둥이 형, 선글라스 시즌2', 'bluff', '선글라스는 동생 거 빌렸어.'],
+    ['태준', '쌍둥이 형, 칩 콕 찍기', 'calc', '이 칩 하나가 네 운명을 바꿀 거야.'],
+    ['태준', '쌍둥이 형, 위스키 감별사', 'station', '위스키는 스트레이트, 콜도 스트레이트.'],
+    ['태준', '쌍둥이 형, 카드 들고 공격 개시', 'maniac', '카드를 든 순간부터 전쟁이야.'],
+    ['태준', '쌍둥이 형, 홍콩 야경 귀공자', 'rock', '이 야경만큼 내 레인지도 넓지. 아, 아니다. 좁다.']
+  ].map(([n, t, ty, say], k) => ({ i: k + 1, id: 'r' + (k + 1), n, t, ty, say, fam: k >= 30 ? 'taejun' : k >= 20 ? 'taeo' : 'lady' }));
+  const SHADES = ['r26', 'r36'];
+  const byId = id => R.find(r => r.id === id) || R[0];
+
+  // ---------- 성격별 대사 ----------
+  const L = {
+    intro: {
+      bluff: ['내 표정만 보고 판단하면… 큰일 날 걸?', '진짜일까, 연기일까? 맞혀 봐.', '오늘 내 연기력, 아카데미 감이야.'],
+      rock: ['나는 기다리는 사람이야. 네가 실수할 때까지.', '좋은 패 아니면 안 움직여. 근데 오늘 좋은 패만 와.', '조용히, 확실하게.'],
+      maniac: ['칩 다 걸 준비 됐어? 나는 됐어.', '오늘 테이블은 내가 접수한다!', '폴드는 겁쟁이나 하는 거야!'],
+      station: ['난 끝까지 따라간다. 리버까지. 영원히.', '네가 뭘 하든 콜. 그게 내 철학이야.', '궁금한 건 못 참아. 다 보고 갈 거야.'],
+      calc: ['확률은 거짓말을 안 해. 너는?', '내 머릿속 계산기는 이미 돌아가고 있어.', '감으로 치는 사람, 제일 좋아해. 먹기 좋거든.']
+    },
+    facing: {
+      bluff: ['그 베팅, 내가 진짜로 보여? 후후.', '쫄았지? 손이 떨리는데?', '콜하면 후회, 폴드하면 더 후회~'],
+      rock: ['…(아무 말 없이 쳐다본다)', '나 이번엔 진짜야. 아마도.', '이 정도면 알 텐데?'],
+      maniac: ['받아? 말아? 빨리빨리!', '고민하는 사이에 칩 더 올린다?', '용기 있으면 따라와!'],
+      station: ['나도 맨날 콜하는데, 너도 콜해~', '같이 리버 보러 가자~', '여기서 접으면 궁금해서 잠 못 잘걸?'],
+      calc: ['팟오즈 계산은 했고?', '필요 승률 몇 %인지 알아?', '숫자를 봐. 감정 말고.']
+    },
+    open: {
+      bluff: ['체크하면 내가 훔쳐 갈 거야~', '먼저 움직여 봐. 연기 평가해 줄게.', '조용하네? 수상해.'],
+      rock: ['네 차례야. 신중하게.', '나는 기다릴게. 언제까지나.', '실수 한 번이면 충분해.'],
+      maniac: ['빨리 쳐! 안 치면 내가 친다!', '체크? 지루해서 하품 나온다~', '판 키우자, 판!'],
+      station: ['베팅해도 나는 콜할 건데?', '얼마를 걸든 따라간다~', '밸류 뽑기 좋은 날이지, 응?'],
+      calc: ['이 보드, 누구 레인지에 유리할까?', '베팅 크기도 실력이야.', '계산하고 움직여.']
+    },
+    hit: {
+      bluff: ['크윽… 내 연기가 읽혔다고?!', '거짓말… 표정 관리 완벽했는데!', '아니, 그걸 어떻게 알았어?!'],
+      rock: ['…제법이군.', '…인정. 한 번은.', '(카드를 살짝 구긴다)'],
+      maniac: ['으아악! 내 칩!!', '이건 운이야! 운!', '다음 판엔 두 배로 간다!'],
+      station: ['어? 내가 졌어? 다시, 다시!', '콜했는데 왜 졌지…?', '궁금했는데… 알고 싶지 않았어.'],
+      calc: ['내 계산이… 틀렸다고?', '소수점 오차… 아니, 네가 잘한 거야.', '데이터에 추가해 둘게. 쳇.']
+    },
+    gloat: {
+      bluff: ['후훗, 연기 대상은 나야~', '깜빡 속았지? 칩 잘 쓸게♡', '내 눈빛에 넘어왔구나~'],
+      rock: ['기다린 보람이 있군.', '그러니까 신중하라 했잖아.', '…예상대로.'],
+      maniac: ['봤지?! 밀어붙이면 이긴다!', '칩 고마워~ 바로 또 올인한다!', '하하하! 테이블은 내 거야!'],
+      station: ['거봐, 콜하길 잘했지~', '리버까지 보니까 재밌지?', '궁금증 해결! 칩도 내 거!'],
+      calc: ['확률대로 됐네.', '계산 안 하고 쳤지? 티 나.', '숫자는 거짓말 안 한다니까.']
+    },
+    lose: ['오늘은 내가 졌어. 다음엔 안 봐줘.', '크… 리벤지 매치 꼭 와.', '인정할게. 너 좀 치는구나.', '오늘 운세가 나빴던 거야. 그런 거야.'],
+    win: ['한 판 더? 칩은 충분해?', '해설 꼼꼼히 읽고 다시 와~', '오늘은 내가 이겼다. 복습하고 와!', '다음엔 좀 더 버텨 봐.']
+  };
+
+  // ---------- 코믹 시나리오 문장 ----------
+  const RANKS = '23456789TJQKA';
+  function handClass(c) {
+    if (!c || c.length < 4) return 'junk';
+    const r1 = c[0], r2 = c[2], s = c[1] === c[3];
+    const v1 = RANKS.indexOf(r1), v2 = RANKS.indexOf(r2), hi = Math.max(v1, v2), lo = Math.min(v1, v2);
+    if (r1 === r2) return hi >= 10 ? 'bigpair' : 'pair';
+    if (hi === 12 && lo >= 9) return 'bigace';
+    if (hi === 12) return s ? 'suitedace' : 'weakace';
+    if (lo >= 8) return 'broadway';
+    if (s && hi - lo <= 2) return 'connector';
+    return 'junk';
+  }
+  const HOOK = {
+    bigpair: ['주머니 속에 로켓이… 표정 관리 들어갑니다.', '이 패 받고 웃으면 반칙입니다. 입꼬리 단속!', '프리미엄 페어 도착. 심장아, 진정해.'],
+    pair: ['작은 페어. 귀엽지만 세트 되면 깡패가 됩니다.', '페어는 페어인데… 자신감은 반쯤만.', '보드에 큰 카드 깔리면 바로 쭈굴해지는 패.'],
+    bigace: ['에이스에 그림 카드! 손이 근질근질합니다.', '좋은 패입니다. 너무 사랑에 빠지지만 마세요.', '이 패로 폴드하면 엄마가 운다는 그 패.'],
+    suitedace: ['무늬 맞춘 에이스. 옷은 잘 입었는데 실력은?', '에이스는 에이스인데… 키커가 좀 수줍네요.', '플러시 꿈을 꾸게 만드는 패.'],
+    weakace: ['에이스 들었다고 신나면 안 되는 그 패.', '에이스 하나 믿고 가기엔… 친구가 약합니다.', '에이스라는 이름값만 하는 패.'],
+    broadway: ['그림 카드 두 장. 사진발은 좋은데.', '높은 카드 둘! 근데 그게 전부일 수도.', '얼굴(그림 카드)은 합격. 실속은 검토 중.'],
+    connector: ['수딧 커넥터. 잘 되면 대박, 안 되면 추억.', '스트레이트·플러시 다 꿈꿀 수 있는 낭만 패.', '보드만 도와주면 무서운 패. 보드가 도와줄까?'],
+    junk: ['이 패… 손에서 이상한 냄새가 납니다.', '카드가 당신을 보고 미안해하고 있습니다.', '받자마자 한숨 나오는 패. 그런데 정답은?']
+  };
+  const TOPIC = {
+    '포지션별 시작 핸드': ['자리가 곧 권력! 오늘 당신의 자리는 {pos}.', '같은 패라도 자리 따라 운명이 바뀝니다.'],
+    '기본 팟오즈': ['계산기 꺼내세요. 오늘은 수학 시간입니다.', '얼마 걸고 얼마 먹을 수 있는지, 장사꾼 마인드 ON.'],
+    '체크와 밸류 베팅': ['좋은 패로 얼마나 뽑아 먹을지 고민할 시간.', '욕심은 적당히, 밸류는 확실히.'],
+    '3벳 대응': ['누가 레이즈 위에 레이즈를 얹었습니다. 무례하네요.', '3벳 날아왔다! 맞설까, 비켜설까?'],
+    '드로우의 콜 판단': ['한 장만 오면 되는데… 그 한 장이 늘 안 오죠.', '아웃츠 세는 시간. 손가락 준비!'],
+    '베팅 크기': ['얼마를 걸지가 문제. 소심하게? 화끈하게?', '베팅 크기 하나로 상대 지갑이 열리고 닫힙니다.'],
+    '턴 액션': ['턴 카드 투하! 분위기 급반전 가능 구간.', '턴에서 한 번 더 고민하는 자가 이깁니다.'],
+    '상대 범위 추정': ['상대 머릿속 들여다보기 시간. 독심술 ON.', '상대가 뭘 들었을지 탐정 놀이 시작.'],
+    '블러프 캐치': ['진짜일까, 연기일까? 오늘의 연기 대상 심사위원은 당신.', '상대의 뻥을 잡아낼 시간. 거짓말 탐지기 가동!'],
+    '숏스택': ['칩이 다이어트 중입니다. 너무 빠졌어요.', '칩이 얼마 없습니다. 이제 승부를 걸어야 할 때.'],
+    '버블과 ICM': ['한 명만 더 떨어지면 상금권! 심장 BPM 180.', '돈이 걸리면 칩 계산이 달라집니다. 무서운 버블 타임.']
+  };
+  const TOPIC_DEF = ['오늘도 한 판, 오늘도 한 수.', '테이블 위 작은 드라마가 시작됩니다.'];
+  const OPEN = {
+    pre: ['블라인드가 깔렸고, 모두의 시선이 당신에게 쏠립니다. (부담 백배)', '아직 아무도 움직이지 않았습니다. 첫 수는 당신 몫.'],
+    facing: ['앞에서 누가 판을 키웠습니다. 지갑이 살짝 떨립니다.', '상대가 칩을 밀었습니다. 테이블 공기가 무거워집니다.', '판돈이 올라갔습니다. 이제 진짜 선택의 시간.'],
+    idle: ['공이 당신에게 넘어왔습니다. 칠까, 말까?', '상대가 조용히 넘겼습니다. 이 침묵, 믿어도 될까요?', '당신 차례입니다. 주도권을 잡을 기회!']
+  };
+  const PROMPT = {
+    facing: ['따라갈까, 도망갈까. 인생도 포커도 타이밍.', '콜 버튼이 당신을 유혹합니다. 넘어갈까요?', '폴드는 패배가 아니라 전략일 수도… 아닐 수도.'],
+    idle: ['먼저 칠까, 지켜볼까. 주도권은 당신 손에.', '체크는 겸손, 베팅은 자신감. 오늘 당신은?', '조용히 갈까, 화끈하게 갈까?']
+  };
+  const VERDICT = {
+    ok: ['정답! 머리 위에 전구가 켜졌습니다 💡', '나이스! 오늘 좀 치는데요?', '완벽한 선택. 상대가 카드를 씹어 먹을 기세.', '정답! 이 정도면 테이블의 공포.'],
+    no: ['앗… 칩이 기부되었습니다.', '괜찮아요, 수업료 낸 셈 치죠.', '오답! 하지만 실패는 고수의 어머니.', '아깝다! 해설 보고 바로 복수하러 가요.']
+  };
+
+  // ---------- 상태 ----------
+  function st() {
+    const p = Store.S.p;
+    const d = { streak: 0, best: 0, perfect: 0, sets: 0, met: {}, beat: {}, lost: {}, ach: {}, seen: false };
+    p.fun = { ...d, ...(p.fun || {}) };
+    return p.fun;
+  }
+
+  // ---------- 라이벌 고르기 ----------
+  let nextRival = null;
+  function peekNext() {
+    if (nextRival) return byId(nextRival);
+    const f = st(), last = f.last;
+    const fresh = R.filter(r => !f.met[r.id] && r.id !== last);
+    const pool = fresh.length && Math.random() < 0.75 ? fresh : R.filter(r => r.id !== last);
+    nextRival = pool[Math.floor(Math.random() * pool.length)].id;
+    return byId(nextRival);
+  }
+  function takeRival() { const r = peekNext(); nextRival = null; return r.id; }
+
+  // ---------- 화면 조각 ----------
+  const hearts = (n, hit) => Array.from({ length: n }, (_, k) => `<i class="${k < n - hit ? 'on' : ''}">♥</i>`).join('');
+  function rivalOf(set) { return set && set.rival ? byId(set.rival) : null; }
+
+  /** 풀이 화면 위쪽 라이벌 말풍선 */
+  function banner(set, p, stt) {
+    const r = rivalOf(set); if (!r) return '';
+    const done = set.answers[set.idx];
+    const hits = set.answers.filter(a => a && a.ok).length;
+    const seed = p.id + r.id;
+    let line, cls = '';
+    if (done && done.ok) { line = spick(L.hit[r.ty], seed + 'h'); cls = 'hit'; }
+    else if (done) { line = spick(L.gloat[r.ty], seed + 'g'); cls = 'gloat'; }
+    else line = spick(stt.facing ? L.facing[r.ty] : L.open[r.ty], seed);
+    return `<div class="rival-bar ${cls}"><button class="rb-face" type="button" data-rival="${r.id}" aria-label="${U.esc(r.n)} 프로필"><img src="${thumb(r)}" alt="" width="64" height="64"></button>
+      <div class="rb-main"><div class="rb-top"><b>${U.esc(r.n)}</b><span>${U.esc(r.t)}</span><span class="rb-hp" aria-label="라이벌 체력 ${set.ids.length - hits}/${set.ids.length}">${hearts(set.ids.length, hits)}</span></div>
+      <div class="rb-say">${U.esc(line)}</div></div>${done ? `<span class="rb-fx">${done.ok ? '-1 ♥' : '+칩'}</span>` : ''}</div>`;
+  }
+
+  /** 기존 시나리오 카드를 코믹 버전으로 */
+  function story(p, stt, prog, set) {
+    const A = x => TableView.amt(x, stt.bb, App.units());
+    const r = rivalOf(set);
+    const pos = PD.posName(stt.hero.k);
+    const actions = stt.log.flatMap(l => l.evs).filter(e => e.t !== 'f');
+    const seed = p.id + (r ? r.id : '');
+    const hook = spick(HOOK[handClass(p.c)], seed + 'k');
+    const topic = fill(spick(TOPIC[p.tp] || TOPIC_DEF, seed + 't'), { pos });
+    const opening = spick(!actions.length ? OPEN.pre : stt.facing ? OPEN.facing : OPEN.idle, seed + 'o');
+    const prompt = spick(stt.facing ? PROMPT.facing : PROMPT.idle, seed + 'p');
+    const who = r ? `맞은편엔 ‘${U.esc(r.t)}’ <b>${U.esc(josa(r.n, '이', '가'))}</b> 앉아 있습니다. ` : '';
+    return `<header class="hand-story comic">${set && set.rival ? banner(set, p, stt) : ''}<div class="story-top"><span>EPISODE · ${U.esc(p.tp)}</span><span>${U.esc(prog)} · ${PD.STREET_KO[stt.street]}</span></div>
+      <h1>${U.esc(p.ti)}</h1><p class="story-hook">“${U.esc(hook)}”</p>
+      <div class="story-intro">${stt.n}인 ${p.format === 'cash' ? '링게임' : '토너먼트'}. 당신은 <b>${pos}</b> 자리. ${who}유효 스택은 <b>${TableView.trimNum(stt.effBB)}BB</b>.<br>${U.esc(opening)}</div>
+      <p class="story-topic">📌 ${U.esc(topic)}</p>
+      ${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}
+      <div class="story-facts"><div><span>내 핸드</span><b>${TableView.miniCards(stt.heroCards)}</b></div><div><span>현재 팟</span><b>${A(stt.total)}</b></div><div><span>${stt.facing ? '콜에 필요한 금액' : '현재 액션'}</span><b>${stt.facing ? A(Math.min(stt.toCall, stt.hero.stack)) : '체크 또는 베팅'}</b></div></div>
+      <div class="story-prompt">${U.esc(prompt)}<span>테이블을 읽고, 당신의 액션을 선택하세요.</span></div></header>`;
+  }
+  const verdictLine = (ok, seed) => spick(ok ? VERDICT.ok : VERDICT.no, seed);
+
+  // ---------- 업적 ----------
+  const lvOf = id => { const q = PROBLEMS.find(x => x.id === id); return q ? q.lv : 0; };
+  function stats() {
+    const p = Store.S.p, f = st();
+    const sol = Object.entries(p.solved || {});
+    const lv = { 1: 0, 2: 0, 3: 0 };
+    sol.forEach(([id, v]) => { if (v.ok) { const l = lvOf(id) || (App.byId(id) || {}).lv; if (lv[l] != null) lv[l]++; } });
+    const met = Object.keys(f.met), beat = Object.keys(f.beat);
+    return {
+      c: p.tot.c, wrong: sol.filter(([, v]) => !v.ok).length, best: f.best, perfect: f.perfect, sets: f.sets,
+      met: met.length, beat: beat.length, lv,
+      taeo: met.filter(id => byId(id).fam !== 'lady').length,
+      shades: SHADES.some(id => f.beat[id]) ? 1 : 0,
+      twins: ['taeo', 'taejun'].every(fam => beat.some(id => byId(id).fam === fam)) ? 1 : 0
+    };
+  }
+  // g: 그룹 · k: 통계 키 · n: 목표 · e: 아이콘
+  const ACH = [
+    ['c1', 'count', 'c', 1, '🐣', '첫 칩 냄새', '첫 정답. 칩 냄새가 고소합니다.'],
+    ['c3', 'count', 'c', 3, '🍀', '초심자의 행운?', '정답 3개. 운인지 실력인지는 아직 모름.'],
+    ['c5', 'count', 'c', 5, '🖐️', '손 풀렸다', '정답 5개. 이제 몸이 좀 풀렸네요.'],
+    ['c10', 'count', 'c', 10, '🏠', '동네 홀덤 짱', '정답 10개. 동네에선 이제 적수가 없습니다.'],
+    ['c20', 'count', 'c', 20, '🎮', 'PC방 전설', '정답 20개. 사장님이 당신 이름을 압니다.'],
+    ['c30', 'count', 'c', 30, '🥂', '라운지 VIP', '정답 30개. 웰컴 드링크가 공짜입니다.'],
+    ['c50', 'count', 'c', 50, '👑', '칩 리더의 향기', '정답 50개. 테이블이 당신을 경계합니다.'],
+    ['c77', 'count', 'c', 77, '🎰', '럭키 세븐세븐', '정답 77개. 7이 두 개면 두 배로 럭키.'],
+    ['c100', 'count', 'c', 100, '💯', '백전백승(진짜 100)', '정답 100개. 이건 운으로 안 됩니다.'],
+    ['c150', 'count', 'c', 150, '🎓', '포커 박사(비공인)', '정답 150개. 학위증은 마음속에 있습니다.'],
+    ['c200', 'count', 'c', 200, '✈️', '라스베이거스 출국 준비', '정답 200개. 여권 챙기세요.'],
+    ['c250', 'count', 'c', 250, '🐉', '진정한 HOLDEM GOSU', '정답 250개. 당신이 바로 고수입니다.'],
+    ['s3', 'streak', 'best', 3, '🔥', '3연속 콤보', '연속 3문제 정답.'],
+    ['s5', 'streak', 'best', 5, '☄️', '손에 불붙음', '연속 5문제 정답. 손 조심하세요, 뜨거워요.'],
+    ['s10', 'streak', 'best', 10, '🤖', '인간 솔버', '연속 10문제 정답. 혹시 기계세요?'],
+    ['s20', 'streak', 'best', 20, '🧠', 'GTO가 나를 따라함', '연속 20문제 정답. 이론이 당신을 베낍니다.'],
+    ['p1', 'perfect', 'perfect', 1, '✨', '퍼펙트 게임', '한 세트 3문제를 모두 정답.'],
+    ['p5', 'perfect', 'perfect', 5, '💎', '깔끔 그 자체', '퍼펙트 세트 5번.'],
+    ['p10', 'perfect', 'perfect', 10, '🏆', '무결점 플레이어', '퍼펙트 세트 10번.'],
+    ['r1', 'rival', 'beat', 1, '🥊', '첫 격파', '라이벌을 처음으로 이겼습니다.'],
+    ['r5', 'rival', 'beat', 5, '🗺️', '라운지 순회 공연', '서로 다른 라이벌 5명 격파.'],
+    ['r10', 'rival', 'beat', 10, '⚔️', '도장 깨기', '서로 다른 라이벌 10명 격파.'],
+    ['r20', 'rival', 'beat', 20, '🦁', '라운지의 지배자', '서로 다른 라이벌 20명 격파.'],
+    ['r40', 'rival', 'beat', 40, '📖', '라이벌 도감 완성', '라이벌 40명을 모두 격파.'],
+    ['m10', 'rival', 'met', 10, '🤝', '마당발', '라이벌 10명과 만났습니다.'],
+    ['tw', 'rival', 'twins', 1, '👯', '쌍둥이 감별사', '태오와 태준, 두 형제를 모두 격파.'],
+    ['sh', 'rival', 'shades', 1, '🕶️', '실내 선글라스 단속반', '선글라스 쓴 라이벌을 격파. 실내에선 벗으세요.'],
+    ['t5', 'rival', 'taeo', 5, '🪞', '이 사람 아까 본 것 같은데', '태오·태준 형제를 5가지 버전으로 만났습니다.'],
+    ['l1', 'level', 'lv1', 10, '🌱', '입문 졸업', '입문 문제 10개 정답.'],
+    ['l2', 'level', 'lv2', 10, '🌿', '중급 돌파', '중급 문제 10개 정답.'],
+    ['l3', 'level', 'lv3', 10, '🌳', '고급 클럽 입장', '고급 문제 10개 정답.'],
+    ['w5', 'fun', 'wrong', 5, '💸', '수업료 납부 완료', '오답 5개. 배움에는 원래 돈이 듭니다.'],
+    ['w20', 'fun', 'wrong', 20, '🧘', '멘탈 금강불괴', '오답 20개에도 포기하지 않는 멘탈.'],
+    ['g10', 'fun', 'sets', 10, '☕', '단골손님', '세트 10번 완주. 자리 맡아 둘게요.']
+  ].map(([id, g, k, n, e, nm, d]) => ({ id, g, k, n, e, nm, d }));
+  const GROUPS = { count: '정답 수', streak: '연속 정답', perfect: '퍼펙트', rival: '라이벌', level: '난이도', fun: '기타' };
+  const val = (s, k) => (k.startsWith('lv') ? s.lv[k[2]] : s[k]) || 0;
+
+  /** 새로 달성한 업적을 기록하고 돌려준다 */
+  function check(silent) {
+    const f = st(), s = stats(), now = Date.now(), out = [];
+    ACH.forEach(a => { if (!f.ach[a.id] && val(s, a.k) >= a.n) { f.ach[a.id] = now; out.push(a); } });
+    if (out.length) { Store.save(); if (!silent) out.forEach(a => queuePop(a)); }
+    return out;
+  }
+  /** 현재 칭호: 달성한 정답 수 업적 중 가장 높은 것 */
+  function title() {
+    const f = st(); const got = ACH.filter(a => a.g === 'count' && f.ach[a.id]);
+    return got.length ? got[got.length - 1] : null;
+  }
+  function nextCountGoal() { const f = st(); return ACH.find(a => a.g === 'count' && !f.ach[a.id]) || null; }
+
+  // ---------- 업적 팝업 ----------
+  const q = []; let showing = false;
+  function queuePop(a) { q.push(a); if (!showing) popNext(); }
+  function popNext() {
+    const a = q.shift(); if (!a) { showing = false; return; }
+    showing = true;
+    const el = document.createElement('div');
+    el.className = 'ach-pop'; el.setAttribute('role', 'status');
+    el.innerHTML = `<span class="ap-ic">${a.e}</span><span><small>업적 달성!</small><b>${U.esc(a.nm)}</b><em>${U.esc(a.d)}</em></span>`;
+    el.onclick = () => { el.remove(); App.go('ach'); };
+    document.body.appendChild(el);
+    confetti();
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => { el.remove(); popNext(); }, 350); }, 3000);
+  }
+  function confetti() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const box = document.createElement('div'); box.className = 'confetti'; box.setAttribute('aria-hidden', 'true');
+    const g = ['♠', '♥', '♦', '♣', '★'];
+    box.innerHTML = Array.from({ length: 26 }, (_, k) => `<i style="left:${Math.random() * 100}%;animation-delay:${Math.random() * .4}s;animation-duration:${1.4 + Math.random()}s;color:${['#f5c451', '#ff6b6b', '#7fb0ff', '#6fd39a', '#fff'][k % 5]}">${g[k % 5]}</i>`).join('');
+    document.body.appendChild(box); setTimeout(() => box.remove(), 2800);
+  }
+
+  // ---------- 진행 연결 ----------
+  /** 채점 세트 시작: 라이벌 배정 후 VS 화면 */
+  function startSet(set) {
+    if (set.mode === 'preview') return;
+    set.rival = takeRival();
+    const f = st(); f.last = set.rival;
+    if (set.mode === 'scored') { f.met[set.rival] = (f.met[set.rival] || 0) + 1; Store.save(); }
+    setTimeout(() => vs(set), 30);
+  }
+  function vs(set) {
+    const r = byId(set.rival), f = st();
+    const rec = `${f.beat[r.id] || 0}승 ${f.lost[r.id] || 0}패`;
+    const v = Layer.open(`<div class="vs-card" data-ty="${r.ty}"><div class="vs-img"><img src="${img(r)}" alt="${U.esc(r.n)}"><span class="vs-badge">VS</span><span class="vs-type">${TY[r.ty]}</span></div>
+      <div class="vs-body"><span class="vs-eyebrow">${set.mode === 'retry' ? '복습 스파링 상대' : '이번 라운드 라이벌'}</span><h2>${U.esc(r.n)} <small>${U.esc(r.t)}</small></h2>
+      <p class="vs-say">“${U.esc(spick(L.intro[r.ty], r.id + Date.now()))}”</p>
+      <div class="vs-meta"><span>라이벌 체력 <b class="rb-hp">${hearts(set.ids.length, 0)}</b></span><span>상대 전적 ${rec}</span></div>
+      <p class="vs-rule">${set.ids.length}문제 중 ${Math.ceil(set.ids.length * 2 / 3)}문제 이상 맞히면 격파! 정답 하나에 하트 하나.</p>
+      <button class="btn btn-brass btn-block" type="button" id="vs-go">한 판 붙자! 🃏</button></div></div>`, '라이벌 등장');
+    const close = () => Layer.close();
+    U.$('#vs-go', v).onclick = close; v.onclick = e => { if (e.target === v) close(); };
+    U.$('#vs-go', v).focus();
+  }
+  /** 문제를 풀었을 때(채점 세트) */
+  function onAnswer(set, ok, graded) {
+    if (set.mode !== 'scored' || !graded) return;
+    const f = st();
+    f.streak = ok ? f.streak + 1 : 0; f.best = Math.max(f.best, f.streak);
+    if (ok && [3, 5, 7, 10, 15, 20].includes(f.streak)) U.toast(`🔥 ${f.streak}연속 정답! 손이 뜨겁다!`);
+    Store.save(); check();
+  }
+  /** 세트가 끝났을 때 결과 */
+  function endSet(set) {
+    if (!set.rival || set.funDone) return set.fun;
+    set.funDone = true;
+    const n = set.ids.length, okN = set.answers.filter(a => a && a.ok).length;
+    const win = okN * 3 >= n * 2;
+    const res = { win, okN, n, perfect: n >= 3 && okN === n };
+    if (set.mode === 'scored') {
+      const f = st(); f.sets++;
+      if (win) f.beat[set.rival] = (f.beat[set.rival] || 0) + 1; else f.lost[set.rival] = (f.lost[set.rival] || 0) + 1;
+      if (res.perfect) f.perfect++;
+      Store.save(); check();
+    }
+    set.fun = res;
+    return res;
+  }
+  function resultBlock(set) {
+    if (!set || !set.rival || !set.fun) return '';
+    const r = byId(set.rival), res = set.fun;
+    const line = spick(res.win ? L.lose : L.win, r.id + res.okN);
+    return `<div class="rival-result ${res.win ? 'win' : 'lose'}"><div class="rr-img"><img src="${img(r)}" alt="${U.esc(r.n)}"><span class="rr-stamp">${res.win ? (res.perfect ? 'PERFECT!' : '격파!') : '패배…'}</span></div>
+      <div class="rr-body"><span class="eyebrow">${res.win ? 'RIVAL DEFEATED' : 'REMATCH?'}</span><h3>${res.win ? `${U.esc(josa(r.n, '을', '를'))} 이겼습니다!` : `${U.esc(josa(r.n, '이', '가'))} 이겼습니다`}</h3>
+      <p class="rr-say"><b>${U.esc(r.n)}</b> “${U.esc(line)}”</p>
+      <div class="rr-hp">라이벌 체력 <b class="rb-hp">${hearts(res.n, res.okN)}</b></div>
+      ${set.mode === 'scored' ? `<button class="link" type="button" data-go="ach">${res.win ? '라이벌 도감에 등록됨 ↗' : '라이벌 도감 보기 ↗'}</button>` : ''}</div></div>`;
+  }
+
+  // ---------- 홈 조각 ----------
+  function homeRival() {
+    const r = peekNext(), f = st();
+    return `<button class="hero-rival" type="button" data-rival="${r.id}" aria-label="다음 라이벌 ${U.esc(r.n)}"><img src="${img(r)}" alt=""><span class="hr-tag">NEXT RIVAL</span><span class="hr-name"><b>${U.esc(r.n)}</b>${U.esc(r.t)}</span><span class="hr-say">“${U.esc(r.say)}”</span>${f.met[r.id] ? '' : '<span class="hr-new">NEW</span>'}</button>`;
+  }
+  function homePanel() {
+    const f = st(), t = title(), nx = nextCountGoal(), s = stats();
+    const got = ACH.filter(a => f.ach[a.id]).length;
+    const prog = nx ? Math.min(100, Math.round(s.c / nx.n * 100)) : 100;
+    return `<div class="ach-panel"><span class="eyebrow">ACHIEVEMENTS</span><div class="ap-title"><span class="ap-medal">${t ? t.e : '🃏'}</span><div><small>현재 칭호</small><b>${t ? U.esc(t.nm) : '아직 칭호 없음'}</b></div></div>
+      ${nx ? `<div class="ap-next"><span>다음 칭호 <b>${U.esc(nx.nm)}</b></span><span class="num">${s.c}/${nx.n}</span></div><div class="course-progress"><i style="width:${prog}%"></i></div>` : '<div class="ap-next"><span>모든 칭호를 모았습니다!</span></div>'}
+      <div class="ap-row"><span>업적 <b class="num">${got}/${ACH.length}</b></span><span>격파한 라이벌 <b class="num">${s.beat}/${R.length}</b></span><span>최고 연속 <b class="num">${f.best}</b></span></div>
+      <button class="btn btn-line btn-block" type="button" data-go="ach">업적 · 라이벌 도감 →</button></div>`;
+  }
+
+  // ---------- 업적 화면 ----------
+  let tab = 'ach';
+  const View = {
+    html() {
+      const f = st(), s = stats();
+      const got = ACH.filter(a => f.ach[a.id]).length;
+      const t = title();
+      let inner;
+      if (tab === 'ach') {
+        inner = Object.entries(GROUPS).map(([g, nm]) => {
+          const list = ACH.filter(a => a.g === g).map(a => {
+            const v = Math.min(val(s, a.k), a.n), on = !!f.ach[a.id];
+            return `<div class="ach ${on ? 'on' : ''}"><span class="ach-ic">${on ? a.e : '🔒'}</span><div class="ach-tx"><b>${U.esc(a.nm)}</b><span>${U.esc(a.d)}</span>${on ? `<em>${fmtDate(f.ach[a.id])} 달성</em>` : `<div class="ach-bar"><i style="width:${Math.round(v / a.n * 100)}%"></i></div><em class="num">${v} / ${a.n}</em>`}</div></div>`;
+          }).join('');
+          return `<div class="ach-group"><h3>${nm}</h3><div class="ach-list">${list}</div></div>`;
+        }).join('');
+      } else {
+        inner = `<div class="dex">${R.map(r => {
+          const met = f.met[r.id], beat = f.beat[r.id];
+          return `<button type="button" class="dex-c ${beat ? 'beat' : met ? 'met' : 'lock'}" data-rival="${r.id}" aria-label="${met ? U.esc(r.n) : '아직 만나지 않은 라이벌'}"><img src="${thumb(r)}" alt="" loading="lazy"><span class="dex-n">${met ? U.esc(r.n) : '???'}</span>${beat ? '<span class="dex-s">격파</span>' : ''}<span class="dex-no num">No.${String(r.i).padStart(2, '0')}</span></button>`;
+        }).join('')}</div><p class="small muted" style="margin:0">문제 세트를 시작하면 라이벌이 나타납니다. 3문제 중 2문제 이상 맞히면 격파!</p>`;
+      }
+      return `<section class="screen ach-screen">
+        <div class="spread"><div><div class="eyebrow">업적</div><h2 class="title">${tab === 'ach' ? '업적' : '라이벌 도감'}</h2></div>
+        <div class="tabs" role="tablist"><button type="button" role="tab" data-t="ach" aria-selected="${tab === 'ach'}">업적</button><button type="button" role="tab" data-t="dex" aria-selected="${tab === 'dex'}">라이벌 도감</button></div></div>
+        <div class="ach-hero"><span class="ap-medal">${t ? t.e : '🃏'}</span><div><small>현재 칭호</small><b>${t ? U.esc(t.nm) : '첫 정답을 맞혀 칭호를 받으세요'}</b></div>
+          <div class="ach-hero-n num"><div><b>${got}</b><span>/${ACH.length} 업적</span></div><div><b>${s.beat}</b><span>/${R.length} 격파</span></div><div><b>${s.c}</b><span>정답</span></div></div></div>
+        ${inner}
+      </section>`;
+    },
+    bind(el) {
+      U.$$('[data-t]', el).forEach(b => b.onclick = () => { tab = b.dataset.t; App.render(); });
+    }
+  };
+  function profile(id) {
+    const r = byId(id), f = st();
+    if (!f.met[id] && App.ui.view === 'ach') { U.toast('아직 만나지 않은 라이벌입니다. 문제를 풀면 만날 수 있어요!'); return; }
+    const v = Layer.open(`<div class="vs-card" data-ty="${r.ty}"><div class="vs-img"><img src="${img(r)}" alt="${U.esc(r.n)}"><span class="vs-type">${TY[r.ty]}</span></div>
+      <div class="vs-body"><span class="vs-eyebrow">No.${String(r.i).padStart(2, '0')} · 라이벌 프로필</span><h2>${U.esc(r.n)} <small>${U.esc(r.t)}</small></h2>
+      <p class="vs-say">“${U.esc(r.say)}”</p>
+      <div class="vs-meta"><span>만난 횟수 ${f.met[id] || 0}</span><span>상대 전적 ${f.beat[id] || 0}승 ${f.lost[id] || 0}패</span></div>
+      <button class="btn btn-line btn-block" type="button" id="vs-go">닫기</button></div></div>`, r.n + ' 프로필');
+    U.$('#vs-go', v).onclick = Layer.close; v.onclick = e => { if (e.target === v) Layer.close(); };
+  }
+  // 라이벌 얼굴을 누르면 프로필(위임)
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-rival]');
+    if (b && !e.target.closest('.veil')) { e.preventDefault(); profile(b.dataset.rival); }
+  });
+
+  return { R, ACH, byId, banner, story, verdictLine, startSet, onAnswer, endSet, resultBlock, homeRival, homePanel, View, check, st, title };
 })();
 
 /* ===== 관리자 페이지 ===== */
@@ -3317,11 +3909,12 @@ const Result = {
       : `<div class="spread"><div><div class="eyebrow">${App.ui.set.mode === 'retry' ? '재풀이 결과' : `${scored.length}문제 결과`}</div>
           <div class="score num"><b>${okN}</b><span>/ ${scored.length} 정답</span></div></div>
           <div class="panel pad num" style="text-align:right"><div class="small muted">이번 세트</div><div style="font:800 26px/1 var(--f-display)">+${pts}점</div></div></div>
+        ${Fun.resultBlock(set)}
         <div class="panel pad"><div class="rlist">${list}</div></div>`;
     return `<section class="screen">
       ${head}
       <div class="reward">
-        ${t > 0 ? `<button class="btn btn-ink btn-block" type="button" id="cont">남은 이용권으로 ${Math.min(3, t)}문제 더 풀기 <small class="num">남은 이용권 ${t}개</small></button>` : ''}
+        ${t > 0 ? `<button class="btn btn-ink btn-block" type="button" id="cont">${set.fun && !set.fun.win ? '리벤지? 아니, 다음 라이벌과' : '다음 라이벌 도전!'} ${Math.min(3, t)}문제 <small class="num">남은 이용권 ${t}개</small></button>` : ''}
         <button class="btn btn-brass btn-block" type="button" id="ad" ${adLeft === 0 ? 'disabled' : ''}><span>광고 보고 3문제 더 풀기<small>끝까지 시청하면 이용권 ${s.adReward}개${adLeft != null ? ` · 오늘 남은 횟수 ${adLeft}` : ''}</small></span><span aria-hidden="true">▶</span></button>
         <button class="btn btn-line btn-block" type="button" id="share" ${invLeft === 0 ? 'disabled' : ''}><span>친구에게 공유하고 3문제 더 풀기<small>친구가 링크로 처음 접속해 첫 문제를 풀면 이용권 ${s.inviteReward}개 · 오늘 ${Sx.p.invDay.n}/${s.inviteDailyLimit}</small></span><span aria-hidden="true">↗</span></button>
       </div>
@@ -3559,6 +4152,7 @@ const Ad = {
 // ================= 시작 =================
 function boot(data) {
   Store.initLocal();
+  Fun.check(true);
   const m = /^#inv-([A-Za-z0-9]{4,10})$/.exec(location.hash || '');
   if (m && !Sx.p.tot.a && !Sx.p.invitedBy) { Sx.p.pendingInv = m[1].toUpperCase(); Store.save(); }
   if (data && data.ui) { try { Object.assign(App.ui, data.ui); if (App.ui.view === 'play' && !App.ui.set) App.ui.view = 'home'; } catch (e) { } }
