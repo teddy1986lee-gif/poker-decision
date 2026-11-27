@@ -155,6 +155,8 @@ const Love = (() => {
     } else if (set.mode === 'retry' && set.answers.filter(Boolean).length) gain(set, 0, 3);
     Store.save(); checkLevel();
   }
+  /** 다른 모드(저격 홀덤)의 보상 */
+  function addReward(chips, heart) { gain(null, chips, heart); Store.save(); checkLevel(); }
   function checkLevel() {
     const l = st(), k = calc(l);
     if (k > l.lv) { l.lv = k; Store.save(); setTimeout(() => levelUp(k), 450); }
@@ -218,7 +220,7 @@ const Love = (() => {
     return `<div class="lv-strip">
       <button class="lv-strip-face" type="button" data-go="mina" aria-label="미나 화면 열기"><img src="${thumb(l.outfit)}" alt=""></button>
       <div class="lv-strip-main"><div class="lv-strip-top"><b>미나 · ${U.esc(LV[l.lv].nm)}</b><span>${nx ? `다음 ‘${U.esc(nx.nm)}’` : '최고 단계'}</span></div>${gauge()}<small>${U.esc(needLine(nx))}</small></div>
-      <div class="lv-strip-btns"><span class="lv-bal">${icon('chip')}${fmt(l.chips)}</span><button class="btn btn-line" type="button" data-go="shop">선물 상점</button></div></div>`;
+      <div class="lv-strip-btns"><span class="lv-bal">${icon('chip')}${fmt(l.chips)}</span><button class="btn btn-line" type="button" data-go="sniper">저격 홀덤</button><button class="btn btn-line" type="button" data-go="shop">선물 상점</button></div></div>`;
   }
   const homeQuote = () => line('hello', today());
   /** 해설 위 미나 리액션 말풍선 */
@@ -263,7 +265,7 @@ const Love = (() => {
             <h1>${U.esc(LV[l.lv].nm)}</h1><p class="lv-say">“${U.esc(line('hello', today() + 'm'))}”</p>
             <ol class="lv-steps" aria-label="호감도 단계">${steps}</ol>
             ${gauge()}<small class="lv-need">${U.esc(needLine(nx))}${nx && nx.need && nx.need.have < nx.need.n ? ' · 하트와 학습 조건을 둘 다 채워야 올라가요' : ''}</small>
-            <div class="lv-hero-btns"><button class="btn btn-ink" type="button" data-go="shop">${icon('heart')}선물하기</button><button class="btn btn-line" type="button" id="lv-play">미나 테이블에 앉기</button><span class="lv-bal">${icon('chip')}칩 ${fmt(l.chips)}</span></div>
+            <div class="lv-hero-btns"><button class="btn btn-ink" type="button" data-go="shop">${icon('heart')}선물하기</button><button class="btn btn-line" type="button" id="lv-play">미나 테이블에 앉기</button><button class="btn btn-line" type="button" data-go="sniper">미나와 저격 홀덤</button><span class="lv-bal">${icon('chip')}칩 ${fmt(l.chips)}</span></div>
           </div></div>
         <div class="lv-sec"><div class="lv-sec-h"><h2>옷장</h2><span>${opened} / ${OUT.length} 해금 · 누르면 갈아입어요</span></div><div class="lv-wardrobe">${wardrobe}</div></div>
         <div class="lv-sec"><div class="lv-sec-h"><h2>에피소드</h2><span>시즌 1 · 다음 업데이트에서 열려요</span></div><ol class="lv-eps">${eps}</ol></div>
@@ -432,5 +434,5 @@ const Love = (() => {
     return `<div class="lv-ending ${k}"><img src="${big(st().outfit)}" alt="미나"><div class="lv-ending-tx"><span class="lv-eyebrow">EPISODE · ${U.esc(s.title)} · ${k === 'perfect' ? 'PERFECT ENDING' : k === 'win' ? 'GOOD ENDING' : 'NEXT TIME'}</span><p class="lv-say">“${U.esc(fillR(s.end[k], set))}”</p><small>${U.esc(s.place)}</small></div></div>`;
   }
 
-  return { st, LV, OUT, GIFTS, SCENES, calc, onCorrect, onSetEnd, checkLevel, give, heroImg, homeStrip, homeQuote, bubble, resultBlock, nextInfo, scene, storyLine, sceneEnd, View, Shop };
+  return { addReward, st, LV, OUT, GIFTS, SCENES, calc, onCorrect, onSetEnd, checkLevel, give, heroImg, homeStrip, homeQuote, bubble, resultBlock, nextInfo, scene, storyLine, sceneEnd, View, Shop };
 })();
