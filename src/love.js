@@ -306,5 +306,131 @@ const Love = (() => {
     }
   };
 
-  return { st, LV, OUT, GIFTS, calc, onCorrect, onSetEnd, checkLevel, give, heroImg, homeStrip, homeQuote, bubble, resultBlock, nextInfo, View, Shop };
+  // ---------- 라운드 시나리오(연애 시뮬레이션 장면) ----------
+  // lv: [최소 단계, 최대 단계] · 대사: ['n', 내레이션] 또는 ['m', 미나] · {rival} = 이번 라운드 라이벌 이름
+  // opts: [내 대사, 미나의 답, 하트] · hands: 핸드별 내레이션 · end: 라운드 결과별 미나의 마지막 말
+  const SCENES = [
+    { id: 'first-seat', lv: [0, 1], title: '첫 자리', place: '홀덤 라운지 · 밤 9시',
+      intro: [['n', '라운지 문을 열자 칩 소리와 낮은 재즈가 섞여 흐른다.'], ['m', '처음 오셨죠? 이 자리, 딜러 바로 앞이라 잘 보여요.'], ['n', '맞은편 자리엔 {rival}. 벌써 칩을 만지작거리고 있다.']],
+      q: '미나에게 뭐라고 할까?', opts: [['잘 부탁해요. 많이 배우러 왔어요.', '배우러 오셨구나. 그럼 제가 제대로 봐 드릴게요.', 3], ['오늘 딜러 운이 좋은 것 같은데요?', '…그런 말은 이기고 나서 해 주세요.', 1]],
+      hands: ['미나가 첫 카드를 미끄러뜨리며 눈짓한다. ‘포지션부터 보세요.’', '두 번째 핸드. 미나가 작게 속삭인다. ‘천천히, 계산부터.’', '마지막 핸드. 카드를 돌리던 미나의 손끝이 잠깐 멈춘다.'],
+      end: { perfect: '…전부 맞혔어요? 저 지금 좀 놀랐어요.', win: '오늘 처음 맞아요? 다음에도 이 자리 맡아 둘게요.', lose: '처음엔 다 그래요. 내일 또 오실 거죠?' } },
+    { id: 'coffee-break', lv: [0, 2], title: '쉬는 시간', place: '라운지 뒤편 자판기 앞',
+      intro: [['n', '쉬는 시간. 자판기 앞에서 미나와 마주쳤다.'], ['m', '어, 손님도 커피요? 여기 아메리카노 생각보다 괜찮아요.'], ['m', '다음 테이블 제가 들어가요. 같이 가요.']],
+      q: '자판기 버튼 앞에서', opts: [['미나 씨 것도 제가 뽑을게요.', '…그럼 사양 안 할게요. 다음 판은 제가 잘 봐 드릴게요.', 3], ['저는 단 걸로 마실래요.', '단 거 좋아하세요? 저도요. 의외네.', 2]],
+      hands: ['미나가 종이컵을 테이블 옆에 두고 카드를 섞는다.', '‘커피 식기 전에 끝내 봐요.’ 미나가 웃는다.', '남은 커피 한 모금. 미나가 마지막 카드를 돌린다.'],
+      end: { perfect: '완벽해요. 커피 한 잔 더 뽑아 드릴까요?', win: '커피값은 한 거네요. 다음엔 제가 살게요.', lose: '커피 다 식었다. 다음 판은 더 집중하기예요.' } },
+    { id: 'study', lv: [0, 2], title: '미나의 특강', place: '오픈 전 빈 테이블',
+      intro: [['n', '오픈 전, 빈 테이블에 미나가 노트를 펼쳐 두었다.'], ['m', '일찍 오셨네요. 마침 잘됐다, 문제 몇 개 같이 볼래요?'], ['m', '맞히면… 음, 좋은 거 알려 드릴게요.']],
+      q: '미나의 노트를 보며', opts: [['좋은 게 뭔데요?', '그건 맞히고 나서요. 비밀.', 2], ['선생님, 잘 부탁드립니다.', '선생님이래. …나쁘지 않네요.', 3]],
+      hands: ['미나가 펜 끝으로 보드를 가리킨다. ‘여기서 뭐가 보여요?’', '‘좋아요, 다음 거.’ 미나가 노트를 넘긴다.', '‘마지막 문제. 이거 맞히면 진짜 알려 줄게요.’'],
+      end: { perfect: '만점이에요. 비밀 두 개 알려 줘야겠다.', win: '약속대로. 저 사실 단 거 엄청 좋아해요. …이게 비밀이에요.', lose: '아쉽다. 비밀은 다음 특강 때.' } },
+    { id: 'rude-guest', lv: [1, 2], title: '진상 손님', place: '라운지 VIP 테이블',
+      intro: [['n', '맞은편의 {rival}, 미나에게 카드를 늦게 준다고 투덜댄다.'], ['m', '죄송해요, 바로 돌릴게요.'], ['n', '카드를 쥔 미나의 손이 살짝 떨린다.']],
+      q: '어떻게 할까?', opts: [['딜러 탓 아니에요. 카드로 얘기하죠.', '(미나가 고개를 숙이며 작게 웃는다) …고마워요.', 4], ['조용히 게임에 집중한다.', '(미나가 안도한 듯 숨을 고른다)', 2]],
+      hands: ['‘저 사람, 블러프 많이 해요.’ 미나가 입 모양으로만 말한다.', '{rival}의 칩이 거칠게 밀려 나온다. 미나가 당신을 본다.', '마지막 핸드. 미나가 조용히 응원하는 눈빛이다.'],
+      end: { perfect: '저 사람 표정 봤어요? 오늘 제일 통쾌한 판이었어요.', win: '아까 진짜 멋있었어요. …단골 해 주실 거죠?', lose: '괜찮아요. 제 편 들어 준 것만으로 충분했어요.' } },
+    { id: 'rain', lv: [1, 2], title: '비 오는 마감', place: '마감 30분 전 · 창밖엔 비',
+      intro: [['n', '창밖으로 빗소리가 커진다. 손님이 하나둘 빠져나간다.'], ['m', '우산 가져오셨어요? 저 오늘 깜빡했는데.'], ['m', '마감 전 마지막 테이블이에요. 잘 부탁해요.']],
+      q: '우산 얘기에', opts: [['제 우산 같이 써요.', '…정말요? 그럼 마감까지 기다려 주세요.', 4], ['편의점에서 하나 사다 드릴게요.', '에이, 괜찮아요. 마음만 받을게요.', 2]],
+      hands: ['빗소리 사이로 카드 넘기는 소리가 또렷하다.', '미나가 창밖을 한 번 보고 다시 당신을 본다.', '마지막 핸드. ‘이거 끝나면 같이 나가요.’'],
+      end: { perfect: '오늘 운 좋은 날이네요. …저도요.', win: '우산 하나에 둘은 좀 좁네요. 싫다는 건 아니고요.', lose: '비 그치면 다시 해요. 오늘은 같이 걸어가요.' } },
+    { id: 'reserved', lv: [1, 2], title: '예약석', place: '늘 앉던 자리',
+      intro: [['n', '늘 앉던 자리에 작은 메모가 놓여 있다. ‘예약석’.'], ['m', '아, 그거 제가 써 둔 거예요. 다른 사람이 앉을까 봐.'], ['n', '맞은편에는 처음 보는 얼굴, {rival}.']],
+      q: '메모를 집어 들며', opts: [['저 기다렸어요?', '…조금요. 아주 조금.', 4], ['이 메모 가져가도 돼요?', '네? …마음대로 하세요.', 3]],
+      hands: ['미나가 평소보다 조금 더 천천히 카드를 돌린다.', '‘오늘 핸드 좋아요?’ 미나가 묻는다.', '마지막 핸드. 미나가 메모 쪽을 힐끗 본다.'],
+      end: { perfect: '예약석 주인답네요.', win: '내일도 예약석이에요. 꼭 와요.', lose: '져도 괜찮아요. 자리는 그대로 둘게요.' } },
+    { id: 'cafe', lv: [3, 5], title: '퇴근 후 카페', place: '라운지 옆 작은 카페',
+      intro: [['n', '퇴근한 미나가 유니폼 대신 니트 차림으로 나타났다.'], ['m', '기다렸어? 오늘은 손님 말고 그냥 너로 만나는 거야.'], ['m', '근데 나 포커 얘기밖에 할 줄 몰라. 문제 내도 돼?']],
+      q: '미나가 냅킨을 펼친다', opts: [['좋아, 대신 맞히면 소원 하나.', '소원? …뭔데. 일단 맞혀 봐.', 4], ['오늘은 네 얘기 듣고 싶어.', '(미나가 컵을 만지작거린다) 그럼… 한 판 끝나고.', 3]],
+      hands: ['미나가 냅킨에 보드를 그린다. ‘여기서 넌 뭐 해?’', '‘음, 그다음.’ 미나가 턱을 괸다.', '‘마지막. 이거 맞히면 소원 들어줄게.’'],
+      end: { perfect: '다 맞혔네. 소원 두 개 해.', win: '소원 말해 봐. …아니, 다음에 말해. 아껴 둬.', lose: '소원은 다음에. 대신 커피는 내가 살게.' } },
+    { id: 'late-shift', lv: [3, 4], title: '새벽 근무', place: '새벽 2시의 라운지',
+      intro: [['m', '졸려… 너 아니었으면 벌써 잤을 거야.'], ['n', '미나가 하품을 참으며 카드를 섞는다.'], ['n', '맞은편 {rival}도 눈이 반쯤 감겨 있다.']],
+      q: '졸린 미나에게', opts: [['커피 사 올까?', '아니, 그냥 여기 있어. 그게 더 잠 깨.', 4], ['졸리면 내가 딜 할까?', '너 딜 하면 다 네 칩 되는 거 아냐? 안 돼.', 3]],
+      hands: ['‘첫 핸드. 졸려도 계산은 정확하게.’', '미나가 볼을 톡톡 두드리며 정신을 차린다.', '‘마지막. 이거 끝나면 같이 아침 먹자.’'],
+      end: { perfect: '잠 다 깼어. 너 때문에.', win: '아침은 내가 쏜다. 이긴 사람 특권.', lose: '졸려서 그래. 아침 먹고 다시 해.' } },
+    { id: 'rival-duel', lv: [3, 5], title: '라이벌의 도발', place: '라운지 하이롤러 테이블',
+      intro: [['n', '{rival}, 미나에게 노골적으로 말을 건다.'], ['m', '(작게) 신경 쓰지 마. 그냥 카드로 이겨.'], ['n', '이번 라운드, 질 수 없다.']],
+      q: '{rival}을 보며', opts: [['미나는 내 딜러야.', '(미나 얼굴이 빨개진다) …딜러만?', 5], ['말 대신 칩으로 보여 줄게.', '그래, 그게 너답다.', 4]],
+      hands: ['{rival}의 첫 베팅. 미나가 너만 보이게 고개를 끄덕인다.', '‘침착해.’ 미나의 입 모양.', '마지막 핸드. 라운지가 조용해진다.'],
+      end: { perfect: '완벽해. 오늘 너 진짜 반칙이다.', win: '봤지? 다음부턴 아무도 너한테 못 덤벼.', lose: '괜찮아. 난 네 편이야, 어차피.' } },
+    { id: 'han-river', lv: [4, 5], title: '한강 야경', place: '한강 공원 · 밤',
+      intro: [['n', '강바람이 차다. 미나가 소매 끝을 잡아당긴다.'], ['m', '나 예전에 대회 나갔던 거 말했던가?'], ['m', '…나중에 얘기할게. 오늘은 그냥 같이 있자.']],
+      q: '바람이 분다', opts: [['외투를 벗어 걸쳐 준다.', '(미나가 외투에 얼굴을 반쯤 묻는다) …따뜻하다.', 5], ['다시 대회 나가 보는 건 어때?', '…생각해 볼게. 너랑 연습하면 될지도.', 4]],
+      hands: ['미나가 휴대폰으로 핸드 하나를 보여 준다. ‘이거, 내가 졌던 거.’', '‘너라면 어떻게 했을 것 같아?’', '강 건너 불빛이 흔들린다. 마지막 핸드.'],
+      end: { perfect: '다음 대회, 같이 가 줄래?', win: '…역시 너한테 물어보길 잘했다.', lose: '괜찮아. 나도 그때 똑같이 했거든.' } },
+    { id: 'final-memory', lv: [4, 5], title: '파이널 테이블의 기억', place: '미나의 집 앞 계단',
+      intro: [['n', '미나가 처음으로 그날 이야기를 꺼냈다.'], ['m', '파이널 테이블이었어. 버블 직전에 콜 하나 잘못해서 다 끝났지.'], ['m', '그 뒤로 테이블 맞은편에 앉는 게 무서웠어.']],
+      q: '미나의 이야기에', opts: [['그 핸드, 같이 다시 보자.', '…응. 너랑이면 볼 수 있을 것 같아.', 5], ['그때의 너도 멋있었을 거야.', '바보. …고마워.', 4]],
+      hands: ['‘이 상황이었어. 스택은 이 정도.’ 미나가 숨을 고른다.', '‘여기서 난 콜 했어. 넌?’', '마지막 핸드. 미나가 네 손을 잠깐 잡는다.'],
+      end: { perfect: '…이제 그 핸드 안 무서워.', win: '그때 네가 옆에 있었으면 좋았을 텐데.', lose: '봐, 쉬운 거 아니지? 나만 바보 아니었어.' } },
+    { id: 'eve', lv: [5, 5], title: '대회 전날 밤', place: '라운지 마감 후',
+      intro: [['m', '내일 대회야. 손이 떨려.'], ['m', '마지막으로 같이 한 번만 풀어 줘. 너랑 풀면 괜찮아지거든.']],
+      q: '떨리는 미나에게', opts: [['넌 이미 충분히 강해.', '…그 말 듣고 싶었어.', 5], ['내일 응원하러 갈게.', '진짜? 맨 앞줄에 앉아.', 5]],
+      hands: ['미나가 칩을 쌓았다 무너뜨린다. ‘첫 핸드.’', '‘좋아, 감 돌아오는 것 같아.’', '마지막 핸드. 미나가 눈을 감았다 뜬다.'],
+      end: { perfect: '이제 하나도 안 떨려. 고마워.', win: '내일, 이기고 올게. 기다려.', lose: '연습에서 지는 게 낫지. 내일은 안 져.' } },
+    { id: 'confession', lv: [5, 5], title: '당신의 핸드', place: '텅 빈 라운지 · 새벽',
+      intro: [['n', '모두 떠난 라운지. 테이블엔 카드 두 장이 엎어져 있다.'], ['m', '이건 네 핸드야. 열어 보기 전에, 나 할 말 있어.'], ['m', '…세 판 다 끝나면 말할게.']],
+      q: '미나의 눈을 보며', opts: [['나도 할 말 있어.', '(미나가 웃는다) 그럼 누가 먼저 할지 카드로 정하자.', 5], ['기다릴게. 천천히.', '…넌 항상 그렇게 기다려 주더라.', 5]],
+      hands: ['미나가 첫 카드를 뒤집는다. 손끝이 조금 떨린다.', '‘두 번째.’ 목소리가 작다.', '마지막 카드. 미나가 숨을 들이쉰다.'],
+      end: { perfect: '좋아해. 네가 앉는 테이블이면 어디든 갈게.', win: '좋아해. …이 말 하려고 오늘 딜 했어.', lose: '결과는 상관없어. 좋아해, 그 말이 하고 싶었어.' } }
+  ];
+  const sceneById = id => SCENES.find(s => s.id === id);
+  const rivalName = set => { try { return Fun.byId(set.rival).n; } catch (e) { return '낯선 손님'; } };
+  const fillR = (s, set) => String(s).replace(/\{rival\}/g, rivalName(set));
+  /** 단계에 맞는 장면 중 덜 본 것을 고른다 */
+  function pickScene() {
+    const l = st(); l.seen = l.seen || {};
+    const pool = SCENES.filter(s => l.lv >= s.lv[0] && l.lv <= s.lv[1]);
+    const min = Math.min(...pool.map(s => l.seen[s.id] || 0));
+    const cand = pool.filter(s => (l.seen[s.id] || 0) === min && s.id !== l.lastScene);
+    const list = cand.length ? cand : pool;
+    return list[Math.floor(Math.random() * list.length)];
+  }
+  /** 라운드 시작 장면(비주얼 노벨) */
+  function scene(set) {
+    const s = pickScene(), l = st();
+    set.scene = s.id; l.seen = l.seen || {}; l.seen[s.id] = (l.seen[s.id] || 0) + 1; l.lastScene = s.id; Store.save();
+    const steps = s.intro.map(([w, t]) => ({ w, t: fillR(t, set) }));
+    let i = 0, picked = null;
+    const v = Layer.open(`<div class="vn" role="document"><div class="vn-img"><img src="${big(l.outfit)}" alt="미나"><span class="vn-place">${U.esc(s.place)}</span><span class="vn-ep">EPISODE · ${U.esc(s.title)}</span></div>
+      <div class="vn-box"><div class="vn-body" id="vn-body"></div><div class="vn-act" id="vn-act"></div></div></div>`, '라운드 장면');
+    const body = U.$('#vn-body', v), act = U.$('#vn-act', v);
+    const say = (w, t) => `<b class="vn-who ${w === 'm' ? 'm' : w === 'me' ? 'me' : 'n'}">${w === 'm' ? '미나' : w === 'me' ? '나' : ''}</b><p class="vn-text ${w}">${U.esc(t)}</p>`;
+    const start = () => { Layer.close(); if (picked) { gain(set, 0, picked[2]); Store.save(); checkLevel(); } App.render(); };
+    function draw() {
+      if (i < steps.length) {
+        body.innerHTML = say(steps[i].w, steps[i].t);
+        act.innerHTML = `<button class="vn-skip" type="button" id="vn-skip">건너뛰기</button><button class="btn btn-ink" type="button" id="vn-next">다음 ▸</button>`;
+        U.$('#vn-next', v).onclick = () => { i++; draw(); };
+        U.$('#vn-skip', v).onclick = () => { i = steps.length; draw(); };
+        U.$('#vn-next', v).focus();
+      } else if (!picked) {
+        body.innerHTML = `<b class="vn-who n">${U.esc(fillR(s.q, set))}</b>`;
+        act.innerHTML = `<div class="vn-opts">${s.opts.map((o, k) => `<button class="vn-opt" type="button" data-k="${k}">${U.esc(fillR(o[0], set))}</button>`).join('')}</div>`;
+        U.$$('[data-k]', v).forEach(b => b.onclick = () => { picked = s.opts[+b.dataset.k]; set.choice = +b.dataset.k; draw(); });
+        U.$('[data-k]', v).focus();
+      } else {
+        body.innerHTML = say('me', fillR(picked[0], set)) + say('m', fillR(picked[1], set));
+        act.innerHTML = `<span class="lv-tag heart">${icon('heart')}하트 +${picked[2]}</span><button class="btn btn-ink" type="button" id="vn-go">테이블에 앉기 ▸</button>`;
+        U.$('#vn-go', v).onclick = start; U.$('#vn-go', v).focus();
+      }
+    }
+    draw();
+  }
+  /** 풀이 화면: 이번 핸드의 장면 내레이션 */
+  function storyLine(set) {
+    const s = set && set.scene && sceneById(set.scene); if (!s) return '';
+    const t = fillR(s.hands[Math.min(set.idx, s.hands.length - 1)], set);
+    return `<div class="lv-scene-line"><img src="${thumb(st().outfit)}" alt="미나"><div><span>EPISODE · ${U.esc(s.title)} · ${U.esc(s.place)}</span><p>${U.esc(t)}</p></div></div>`;
+  }
+  /** 결과 화면: 장면 엔딩 */
+  function sceneEnd(set) {
+    const s = set && set.scene && sceneById(set.scene); if (!s || !set.fun) return '';
+    const k = set.fun.perfect ? 'perfect' : set.fun.win ? 'win' : 'lose';
+    return `<div class="lv-ending ${k}"><img src="${big(st().outfit)}" alt="미나"><div class="lv-ending-tx"><span class="lv-eyebrow">EPISODE · ${U.esc(s.title)} · ${k === 'perfect' ? 'PERFECT ENDING' : k === 'win' ? 'GOOD ENDING' : 'NEXT TIME'}</span><p class="lv-say">“${U.esc(fillR(s.end[k], set))}”</p><small>${U.esc(s.place)}</small></div></div>`;
+  }
+
+  return { st, LV, OUT, GIFTS, SCENES, calc, onCorrect, onSetEnd, checkLevel, give, heroImg, homeStrip, homeQuote, bubble, resultBlock, nextInfo, scene, storyLine, sceneEnd, View, Shop };
 })();
