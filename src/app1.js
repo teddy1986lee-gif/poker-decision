@@ -59,7 +59,7 @@ const App = (() => {
     b.textContent = S.p.nick ? S.p.nick : '로그인';
     U.$$('.nav [data-nav]').forEach(x => x.setAttribute('aria-current', x.dataset.nav === navKey() ? 'page' : 'false'));
   }
-  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', ach: 'ach', admin: '' }[ui.view] ?? '');
+  const navKey = () => ({ home: 'home', play: 'home', result: 'home', rank: 'rank', notes: 'notes', sim: 'sim', invite: 'invite', ach: 'ach', mina: 'mina', shop: 'mina', admin: '' }[ui.view] ?? '');
   const canAdmin = () => !S.runtime || S.isOwner || S.canEdit;
 
   function go(view, opts = {}) {
@@ -71,7 +71,7 @@ const App = (() => {
     document.body.dataset.view = ui.view;
     paintHeader();
     const el = U.$('#view');
-    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, ach: Fun.View, admin: Admin }[ui.view] || Home;
+    const f = { home: Home, play: Play, result: Result, rank: Rank, notes: Notes, sim: SimView, invite: Invite, ach: Fun.View, mina: Love.View, shop: Love.Shop, admin: Admin }[ui.view] || Home;
     el.innerHTML = f.html();
     f.bind && f.bind(el);
   }
@@ -93,18 +93,19 @@ const App = (() => {
       const f = Fun.st(), ttl = Fun.title(), nx = Fun.nextGoal(), nr = Fun.peek();
       const beat = Object.keys(f.beat).length, achN = Fun.ACH.filter(a => f.ach[a.id]).length;
       const wrongN = Object.values(S.p.solved).filter(x => !x.ok).length;
-      const cta = inProg ? '진행 중인 라운드 이어하기' : total ? '라이벌 매치 시작' : '이용권 충전하기';
+      const cta = inProg ? '진행 중인 라운드 이어하기' : total ? '미나 테이블에 앉기' : '이용권 충전하기';
       return `<section class="home2">
         <div class="h2-hero">
-          <img class="h2-bg" src="${RIVAL_BASE}hero.webp" alt="" fetchpriority="high">
+          <img class="h2-bg" src="${Love.heroImg()}" alt="딜러석의 미나" fetchpriority="high">
           <div class="h2-copy">
-            <span class="h2-eyebrow">HOLDEM GOSU · RIVAL MATCH</span>
-            <h1>테이블 위의 한 수.<br><em>오늘은 누구를 이길까.</em></h1>
-            <p>${S.p.nick ? U.esc(S.p.nick) + '님, ' : ''}매 라운드 새 라이벌이 앉습니다. 3문제 중 2문제를 맞히면 격파.</p>
+            <span class="h2-eyebrow">HOLDEM GOSU · 미나의 테이블</span>
+            <h1>“${U.esc(Love.homeQuote())}”<br><em>맞힌 만큼 가까워져요.</em></h1>
+            <p>${S.p.nick ? U.esc(S.p.nick) + '님, ' : ''}정답을 맞혀 칩을 모으고 미나에게 선물하세요. 매 라운드 라이벌도 함께 앉습니다.</p>
             <div class="h2-cta"><button class="h2-start" id="start" type="button">${cta}<span aria-hidden="true">→</span></button><span class="h2-tix">남은 이용권 <b class="num">${total}</b></span></div>
           </div>
           <button class="h2-next" type="button" data-rival="${nr.id}"><img src="${Fun.thumb(nr)}" alt=""><span><small>NEXT RIVAL${f.met[nr.id] ? '' : ' · NEW'}</small><b>${U.esc(nr.n)}</b><em>${U.esc(nr.t)}</em></span></button>
         </div>
+        ${Love.homeStrip()}
         <div class="h2-stats">
           <div><span>칭호</span><b>${ttl ? ttl.e + ' ' + U.esc(ttl.nm) : '—'}</b></div>
           <div><span>정답률</span><b class="num">${acc}<small>%</small></b></div>
@@ -112,7 +113,7 @@ const App = (() => {
           <div><span>격파한 라이벌</span><b class="num">${beat}<small>/${Fun.R.length}</small></b></div>
         </div>
         <div class="h2-grid">
-          <button class="h2-card h2-ach" type="button" data-go="ach"><img src="${RIVAL_BASE}card-a.webp" alt="" loading="lazy"><span class="h2-cb"><small>ACHIEVEMENTS</small><b>업적 · 라이벌 도감</b><em>${achN}/${Fun.ACH.length} 달성${nx ? ` · 다음 칭호 ‘${U.esc(nx.nm)}’까지 ${Math.max(0, nx.n - S.p.tot.c)}문제` : ''}</em>${nx ? `<i class="h2-bar"><i style="width:${Math.min(100, Math.round(S.p.tot.c / nx.n * 100))}%"></i></i>` : ''}</span></button>
+          <button class="h2-card h2-ach" type="button" data-go="ach"><img src="${MINA_BASE}o40.webp" alt="" loading="lazy"><span class="h2-cb"><small>ACHIEVEMENTS</small><b>업적 · 라이벌 도감</b><em>${achN}/${Fun.ACH.length} 달성${nx ? ` · 다음 칭호 ‘${U.esc(nx.nm)}’까지 ${Math.max(0, nx.n - S.p.tot.c)}문제` : ''}</em>${nx ? `<i class="h2-bar"><i style="width:${Math.min(100, Math.round(S.p.tot.c / nx.n * 100))}%"></i></i>` : ''}</span></button>
           <div class="h2-side">
             <button class="h2-card h2-tx" type="button" id="academy-review"><small>REVIEW</small><b>오답 복습</b><em>${wrongN ? `틀린 문제 ${wrongN}개 · 이용권 없이 다시 풀기` : '아직 틀린 문제가 없어요'}</em><span class="h2-arr">→</span></button>
             <button class="h2-card h2-tx" type="button" onclick="Coach.open()"><small>AI COACH</small><b>GTO AI 코치</b><em>${COACH_CONFIG.endpoint ? `남은 질문권 ${S.p.aiTickets ?? 1}개` : '연결 준비 중'}</em><span class="h2-arr">→</span></button>
@@ -290,8 +291,8 @@ const App = (() => {
     const last = set.idx >= set.ids.length - 1;
     let verdict;
     if (!ans.length) verdict = `<div class="verdict na"><b>검수 대기</b><span>이 예시 문제의 정답은 전문가 검수 후 공개됩니다.</span></div>`;
-    else if (done.ok) verdict = `<p class="verdict-fun ok">${U.esc(Fun.verdictLine(true, p.id))}</p><div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
-    else verdict = `<p class="verdict-fun no">${U.esc(Fun.verdictLine(false, p.id))}</p><div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
+    else if (done.ok) verdict = `${Love.bubble(true, p.id, set, done)}<div class="verdict ok"><b>정답</b><span>${set.mode === 'scored' && done.first ? `+${POINTS}점 · 정답 수 +1` : set.mode === 'scored' ? '이미 푼 문제라 점수는 더해지지 않습니다' : '랭킹에는 반영되지 않습니다'}</span></div>`;
+    else verdict = `${Love.bubble(false, p.id, set, done)}<div class="verdict no"><b>오답</b><span>권장: ${ans.map(i => U.esc(optLabel(st, p.o[i]))).join(' 또는 ')}${set.mode === 'scored' ? ' · 오답노트에 저장됨' : ''}</span></div>`;
     const others = p.o.map((tok, i) => (p.n && p.n[i] && !ans.includes(i)) ? `<li><b>${U.esc(optLabel(st, tok))}</b><span>${U.esc(p.n[i])}</span></li>` : '').join('');
     const btn = set.mode === 'preview' ? `<button class="btn btn-ink btn-block" id="next" type="button">돌아가기</button>`
       : `<button class="btn btn-ink btn-block" id="next" type="button">${last ? '결과 보기' : '다음 문제'}</button>`;
@@ -319,7 +320,7 @@ const App = (() => {
       if (first) {
         S.p.solved[p.id] = { ok, c: i, at: Date.now() };
         S.p.tot.a++; S.p.wk.a++;
-        if (ok) { S.p.tot.c++; S.p.wk.c++; S.p.tot.p += POINTS; S.p.wk.p += POINTS; }
+        if (ok) { S.p.tot.c++; S.p.wk.c++; S.p.tot.p += POINTS; S.p.wk.p += POINTS; Love.onCorrect(set); }
       } else {
         S.p.retry[p.id] = { ok, at: Date.now() };
       }
@@ -341,6 +342,7 @@ const App = (() => {
     if (set.idx < set.ids.length - 1) { set.idx++; return go('play'); }
     if (set.mode === 'scored') { S.p.ctr.setsDone++; S.p.ctr.offers++; Store.save(); }
     Fun.endSet(set);
+    Love.onSetEnd(set);
     go('result');
   }
 
