@@ -24,7 +24,9 @@ const Result = {
       : `<div class="spread"><div><div class="eyebrow">${App.ui.set.mode === 'retry' ? '재풀이 결과' : `${scored.length}문제 결과`}</div>
           <div class="score num"><b>${okN}</b><span>/ ${scored.length} 정답</span></div></div>
           <div class="panel pad num" style="text-align:right"><div class="small muted">이번 세트</div><div style="font:800 26px/1 var(--f-display)">+${pts}점</div></div></div>
+        ${Love.sceneEnd(set)}
         ${Fun.resultBlock(set)}
+        ${Love.resultBlock(set)}
         <div class="panel pad"><div class="rlist">${list}</div></div>`;
     return `<section class="screen">
       ${head}

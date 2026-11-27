@@ -206,8 +206,9 @@ const Fun = (() => {
     const opening = spick(!actions.length ? OPEN.pre : stt.facing ? OPEN.facing : OPEN.idle, seed + 'o');
     const prompt = spick(stt.facing ? PROMPT.facing : PROMPT.idle, seed + 'p');
     const who = r ? `맞은편엔 ‘${U.esc(r.t)}’ <b>${U.esc(josa(r.n, '이', '가'))}</b> 앉아 있습니다. ` : '';
-    return `<header class="hand-story comic">${set && set.rival ? banner(set, p, stt) : ''}<div class="story-top"><span>EPISODE · ${U.esc(p.tp)}</span><span>${U.esc(prog)} · ${PD.STREET_KO[stt.street]}</span></div>
-      <h1>${U.esc(p.ti)}</h1><p class="story-hook">“${U.esc(hook)}”</p>
+    const sl = set && set.scene && typeof Love !== 'undefined' ? Love.storyLine(set) : '';
+    return `<header class="hand-story comic">${sl}${set && set.rival ? banner(set, p, stt) : ''}<div class="story-top"><span>HAND · ${U.esc(p.tp)}</span><span>${U.esc(prog)} · ${PD.STREET_KO[stt.street]}</span></div>
+      <h1>${U.esc(p.ti)}</h1>${sl ? '' : `<p class="story-hook">“${U.esc(hook)}”</p>`}
       <div class="story-intro">${stt.n}인 ${p.format === 'cash' ? '링게임' : '토너먼트'}. 당신은 <b>${pos}</b> 자리. ${who}유효 스택은 <b>${TableView.trimNum(stt.effBB)}BB</b>.<br>${U.esc(opening)}</div>
       <p class="story-topic">📌 ${U.esc(topic)}</p>
       ${p.ctx ? `<div class="story-context"><span>이 핸드의 상황</span><p>${U.esc(p.ctx)}</p></div>` : ''}
@@ -315,7 +316,8 @@ const Fun = (() => {
     set.rival = takeRival();
     const f = st(); f.last = set.rival;
     if (set.mode === 'scored') { f.met[set.rival] = (f.met[set.rival] || 0) + 1; Store.save(); }
-    setTimeout(() => vs(set), 30);
+    // 채점 라운드는 미나와의 장면으로 시작, 복습은 기존 VS 화면
+    setTimeout(() => (set.mode === 'scored' && typeof Love !== 'undefined' ? Love.scene(set) : vs(set)), 30);
   }
   function vs(set) {
     const r = byId(set.rival), f = st();

@@ -13,7 +13,7 @@ def script(share_base):
     probs = ''.join(R(f) for f in sorted(glob.glob('problems/*.js')))
     app1 = R('src/app1.js').replace("const SHARE_BASE = '';", f"const SHARE_BASE = {share_base!r};")
     js = '\n'.join([R('src/engine.js'), R('src/problem-review.js'), 'const PROBLEMS = []; const P = o => PROBLEMS.push(ProblemReview.apply(o, PD));', probs,
-                    R('src/table.js'), R('src/store.js'), app1, R('src/fun.js'), R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
+                    R('src/table.js'), R('src/store.js'), app1, R('src/fun.js'), R('src/love.js'), R('src/admin.js'), R('src/simcore.js'), R('src/simview.js'), R('src/coach-config.js'), R('src/coach.js'), R('src/app2.js')])
     assert '</script' not in js
     return js
 
@@ -22,7 +22,7 @@ HEAD = '''<title>HOLDEM GOSU</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@700&display=swap">
 <style>
-''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '\n' + R('src/fun.css') + '\n' + R('src/home.css') + '''
+''' + R('src/style_a.css') + '\n' + R('src/style_b.css') + '\n' + R('src/style_c.css') + '\n' + R('src/coach.css') + '\n' + R('src/academy.css') + '\n' + R('src/storefront.css') + '\n' + R('src/story.css') + '\n' + R('src/fun.css') + '\n' + R('src/home.css') + '\n' + R('src/love.css') + '''
 </style>
 '''
 BODY = R('src/body.html')
@@ -42,4 +42,5 @@ page = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
 open('docs/index.html', 'w', encoding='utf-8').write(page)
 # 라이벌 이미지(assets/rivals → docs/rivals)
 shutil.copytree('assets/rivals', 'docs/rivals', dirs_exist_ok=True)
+shutil.copytree('assets/mina', 'docs/mina', dirs_exist_ok=True)
 print('built dist/poker-decision.html', len(frag.encode()), 'bytes; docs/index.html', len(page.encode()), 'bytes')
