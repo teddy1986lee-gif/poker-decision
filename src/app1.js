@@ -96,7 +96,7 @@ const App = (() => {
       const cta = inProg ? '진행 중인 라운드 이어하기' : total ? '미나 테이블에 앉기' : '이용권 충전하기';
       return `<section class="home2">
         <div class="h2-hero">
-          <img class="h2-bg" src="${Love.heroImg()}" alt="딜러석의 미나" fetchpriority="high">
+          <img class="h2-bg" src="${MINA_BASE}lobby.webp" alt="카드를 건네는 미나" fetchpriority="high">
           <div class="h2-copy">
             <span class="h2-eyebrow">HOLDEM GOSU · 미나의 테이블</span>
             <h1>“${U.esc(Love.homeQuote())}”<br><em>맞힌 만큼 가까워져요.</em></h1>
